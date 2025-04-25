@@ -1,4 +1,3 @@
-// src/pages/SignUpPage.tsx
 import React from "react";
 import SignUpForm from "../components/SignupForm";
 

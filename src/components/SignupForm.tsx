@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import {UserDTO} from "../types/UserDTO"; // Import UserDTO from the types folder
+import {UserDTO} from "../types/UserDTO";
 import {Button, Container, Grid, Link, Paper, TextField, Typography} from "@mui/material";
-import {Link as RouterLink, useNavigate} from "react-router-dom"; // Import useNavigate for redirect
-import {signup} from "../api/authApi.tsx"; // Import signup function
+import {Link as RouterLink, useNavigate} from "react-router-dom";
+import {signup} from "../api/AuthApi.tsx";
 
 const initialUser: UserDTO = {
     name: "",

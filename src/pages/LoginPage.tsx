@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import {Container, Paper, Typography} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
-import {getToken, isTokenExpired, removeToken} from '../auth/auth';
+import {getToken, isTokenExpired, removeToken} from '../auth/Auth.ts';
 import LoginForm from '../components/LoginForm';
 
 const LoginPage = () => {

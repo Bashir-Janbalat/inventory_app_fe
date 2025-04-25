@@ -15,36 +15,37 @@ Dies ist das Frontend der Lagerverwaltungsanwendung. Es kommuniziert mit einem S
 
 ## 📁 Projektstruktur
 ````
-src/
 ├── api/
-│   ├── api.ts
-│   ├── authApi.ts
-│   └── productApi.ts
+│   ├── Api.ts         # Base API logic for making HTTP requests
+│   ├── AuthApi.ts     # API logic for authentication (login, signup)
+│   └── ProductApi.ts  # API logic for product-related operations
 │
 ├── auth/
-│   ├── auth.ts
-│   └── useAuth.ts
+│   ├── Auth.ts        # Authentication logic (handling JWT tokens)
+│   └── UseAuth.ts     # Custom hook for authentication management (login, logout)
 │
 ├── components/
-│   ├── LoginForm.tsx
-│   ├── ProductCard.tsx
-│   ├── ProductList.tsx
-│   └── ProtectedRoute.tsx
+│   ├── LoginForm.tsx  # Form component for logging in
+│   ├── ProductCard.tsx # Card component to display a product
+│   ├── ProductList.tsx # List component for displaying products
+│   └── ProtectedRoute.tsx # Wrapper component to protect routes
+│   ├── Header.tsx     # Header component (with logout button)
+│   └── Footer.tsx     # Footer component (includes copyright info)
 │
 ├── pages/
-│   ├── LoginPage.tsx
-│   ├── NotFoundPage.tsx
-│   ├── ProductPage.tsx
-│   └── SignupPage.tsx
+│   ├── LoginPage.tsx   # Page component for login
+│   ├── NotFoundPage.tsx # Page component for 404 errors
+│   ├── ProductPage.tsx  # Page component for individual product details
+│   └── SignupPage.tsx  # Page component for signup
 │
 ├── types/
-│   ├── ProductDTO.ts
-│   └── UserDTO.ts
+│   ├── ProductDTO.ts    # Product data structure
+│   └── UserDTO.ts       # User data structure
 │
-├── App.tsx
-├── main.tsx
-└── routes.tsx
-└── vite-env.d.ts
+├── App.tsx              # Main app component, sets up routing
+├── main.tsx             # Entry point of the app
+├── routes.tsx           # Handles routing of the app
+└── vite-env.d.ts        # TypeScript environment types for Vite
 
 ````
 
@@ -75,7 +76,7 @@ Du kannst Umgebungsvariablen in einer .env Datei definieren, zB.:
 
     VITE_API_URL=http://localhost:8081/api
 
-Und in api.ts wie folgt verwenden:
+Und in Api.ts wie folgt verwenden:
 
     baseURL: import.meta.env.VITE_API_URL
 

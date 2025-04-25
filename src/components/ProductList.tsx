@@ -1,8 +1,19 @@
 import React, {useEffect, useState} from 'react';
 import {ProductDTO} from '../types/ProductDTO';
-import {getProducts} from '../api/productApi';
+import {getProducts} from '../api/ProductApi.ts';
 import ProductCard from './ProductCard';
-import {CircularProgress, Container, Grid, Pagination, Stack, Typography,} from '@mui/material';
+import {
+    CircularProgress,
+    Container,
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Pagination,
+    Select,
+    Stack,
+    Typography,
+} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 
 const ProductList: React.FC = () => {
@@ -11,14 +22,15 @@ const ProductList: React.FC = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const navigate = useNavigate();
-
+    const [sortBy, setSortBy] = useState<'name' | 'price'>('name');
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
     const pageSize = 6;
 
     useEffect(() => {
         const fetchProducts = async () => {
             setLoading(true);
             try {
-                const productResponse = await getProducts(page - 1, pageSize);
+                const productResponse = await getProducts(page - 1, pageSize,sortBy,sortDirection);
                 setProducts(productResponse.content);
                 setTotalPages(productResponse.totalPages);
             } catch (error) {
@@ -29,7 +41,7 @@ const ProductList: React.FC = () => {
         };
 
         fetchProducts();
-    }, [page]);
+    }, [page,sortBy,sortDirection]);
 
     const handleProductClick = (id: number) => {
         navigate(`/products/${id}`);
@@ -41,6 +53,38 @@ const ProductList: React.FC = () => {
                 Our Products
             </Typography>
 
+            <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
+                {/* Sort by field */}
+                <FormControl sx={{ minWidth: 120 }}>
+                    <InputLabel>Sort by</InputLabel>
+                    <Select
+                        value={sortBy}
+                        label="Sort by"
+                        onChange={(e) => {
+                            setSortBy(e.target.value as 'name' | 'price');
+                            setPage(1);
+                        }}
+                    >
+                        <MenuItem value="name">Name</MenuItem>
+                        <MenuItem value="price">Price</MenuItem>
+                    </Select>
+                </FormControl>
+
+                <FormControl sx={{ minWidth: 120 }}>
+                    <InputLabel>Direction</InputLabel>
+                    <Select
+                        value={sortDirection}
+                        label="Direction"
+                        onChange={(e) => {
+                            setSortDirection(e.target.value as 'asc' | 'desc');
+                            setPage(1);
+                        }}
+                    >
+                        <MenuItem value="asc">Ascending ↑</MenuItem>
+                        <MenuItem value="desc">Descending ↓</MenuItem>
+                    </Select>
+                </FormControl>
+            </Stack>
             {loading ? (
                 <Grid container justifyContent="center">
                     <CircularProgress/>

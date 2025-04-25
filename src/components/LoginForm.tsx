@@ -1,8 +1,8 @@
-import {useState} from 'react';
-import {Alert, Box, Button, TextField, Typography} from '@mui/material';
-import {login} from '../api/authApi';
-import {Link, useNavigate} from 'react-router-dom';
-import {saveToken} from '../auth/auth';
+import { useState } from 'react';
+import { Alert, Box, Button, TextField, Typography } from '@mui/material';
+import { login } from '../api/AuthApi.tsx';
+import { Link, useNavigate } from 'react-router-dom';
+import { saveToken } from '../auth/Auth.ts';
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
@@ -17,12 +17,12 @@ const LoginForm = () => {
             saveToken(response.accessToken);
             navigate('/products');
         } catch (err) {
-            setError('Fehler beim Login. Bitte überprüfen Sie Ihre Daten.');
+            setError('Login failed. Please check your credentials.');
         }
     };
 
     return (
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 2}}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 2 }}>
             {error && <Alert severity="error">{error}</Alert>}
             <TextField
                 label="Username"
@@ -34,7 +34,7 @@ const LoginForm = () => {
                 onChange={(e) => setUsername(e.target.value)}
             />
             <TextField
-                label="Passwort"
+                label="Password"
                 type="password"
                 fullWidth
                 margin="normal"
@@ -47,9 +47,9 @@ const LoginForm = () => {
                 variant="contained"
                 color="primary"
                 fullWidth
-                sx={{mt: 2}}
+                sx={{ mt: 2 }}
             >
-                Einloggen
+                Login
             </Button>
             <Typography variant="body2" align="center" sx={{ mt: 2 }}>
                 Don't have an account? <Link to="/signup">Sign Up</Link>

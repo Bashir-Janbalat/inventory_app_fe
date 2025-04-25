@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProductDTO } from '../types/ProductDTO';
-import { getProductById } from '../api/productApi';
+import { getProductById } from '../api/ProductApi.ts';
 import { Card, CardContent, Typography, Button, CardMedia, Container, CircularProgress } from '@mui/material';
 
 const ProductPage: React.FC = () => {

@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { getToken, isTokenExpired, removeToken } from '../auth/auth';
+import { getToken, isTokenExpired, removeToken } from '../auth/Auth.ts';
 
-// استخدم المتغير الصحيح من .env
 const instance = axios.create({
     baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8081/api',
 });

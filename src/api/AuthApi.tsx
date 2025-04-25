@@ -1,4 +1,4 @@
-import axios from './api';
+import axios from './Api.ts';
 import {UserDTO} from "../types/UserDTO.ts";
 
 interface LoginResponse {

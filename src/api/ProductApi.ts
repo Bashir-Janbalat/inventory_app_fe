@@ -1,4 +1,4 @@
-import axios from './api';
+import axios from './Api.ts';
 
 import {ProductDTO} from '../types/ProductDTO';
 
@@ -10,11 +10,13 @@ interface ProductResponse {
     totalElements: number;
 }
 
-export const getProducts =async (page: number, size: number): Promise<ProductResponse> => {
+export const getProducts =async (page: number, size: number, sortBy: string, sortDirection: string): Promise<ProductResponse> => {
     const response = await axios.get(baseURL + "/products", {
         params: {
             page,
-            size
+            size,
+            sortDirection,
+            sortBy
         }
         });
     return  response.data as ProductResponse;
