@@ -2,19 +2,25 @@ import React, {useEffect, useState} from 'react';
 import {ProductDTO} from '../types/ProductDTO';
 import {getProducts} from '../api/productApi';
 import ProductCard from './ProductCard';
-import {CircularProgress, Container, Grid, Typography} from '@mui/material';
+import {CircularProgress, Container, Grid, Pagination, Stack, Typography,} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 
 const ProductList: React.FC = () => {
     const [products, setProducts] = useState<ProductDTO[]>([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const navigate = useNavigate();
+
+    const pageSize = 6;
 
     useEffect(() => {
         const fetchProducts = async () => {
+            setLoading(true);
             try {
-                const fetchedProducts = await getProducts();
-                setProducts(fetchedProducts);
+                const productResponse = await getProducts(page - 1, pageSize);
+                setProducts(productResponse.content);
+                setTotalPages(productResponse.totalPages);
             } catch (error) {
                 console.error('Error fetching products:', error);
             } finally {
@@ -23,7 +29,7 @@ const ProductList: React.FC = () => {
         };
 
         fetchProducts();
-    }, []);
+    }, [page]);
 
     const handleProductClick = (id: number) => {
         navigate(`/products/${id}`);
@@ -40,13 +46,23 @@ const ProductList: React.FC = () => {
                     <CircularProgress/>
                 </Grid>
             ) : (
-                <Grid container spacing={4}>
-                    {products.map((product) => (
-                        <Grid  key={product.id}>
-                            <ProductCard product={product} onClick={() => handleProductClick(product.id)} />
-                        </Grid>
-                    ))}
-                </Grid>
+                <>
+                    <Grid container spacing={4}>
+                        {products.map((product) => (
+                            <Grid key={product.id}>
+                                <ProductCard product={product} onClick={() => handleProductClick(product.id)}/>
+                            </Grid>
+                        ))}
+                    </Grid>
+                    <Stack alignItems="center" mt={4}>
+                        <Pagination
+                            count={totalPages}
+                            page={page}
+                            onChange={(_event, value) => setPage(value)}
+                            color="primary"
+                        />
+                    </Stack>
+                </>
             )}
         </Container>
     );
