@@ -13,8 +13,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
             <CardMedia
                 component="img"
                 height="140"
-                image={product.images[0]?.url}
-                alt={product.name}
+                image={product.images[0]?.imageUrl}
+                alt={product.images[0]?.altText || product.name}
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
