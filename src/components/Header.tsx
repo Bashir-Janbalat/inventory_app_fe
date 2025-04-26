@@ -13,18 +13,18 @@ const Header: React.FC = () => {
     };
 
     return (
-        <AppBar position="static" color="primary">
-            <Toolbar sx={{justifyContent: "space-between"}}>
-                <Typography variant="h6" component={Link} to="/" sx={{color: "white", textDecoration: "none"}}>
+        <AppBar position="static" sx={{backgroundColor: "#f5f7fa"}}>
+            <Toolbar  sx={{justifyContent: "space-between"}}>
+                <Typography variant="h6" component={Link} to="/" sx={{color: "blue", textDecoration: "none"}}>
                     Inventory Manager
                 </Typography>
 
                 <Box>
                     {isAuthenticated && (
                         <>
-                            <Button color="inherit" component={Link} to="/dashboard">Dashboard</Button>
-                            <Button color="inherit" component={Link} to="/products">Products</Button>
-                            <Button color="inherit" onClick={handleLogout}>Logout</Button>
+                            <Button color="primary" component={Link} to="/dashboard">Dashboard</Button>
+                            <Button color="primary" component={Link} to="/products">Products</Button>
+                            <Button color="primary" onClick={handleLogout}>Logout</Button>
                         </>
                     )}
                 </Box>

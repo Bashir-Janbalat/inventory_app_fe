@@ -30,7 +30,7 @@ const ProductList: React.FC = () => {
         const fetchProducts = async () => {
             setLoading(true);
             try {
-                const productResponse = await getProducts(page - 1, pageSize,sortBy,sortDirection);
+                const productResponse = await getProducts(page - 1, pageSize, sortBy, sortDirection);
                 setProducts(productResponse.content);
                 setTotalPages(productResponse.totalPages);
             } catch (error) {
@@ -41,7 +41,7 @@ const ProductList: React.FC = () => {
         };
 
         fetchProducts();
-    }, [page,sortBy,sortDirection]);
+    }, [page, sortBy, sortDirection]);
 
     const handleProductClick = (id: number) => {
         navigate(`/products/${id}`);
@@ -53,9 +53,9 @@ const ProductList: React.FC = () => {
                 Our Products
             </Typography>
 
-            <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
+            <Stack direction="row" spacing={2} sx={{mb: 3}}>
                 {/* Sort by field */}
-                <FormControl sx={{ minWidth: 120 }}>
+                <FormControl sx={{minWidth: 120}}>
                     <InputLabel>Sort by</InputLabel>
                     <Select
                         value={sortBy}
@@ -70,7 +70,7 @@ const ProductList: React.FC = () => {
                     </Select>
                 </FormControl>
 
-                <FormControl sx={{ minWidth: 120 }}>
+                <FormControl sx={{minWidth: 120}}>
                     <InputLabel>Direction</InputLabel>
                     <Select
                         value={sortDirection}
@@ -104,6 +104,13 @@ const ProductList: React.FC = () => {
                             page={page}
                             onChange={(_event, value) => setPage(value)}
                             color="primary"
+                            sx={{
+                                '&:hover': {
+                                    transform: 'scale(1.02)',
+                                    boxShadow: 6,
+                                    cursor: 'pointer'
+                                },
+                            }}
                         />
                     </Stack>
                 </>

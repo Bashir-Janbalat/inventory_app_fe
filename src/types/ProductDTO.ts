@@ -1,10 +1,14 @@
 interface ProductAttributeDTO {
-    name: string;
-    value: string;
+    attributeName: string;
+    attributeValue: string;
 }
 interface ImageDTO  {
     imageUrl: string;
     altText: string;
+}
+interface stockDTO {
+    quantity: number;
+    warehouseLocation: string;
 }
 
 export interface ProductDTO {
@@ -19,5 +23,6 @@ export interface ProductDTO {
     supplierContactEmail?: string;
     images: ImageDTO [];
     productAttributes: ProductAttributeDTO[];
+    stock:stockDTO;
 }
 

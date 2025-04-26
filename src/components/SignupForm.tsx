@@ -71,11 +71,9 @@ const SignUpForm: React.FC = () => {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="sm">
             <Paper elevation={3} sx={{padding: 3}}>
-                <Typography variant="h5" align="center" gutterBottom>
-                    Create a new account
-                </Typography>
+                <Typography variant="h5" align="center" gutterBottom> Create a new account </Typography>
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={2} direction="column">
                         <TextField

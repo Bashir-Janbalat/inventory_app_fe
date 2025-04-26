@@ -1,35 +1,95 @@
 import React from 'react';
-import { ProductDTO } from '../types/ProductDTO.ts';
-import { Card, CardContent, Typography, Button, CardMedia } from '@mui/material';
+import {ProductDTO} from '../types/ProductDTO.ts';
+import {Box, Button, Card, CardContent, CardMedia, Typography} from '@mui/material';
 
 interface ProductCardProps {
     product: ProductDTO;
     onClick: () => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
+const ProductCard: React.FC<ProductCardProps> = ({product, onClick}) => {
     return (
-        <Card sx={{ maxWidth: 345 }} onClick={onClick}>
+        <Card
+            onClick={onClick}
+            raised
+            sx={{
+                width: 300,
+                height: 500,
+                display: 'flex',
+                flexDirection: 'column',
+                margin: 2,
+                overflow: 'hidden',
+                transition: 'transform 0.3s, box-shadow 0.3s',
+                '&:hover': {
+                    transform: 'scale(1.02)',
+                    boxShadow: 6,
+                    cursor: 'pointer',
+                },
+            }}
+        >
             <CardMedia
                 component="img"
-                height="140"
-                image={product.images[0]?.imageUrl}
+                height="200"
+                image={product.images[0]?.imageUrl || '/default-image.jpg'}
                 alt={product.images[0]?.altText || product.name}
+                sx={{objectFit: 'cover', flexShrink: 0}}
             />
-            <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
+
+            <CardContent
+                sx={{
+                    flexGrow: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    padding: 2,
+                }}
+            >
+                <Typography
+                    variant="h6"
+                    component="div"
+                    sx={{
+                        fontWeight: 'bold',
+                        fontSize: '1.1rem',
+                        height: 50,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                    }}
+                >
                     {product.name}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    {product.description}
+
+                <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                        flexGrow: 1,
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: 3,
+                        marginBottom: 2,
+                    }}
+                >
+                    {product.description || "No description available."}
                 </Typography>
-                <Typography variant="h6" color="text.primary" sx={{ mt: 2 }}>
-                    ${product.price}
+
+                <Typography
+                    variant="h6"
+                    color="text.primary"
+                    sx={{
+                        fontWeight: 'bold',
+                        fontSize: '1.2rem',
+                        marginBottom: 1,
+                    }}
+                >
+                    ${product.price.toFixed(2)}
                 </Typography>
-                <Button variant="contained" color="primary" sx={{ mt: 2 }}>
-                    View Details
-                </Button>
             </CardContent>
+
+            <Box sx={{p: 1}}>
+                <Button variant="contained" color="primary" fullWidth>View Details</Button>
+            </Box>
         </Card>
     );
 };
