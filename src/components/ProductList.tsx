@@ -32,14 +32,15 @@ const ProductList: React.FC = () => {
     const [searchBy, setSearchBy] = useState<string>('');
     const [categories, setCategories] = useState<CategoryDTO[]>([]);
     const [brands, setBrands] = useState<BrandDTO[]>([]);
-    const [category, setCategory] = useState<string>('');
-    const [brand, setBrand] = useState<string>('');
+    const [categoryName, setCategoryName] = useState<string>('');
+    const [brandName, setBrandName] = useState<string>('');
     const pageSize = 6;
 
     const fetchProducts = async () => {
         setLoading(true);
         try {
-            const productResponse = await getProducts(page - 1, pageSize, sortBy, sortDirection, searchBy);
+            const productResponse =
+                await getProducts(page - 1, pageSize, sortBy, sortDirection, searchBy, categoryName, brandName);
             setProducts(productResponse.content);
             setTotalPages(productResponse.totalPages);
         } catch (error) {
@@ -51,7 +52,7 @@ const ProductList: React.FC = () => {
 
     useEffect(() => {
         fetchProducts();
-    }, [page, sortBy, sortDirection, searchBy, category, brand]);
+    }, [page, sortBy, sortDirection, searchBy, categoryName, brandName]);
 
     const fetchCategories = async () => {
         setLoading(true);
@@ -90,12 +91,12 @@ const ProductList: React.FC = () => {
         setPage(1);
     };
     const handleCategoryChange = (e: SelectChangeEvent<string>) => {
-        setCategory(e.target.value);
+        setCategoryName(e.target.value);
         setPage(1);
     };
 
     const handleBrandChange = (e: SelectChangeEvent<string>) => {
-        setBrand(e.target.value);
+        setBrandName(e.target.value);
         setPage(1);
     };
 
@@ -145,7 +146,7 @@ const ProductList: React.FC = () => {
                 <FormControl sx={{minWidth: 120}}>
                     <InputLabel>Category</InputLabel>
                     <Select
-                        value={category}
+                        value={categoryName}
                         label="Category"
                         onChange={handleCategoryChange}
                     >
@@ -161,7 +162,7 @@ const ProductList: React.FC = () => {
                 <FormControl sx={{minWidth: 120}}>
                     <InputLabel>Brand</InputLabel>
                     <Select
-                        value={brand}
+                        value={brandName}
                         label="Brand"
                         onChange={handleBrandChange}
                     >

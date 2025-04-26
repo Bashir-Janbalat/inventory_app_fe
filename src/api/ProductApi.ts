@@ -7,14 +7,17 @@ const baseURL = import.meta.env.VITE_API_BASE_URL;
 
 
 export const getProducts =
-    async (page: number, size: number, sortBy: string, sortDirection: string, searchBy: string): Promise<PagedResponse<ProductDTO>> => {
+    async (page: number, size: number, sortBy: string, sortDirection: string, searchBy: string, categoryName: string, brandName: string):
+        Promise<PagedResponse<ProductDTO>> => {
         const response = await axios.get(baseURL + "/products", {
             params: {
                 page,
                 size,
                 sortDirection,
                 sortBy,
-                searchBy
+                searchBy,
+                categoryName,
+                brandName
             }
         });
         return response.data as PagedResponse<ProductDTO>;
