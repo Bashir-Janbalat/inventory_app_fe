@@ -4,11 +4,13 @@ import {CircularProgress, Container, Grid, Pagination, Stack,} from '@mui/materi
 import {ProductDTO} from '../types/ProductDTO';
 import {BrandDTO} from "../types/BrandDTO.ts";
 import {CategoryDTO} from "../types/CategoryDTO.ts";
+import {SupplierDTO} from "../types/SupplierDTO.ts";
 import {getProducts} from '../api/ProductApi.ts';
 import {getCategories} from "../api/CategoryApi.ts";
 import {getBrands} from "../api/BrandApi.ts";
 import ProductCard from './ProductCard';
 import ProductFilters from "./filters/ProductFilters.tsx";
+import {getSuppliers} from "../api/SupplierApi.ts";
 
 const ProductList: React.FC = () => {
     const [products, setProducts] = useState<ProductDTO[]>([]);
@@ -20,20 +22,24 @@ const ProductList: React.FC = () => {
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
     const [searchBy, setSearchBy] = useState<string>('');
     const [categories, setCategories] = useState<CategoryDTO[]>([]);
+    const [suppliers, setSuppliers] = useState<SupplierDTO[]>([]);
     const [brands, setBrands] = useState<BrandDTO[]>([]);
     const [categoryName, setCategoryName] = useState<string>('');
     const [brandName, setBrandName] = useState<string>('');
+    const [supplierName, setSupplierName] = useState<string>('');
     const size = 6;
 
     const fetchInitialData = async () => {
         setLoading(true);
         try {
-            const [categoriesResponse, brandsResponse] = await Promise.all([
+            const [categoriesResponse, brandsResponse, suppliersResponse] = await Promise.all([
                 getCategories(),
                 getBrands(),
+                getSuppliers()
             ]);
             setCategories(categoriesResponse.content);
             setBrands(brandsResponse.content);
+            setSuppliers(suppliersResponse.content)
         } catch (error) {
             console.error('Error fetching initial data:', error);
         } finally {
@@ -45,7 +51,7 @@ const ProductList: React.FC = () => {
         setLoading(true);
         try {
             const productResponse =
-                await getProducts(page - 1, size, sortBy, sortDirection, searchBy, categoryName, brandName);
+                await getProducts(page - 1, size, sortBy, sortDirection, searchBy, categoryName, brandName,supplierName);
             setProducts(productResponse.content);
             setTotalPages(productResponse.totalPages);
         } catch (error) {
@@ -57,7 +63,7 @@ const ProductList: React.FC = () => {
 
     useEffect(() => {
         fetchProducts();
-    }, [page, sortBy, sortDirection, searchBy, categoryName, brandName]);
+    }, [page, sortBy, sortDirection, searchBy, categoryName, brandName,supplierName]);
 
 
     useEffect(() => {
@@ -79,11 +85,14 @@ const ProductList: React.FC = () => {
                 brandName={brandName}
                 categories={categories}
                 brands={brands}
+                supplierName={supplierName}
+                suppliers={suppliers}
                 setSortBy={setSortBy}
                 setSortDirection={setSortDirection}
                 setSearchBy={setSearchBy}
                 setCategoryName={setCategoryName}
                 setBrandName={setBrandName}
+                setSupplierName={setSupplierName}
                 setPage={setPage}
             />
             {

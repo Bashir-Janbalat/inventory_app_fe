@@ -5,7 +5,8 @@ import {PagedResponseDTO} from "../types/PagedResponseDTO.ts";
 
 
 export const getProducts =
-    async (page: number, size: number, sortBy: string, sortDirection: string, searchBy: string, categoryName: string, brandName: string):
+    async (page: number, size: number, sortBy: string, sortDirection: string,
+           searchBy: string, categoryName: string, brandName: string, supplierName: string):
         Promise<PagedResponseDTO<ProductDTO>> => {
         const response = await axiosInstance.get("/products", {
             params: {
@@ -15,7 +16,8 @@ export const getProducts =
                 sortBy,
                 searchBy,
                 categoryName,
-                brandName
+                brandName,
+                supplierName
             }
         });
         return response.data as PagedResponseDTO<ProductDTO>;

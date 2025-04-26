@@ -2,6 +2,7 @@ import React from 'react';
 import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField} from '@mui/material';
 import {CategoryDTO} from "../../types/CategoryDTO.ts";
 import {BrandDTO} from "../../types/BrandDTO.ts";
+import {SupplierDTO} from "../../types/SupplierDTO.ts";
 
 
 export interface ProductFiltersProps {
@@ -12,11 +13,14 @@ export interface ProductFiltersProps {
     brandName: string;
     categories: CategoryDTO[];
     brands: BrandDTO[];
+    supplierName: string;
+    suppliers: SupplierDTO[]
     setSortBy: (value: 'name' | 'price') => void;
     setSortDirection: (value: 'asc' | 'desc') => void;
     setSearchBy: (value: string) => void;
     setCategoryName: (value: string) => void;
     setBrandName: (value: string) => void;
+    setSupplierName: (value: string) => void;
     setPage: (page: number) => void;
 }
 
@@ -29,11 +33,14 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                                                            brandName,
                                                            categories,
                                                            brands,
+                                                           supplierName,
+                                                           suppliers,
                                                            setSortBy,
                                                            setSortDirection,
                                                            setSearchBy,
                                                            setCategoryName,
                                                            setBrandName,
+                                                           setSupplierName,
                                                            setPage,
                                                        }) => {
 
@@ -88,7 +95,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 <InputLabel>Category</InputLabel>
                 <Select
                     value={categoryName}
-                    label="Category"
+                    label="Categories"
                     onChange={resetPageAndSetSelect(setCategoryName)}
                 >
                     <MenuItem value="">All</MenuItem>
@@ -104,13 +111,29 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 <InputLabel>Brand</InputLabel>
                 <Select
                     value={brandName}
-                    label="Brand"
+                    label="Brands"
                     onChange={resetPageAndSetSelect(setBrandName)}
                 >
                     <MenuItem value="">All</MenuItem>
                     {brands.map((b) => (
                         <MenuItem key={b.id} value={b.name}>
                             {b.name}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
+
+            <FormControl sx={{ minWidth: 120 }}>
+                <InputLabel>Supplier</InputLabel>
+                <Select
+                    value={supplierName}
+                    label="Supplieres"
+                    onChange={resetPageAndSetSelect(setSupplierName)}
+                >
+                    <MenuItem value="">All</MenuItem>
+                    {suppliers.map((s) => (
+                        <MenuItem key={s.id} value={s.name}>
+                            {s.name}
                         </MenuItem>
                     ))}
                 </Select>
