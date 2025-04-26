@@ -1,11 +1,11 @@
 import axios from 'axios';
-import { getToken, isTokenExpired, removeToken } from '../auth/Auth.ts';
+import {getToken, isTokenExpired, removeToken} from '../auth/Auth.ts';
 
-const instance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8081/api',
+const axiosInstance = axios.create({
+    baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
-instance.interceptors.request.use((config) => {
+axiosInstance.interceptors.request.use((config) => {
     const token = getToken();
 
     if (token) {
@@ -22,4 +22,4 @@ instance.interceptors.request.use((config) => {
     return Promise.reject(error);
 });
 
-export default instance;
+export default axiosInstance;

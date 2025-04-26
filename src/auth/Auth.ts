@@ -13,6 +13,7 @@ export const getToken = (): string | null => {
 export const removeToken = () => {
     localStorage.removeItem(TOKEN_KEY);
 };
+
 export const isTokenExpired = (token: string): boolean => {
     try {
         const decoded = jwtDecode<JwtPayload>(token);
@@ -28,6 +29,7 @@ export const isLoggedIn = (): boolean => {
     const token = getToken();
     return !!token && !isTokenExpired(token);
 };
+
 export const getUsernameFromToken = (): string | null => {
     const token = getToken();
     if (!token) return null;

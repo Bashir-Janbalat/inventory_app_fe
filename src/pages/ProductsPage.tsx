@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { ProductDTO } from '../types/ProductDTO';
-import { getProductById } from '../api/ProductApi.ts';
+import React, {useEffect, useState} from 'react';
+import {useParams} from 'react-router-dom';
+import {ProductDTO} from '../types/ProductDTO';
+import {getProductById} from '../api/ProductApi.ts';
 import {
     Box,
     Button,
@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 
 const ProductPage: React.FC = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const [product, setProduct] = useState<ProductDTO | null>(null);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -41,14 +41,14 @@ const ProductPage: React.FC = () => {
 
     if (loading) {
         return (
-            <Container sx={{ py: 4, textAlign: 'center' }} maxWidth="sm">
-                <CircularProgress />
+            <Container sx={{py: 4, textAlign: 'center'}} maxWidth="sm">
+                <CircularProgress/>
             </Container>
         );
     }
 
     return (
-        <Container sx={{ py: 4 }} maxWidth="md">
+        <Container sx={{py: 4}} maxWidth="md">
             {product && (
                 <Card
                     sx={{
@@ -65,11 +65,11 @@ const ProductPage: React.FC = () => {
                             height="400"
                             image={selectedImage}
                             alt={product.name}
-                            sx={{ objectFit: 'cover' }}
+                            sx={{objectFit: 'cover'}}
                         />
                     )}
 
-                    <Box sx={{ display: 'flex', overflowX: 'auto', p: 2 }}>
+                    <Box sx={{display: 'flex', overflowX: 'auto', p: 2}}>
                         {product.images.map((img, idx) => (
                             <Box
                                 key={idx}
@@ -88,43 +88,43 @@ const ProductPage: React.FC = () => {
                                 <img
                                     src={img.imageUrl}
                                     alt={img.altText || product.name}
-                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                    style={{width: '100%', height: '100%', objectFit: 'cover'}}
                                 />
                             </Box>
                         ))}
                     </Box>
 
-                    <CardContent sx={{ p: 3 }}>
-                        <Box sx={{ mb: 3 }}>
-                            <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
+                    <CardContent sx={{p: 3}}>
+                        <Box sx={{mb: 3}}>
+                            <Typography variant="h4" sx={{fontWeight: 'bold', mb: 1}}>
                                 {product.name}
                             </Typography>
-                            <Typography variant="h6" color="primary" sx={{ fontSize: '22px', mb: 2 }}>
+                            <Typography variant="h6" color="primary" sx={{fontSize: '22px', mb: 2}}>
                                 ${product.price.toFixed(2)}
                             </Typography>
 
                             <Grid container spacing={2}>
-                                <Grid size = {{xs:12, sm: 6}}>
+                                <Grid size={{xs: 12, sm: 6}}>
                                     <Typography variant="body1">
                                         <strong>Category:</strong> {product.categoryName}
                                     </Typography>
                                 </Grid>
-                                <Grid size = {{xs:12, sm: 6}}>
+                                <Grid size={{xs: 12, sm: 6}}>
                                     <Typography variant="body1">
                                         <strong>Brand:</strong> {product.brandName}
                                     </Typography>
                                 </Grid>
-                                <Grid size = {{xs:12, sm: 6}}>
+                                <Grid size={{xs: 12, sm: 6}}>
                                     <Typography variant="body1">
                                         <strong>Supplier:</strong> {product.supplierName}
                                     </Typography>
                                 </Grid>
-                                <Grid size = {{xs:12, sm: 6}}>
+                                <Grid size={{xs: 12, sm: 6}}>
                                     <Typography variant="body1">
                                         <strong>Stock:</strong> {product.stock.quantity} units
                                     </Typography>
                                 </Grid>
-                                <Grid size = {{xs:12, sm: 6}}>
+                                <Grid size={{xs: 12, sm: 6}}>
                                     <Typography variant="body1">
                                         <strong>Warehouse Location:</strong> {product.stock.warehouseLocation}
                                     </Typography>
@@ -132,10 +132,10 @@ const ProductPage: React.FC = () => {
                             </Grid>
                         </Box>
 
-                        <Divider sx={{ my: 3 }} />
+                        <Divider sx={{my: 3}}/>
 
-                        <Box sx={{ mb: 3 }}>
-                            <Typography variant="h6" sx={{ mb: 1 }}>
+                        <Box sx={{mb: 3}}>
+                            <Typography variant="h6" sx={{mb: 1}}>
                                 Description
                             </Typography>
                             <Typography variant="body2" color="text.secondary">
@@ -144,12 +144,12 @@ const ProductPage: React.FC = () => {
                         </Box>
 
                         <Box>
-                            <Typography variant="h6" sx={{ mb: 2 }}>
+                            <Typography variant="h6" sx={{mb: 2}}>
                                 Product Attributes
                             </Typography>
                             <Grid container spacing={2}>
                                 {product.productAttributes.map((attribute, index) => (
-                                    <Grid size = {{xs:12, sm: 6}} key={index}>
+                                    <Grid size={{xs: 12, sm: 6}} key={index}>
                                         <Typography variant="body2">
                                             <strong>{attribute.attributeName}:</strong> {attribute.attributeValue}
                                         </Typography>
@@ -162,7 +162,7 @@ const ProductPage: React.FC = () => {
                             variant="contained"
                             color="primary"
                             fullWidth
-                            sx={{ mt: 4, py: 1.5, fontSize: '16px' }}
+                            sx={{mt: 4, py: 1.5, fontSize: '16px'}}
                         >
                             Add to Cart
                         </Button>

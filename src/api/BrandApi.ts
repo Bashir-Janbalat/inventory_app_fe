@@ -1,12 +1,9 @@
-import axios from './Api.ts';
-import {PagedResponse} from "../types/PagedResponse.ts";
+import axiosInstance from './Api.ts';
+import {PagedResponseDTO} from "../types/PagedResponseDTO.ts";
 import {BrandDTO} from "../types/BrandDTO.ts";
 
-const baseURL = import.meta.env.VITE_API_BASE_URL;
-
-
 export const getBrands =
-    async (): Promise<PagedResponse<BrandDTO>> => {
-        const response = await axios.get(baseURL + "/brands");
-        return response.data as PagedResponse<BrandDTO>;
+    async (): Promise<PagedResponseDTO<BrandDTO>> => {
+        const response = await axiosInstance.get("/brands");
+        return response.data as PagedResponseDTO<BrandDTO>;
     };

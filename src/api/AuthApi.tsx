@@ -1,4 +1,4 @@
-import axios from './Api.ts';
+import axiosInstance from './Api.ts';
 import {UserDTO} from "../types/UserDTO.ts";
 
 interface LoginResponse {
@@ -10,16 +10,14 @@ interface SignUpResponse {
     statusCode?: number;
 }
 
-const baseURL = import.meta.env.VITE_API_BASE_URL;
-
 export const login = async (username: string, password: string): Promise<LoginResponse> => {
-    const response = await axios.post(baseURL + '/auth/login', {username, password});
+    const response = await axiosInstance.post('/auth/login', {username, password});
     return response.data;
 };
 
 export const signup = async (user: UserDTO): Promise<SignUpResponse> => {
     try {
-        const response = await axios.post(baseURL + '/auth/signup', user);
+        const response = await axiosInstance.post('/auth/signup', user);
         if (response.status === 201) {
             return {
                 message: "Account created successfully!",

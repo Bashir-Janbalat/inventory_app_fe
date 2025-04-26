@@ -1,4 +1,4 @@
-export interface PagedResponse<T> {
+export interface PagedResponseDTO<T> {
     content: T[];
     totalPages: number;
     totalElements: number;

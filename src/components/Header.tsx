@@ -1,8 +1,9 @@
 import React from "react";
 import {AppBar, Avatar, Box, Button, IconButton, Toolbar, Typography} from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
-import {getUsernameFromToken, isLoggedIn, removeToken} from "../auth/Auth.ts";
+import {getUsernameFromToken, removeToken} from "../auth/Auth.ts";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
+import {UseAuth} from "../auth/UseAuth.ts";
 
 interface HeaderProps {
     darkMode: boolean;
@@ -11,7 +12,7 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode }) => {
     const navigate = useNavigate();
-    const isAuthenticated = isLoggedIn();
+    const { authenticated: isAuthenticated } = UseAuth();
 
     const handleLogout = () => {
         removeToken();

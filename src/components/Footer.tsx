@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
                 alignItems: "center",
                 gap: 1,
                 boxShadow: `0px 4px 10px ${theme.palette.mode === "dark" ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)"}`, // ظل مع قيمة واضحة
-                borderRadius: "10px", // يمكنك إضافة حواف دائرية إذا أردت
+                borderRadius: "10px",
             }}
         >
             <Typography variant="body2" align="center">
