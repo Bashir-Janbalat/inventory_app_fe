@@ -11,10 +11,15 @@ import {
     MenuItem,
     Pagination,
     Select,
+    SelectChangeEvent,
     Stack,
-    Typography,
+    TextField,
 } from '@mui/material';
 import {useNavigate} from 'react-router-dom';
+import {getCategories} from "../api/CategoryApi.ts";
+import {CategoryDTO} from "../types/CategoryDTO.ts";
+import {getBrands} from "../api/BrandApi.ts";
+import {BrandDTO} from "../types/BrandDTO.ts";
 
 const ProductList: React.FC = () => {
     const [products, setProducts] = useState<ProductDTO[]>([]);
@@ -24,37 +29,80 @@ const ProductList: React.FC = () => {
     const navigate = useNavigate();
     const [sortBy, setSortBy] = useState<'name' | 'price'>('name');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+    const [searchBy, setSearchBy] = useState<string>('');
+    const [categories, setCategories] = useState<CategoryDTO[]>([]);
+    const [brands, setBrands] = useState<BrandDTO[]>([]);
+    const [category, setCategory] = useState<string>('');
+    const [brand, setBrand] = useState<string>('');
     const pageSize = 6;
 
-    useEffect(() => {
-        const fetchProducts = async () => {
-            setLoading(true);
-            try {
-                const productResponse = await getProducts(page - 1, pageSize, sortBy, sortDirection);
-                setProducts(productResponse.content);
-                setTotalPages(productResponse.totalPages);
-            } catch (error) {
-                console.error('Error fetching products:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    const fetchProducts = async () => {
+        setLoading(true);
+        try {
+            const productResponse = await getProducts(page - 1, pageSize, sortBy, sortDirection, searchBy);
+            setProducts(productResponse.content);
+            setTotalPages(productResponse.totalPages);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchProducts();
-    }, [page, sortBy, sortDirection]);
+    }, [page, sortBy, sortDirection, searchBy, category, brand]);
+
+    const fetchCategories = async () => {
+        setLoading(true);
+        try {
+            const categoryResponse = await getCategories();
+            setCategories(categoryResponse.content);
+        } catch (error) {
+            console.error('Error fetching categories:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    const fetchBrands = async () => {
+        setLoading(true);
+        try {
+            const brandResponse = await getBrands();
+            setBrands(brandResponse.content);
+        } catch (error) {
+            console.error('Error fetching brands:', error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchCategories();
+        fetchBrands();
+    }, []);
+
 
     const handleProductClick = (id: number) => {
         navigate(`/products/${id}`);
     };
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchBy(e.target.value);
+        setPage(1);
+    };
+    const handleCategoryChange = (e: SelectChangeEvent<string>) => {
+        setCategory(e.target.value);
+        setPage(1);
+    };
+
+    const handleBrandChange = (e: SelectChangeEvent<string>) => {
+        setBrand(e.target.value);
+        setPage(1);
+    };
 
     return (
         <Container sx={{py: 4}}>
-            <Typography variant="h3" gutterBottom align="center">
-                Our Products
-            </Typography>
 
             <Stack direction="row" spacing={2} sx={{mb: 3}}>
-                {/* Sort by field */}
                 <FormControl sx={{minWidth: 120}}>
                     <InputLabel>Sort by</InputLabel>
                     <Select
@@ -82,6 +130,47 @@ const ProductList: React.FC = () => {
                     >
                         <MenuItem value="asc">Ascending ↑</MenuItem>
                         <MenuItem value="desc">Descending ↓</MenuItem>
+                    </Select>
+                </FormControl>
+
+                <FormControl sx={{minWidth: 200}}>
+                    <TextField
+                        label="Search by name"
+                        value={searchBy}
+                        onChange={handleSearchChange}
+                        fullWidth
+
+                    />
+                </FormControl>
+                <FormControl sx={{minWidth: 120}}>
+                    <InputLabel>Category</InputLabel>
+                    <Select
+                        value={category}
+                        label="Category"
+                        onChange={handleCategoryChange}
+                    >
+                        <MenuItem value="">All</MenuItem>
+                        {categories.map((cat) => (
+                            <MenuItem key={cat.id} value={cat.name}>
+                                {cat.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+
+                <FormControl sx={{minWidth: 120}}>
+                    <InputLabel>Brand</InputLabel>
+                    <Select
+                        value={brand}
+                        label="Brand"
+                        onChange={handleBrandChange}
+                    >
+                        <MenuItem value="">All</MenuItem>
+                        {brands.map((b) => (
+                            <MenuItem key={b.id} value={b.name}>
+                                {b.name}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </FormControl>
             </Stack>
