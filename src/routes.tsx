@@ -8,25 +8,34 @@ import NotFoundPage from "./pages/NotFoundPage.tsx";
 import Header from "./components/Header.tsx";
 import Footer from "./components/Footer.tsx";
 import {Box, Container} from "@mui/material";
+import React from "react";
 
-const AppRoutes = () => (
-    <Router>
-        <Box display="flex" flexDirection="column" minHeight="100vh">
-            <Header/>
-            <Container sx={{flex: 1, py: 4}}>
-                <Routes>
-                    <Route path="/" element={<LoginPage/>}/>
-                    <Route path="/login" element={<LoginPage/>}/>
-                    <Route path="/signup" element={<SignUpPage/>}/>
-                    <Route path="/products" element={<ProtectedRoute><ProductList/></ProtectedRoute>}/>
-                    <Route path="/products/:id" element={<ProtectedRoute><ProductPage/></ProtectedRoute>}/>
+interface AppRoutesProps {
+    darkMode: boolean;
+    setDarkMode: (mode: boolean) => void;
+}
 
-                    <Route path="*" element={<NotFoundPage/>}/>
-                </Routes>
-            </Container>
-            <Footer/>
-        </Box>
-    </Router>
+const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
+    return (
+        <Router>
+            <Box display="flex" flexDirection="column" minHeight="100vh">
+                <Header darkMode={darkMode} setDarkMode={setDarkMode}/>
+                <Container sx={{flex: 1, py: 4}}>
+                    <Routes>
+                        <Route path="/" element={<LoginPage/>}/>
+                        <Route path="/login" element={<LoginPage/>}/>
+                        <Route path="/signup" element={<SignUpPage/>}/>
+                        <Route path="/products" element={<ProtectedRoute><ProductList/></ProtectedRoute>}/>
+                        <Route path="/products/:id" element={<ProtectedRoute><ProductPage/></ProtectedRoute>}/>
 
-);
+                        <Route path="*" element={<NotFoundPage/>}/>
+                    </Routes>
+                </Container>
+                <Footer/>
+            </Box>
+        </Router>
+    );
+};
+
+
 export default AppRoutes;
