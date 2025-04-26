@@ -28,3 +28,15 @@ export const isLoggedIn = (): boolean => {
     const token = getToken();
     return !!token && !isTokenExpired(token);
 };
+export const getUsernameFromToken = (): string | null => {
+    const token = getToken();
+    if (!token) return null;
+
+    try {
+        const decoded = jwtDecode<JwtPayload>(token);
+        return decoded.sub || null;
+    } catch (error) {
+        console.error('Error decoding token:', error);
+        return null;
+    }
+};
