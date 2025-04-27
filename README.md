@@ -16,7 +16,7 @@ Dies ist das Frontend der Lagerverwaltungsanwendung. Es kommuniziert mit einem S
 ## 📁 Projektstruktur
 ````
 ├── api/
-│   ├── Api.ts         # Base API logic for making HTTP requests
+│   ├── AxiosInstance.ts         # Base API logic for making HTTP requests
 │   ├── AuthApi.ts     # API logic for authentication (login, signup)
 │   └── ProductApi.ts  # API logic for product-related operations
 │
@@ -76,7 +76,7 @@ Du kannst Umgebungsvariablen in einer .env Datei definieren, zB.:
 
     VITE_API_URL=http://localhost:8081/api
 
-Und in Api.ts wie folgt verwenden:
+Und in AxiosInstance.ts wie folgt verwenden:
 
     baseURL: import.meta.env.VITE_API_URL
 

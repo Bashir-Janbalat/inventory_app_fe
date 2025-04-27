@@ -1,4 +1,4 @@
-import axiosInstance from './Api.ts';
+import axiosInstance from './AxiosInstance.ts';
 import {PagedResponseDTO} from "../types/PagedResponseDTO.ts";
 import {BrandDTO} from "../types/BrandDTO.ts";
 
