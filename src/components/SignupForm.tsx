@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {UserDTO} from "../types/UserDTO";
 import {Button, Container, Grid, Link, Paper, TextField, Typography} from "@mui/material";
 import {Link as RouterLink, useNavigate} from "react-router-dom";
-import {signup} from "../api/AuthApi.tsx";
+import {signup} from "../auth/AuthApi.tsx";
 
 const initialUser: UserDTO = {
     name: "",

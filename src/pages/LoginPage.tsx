@@ -2,12 +2,12 @@ import {useEffect} from 'react';
 import {Container, Paper, Typography} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
-import {removeToken} from "../auth/Auth.ts";
-import {UseAuth} from "../auth/UseAuth.ts";
+import {useAuth} from "../auth/AuthContext.tsx";
+import {removeToken} from "../auth/AuthUtils.ts";
 
 const LoginPage = () => {
         const navigate = useNavigate();
-        const {authenticated} = UseAuth();
+        const {authenticated} = useAuth();
 
         useEffect(() => {
                 if (authenticated) {

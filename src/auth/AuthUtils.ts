@@ -30,8 +30,7 @@ export const isLoggedIn = (): boolean => {
     return !!token && !isTokenExpired(token);
 };
 
-export const getUsernameFromToken = (): string | null => {
-    const token = getToken();
+export const getSubjectFromToken = (token: string): string | null => {
     if (!token) return null;
 
     try {

@@ -1,29 +1,28 @@
 import React from "react";
 import {AppBar, Avatar, Box, Button, IconButton, Toolbar, Typography} from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
-import {getUsernameFromToken, removeToken} from "../auth/Auth.ts";
-import { Brightness4, Brightness7 } from "@mui/icons-material";
-import {UseAuth} from "../auth/UseAuth.ts";
+import {Link, useNavigate} from "react-router-dom";
+import {Brightness4, Brightness7} from "@mui/icons-material";
+import {useAuth} from "../auth/AuthContext.tsx";
+
 
 interface HeaderProps {
     darkMode: boolean;
     setDarkMode: (mode: boolean) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode }) => {
+const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode}) => {
     const navigate = useNavigate();
-    const { authenticated: isAuthenticated } = UseAuth();
+    const {authenticated: isAuthenticated, subject: username, logout} = useAuth();
 
     const handleLogout = () => {
-        removeToken();
+        logout();
         navigate("/");
     };
 
-    const username = getUsernameFromToken();
 
     return (
-        <AppBar position="static" sx={{ backgroundColor: darkMode ? "#333" : "#f5f7fa", boxShadow: 4, mb: 4 }}>
-            <Toolbar sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <AppBar position="static" sx={{backgroundColor: darkMode ? "#333" : "#f5f7fa", boxShadow: 4, mb: 4}}>
+            <Toolbar sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
                 {/* Left Side: Logo */}
                 <Typography
                     variant="h6"
@@ -42,35 +41,39 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode }) => {
                 </Typography>
 
                 {/* Right Side: Buttons + Divider + Username */}
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
                     <IconButton color="primary" onClick={() => setDarkMode(!darkMode)}>
-                        {darkMode ? <Brightness7 /> : <Brightness4 />}
+                        {darkMode ? <Brightness7/> : <Brightness4/>}
                     </IconButton>
 
                     {isAuthenticated && (
                         <>
                             {/* Buttons Section */}
-                            <Box sx={{ display: "flex", gap: 1 }}>
-                                <Button variant="outlined" color="primary" component={Link} to="/dashboard" sx={{ fontWeight: "bold", boxShadow: 2 }}>
+                            <Box sx={{display: "flex", gap: 1}}>
+                                <Button variant="outlined" color="primary" component={Link} to="/dashboard"
+                                        sx={{fontWeight: "bold", boxShadow: 2}}>
                                     Dashboard
                                 </Button>
-                                <Button variant="outlined" color="primary" component={Link} to="/products" sx={{ fontWeight: "bold", boxShadow: 2 }}>
+                                <Button variant="outlined" color="primary" component={Link} to="/products"
+                                        sx={{fontWeight: "bold", boxShadow: 2}}>
                                     Products
                                 </Button>
-                                <Button variant="contained" color="error" onClick={handleLogout} sx={{ fontWeight: "bold", boxShadow: 2 }}>
+                                <Button variant="contained" color="error" onClick={handleLogout}
+                                        sx={{fontWeight: "bold", boxShadow: 2}}>
                                     Logout
                                 </Button>
                             </Box>
 
                             {/* Divider */}
-                            <Box sx={{ width: 1, height: 35, borderLeft: "1px solid rgba(255, 255, 255, 0.5)", mx: 2 }} />
+                            <Box sx={{width: 1, height: 35, borderLeft: "1px solid rgba(255, 255, 255, 0.5)", mx: 2}}/>
 
                             {/* Username + Avatar */}
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                                <Avatar sx={{ width: 35, height: 35, bgcolor: "primary.main" }}>
+                            <Box sx={{display: "flex", alignItems: "center", gap: 1}}>
+                                <Avatar sx={{width: 35, height: 35, bgcolor: "primary.main"}}>
                                     {username ? username.charAt(0).toUpperCase() : "U"}
                                 </Avatar>
-                                <Typography variant="subtitle2" sx={{ fontWeight: "bold", color: "text.primary", fontSize: "1rem" }}>
+                                <Typography variant="subtitle2"
+                                            sx={{fontWeight: "bold", color: "text.primary", fontSize: "1rem"}}>
                                     {username}
                                 </Typography>
                             </Box>

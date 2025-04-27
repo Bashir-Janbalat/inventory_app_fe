@@ -1,23 +1,37 @@
 import {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {Alert, Box, Button, TextField, Typography} from '@mui/material';
-import {login} from '../api/AuthApi.tsx';
-import {saveToken} from '../auth/Auth.ts';
+import {login} from '../auth/AuthApi.tsx';
+import {getSubjectFromToken, saveToken} from "../auth/AuthUtils.ts";
+import {useAuth} from "../auth/AuthContext.tsx";
+
 
 const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const {setAuthenticated, setSubject} = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
             const response = await login(username, password);
             saveToken(response.accessToken);
-            navigate('/products');
+            if (response.accessToken) {
+                setAuthenticated(true);
+                setSubject(getSubjectFromToken(response.accessToken));
+                navigate('/products');
+            }
         } catch (err) {
-            setError('Login failed. Please check your credentials.');
+            let errorMessage = "Login failed. Please try again.";
+            if (err instanceof Error) {
+                errorMessage = err.message;
+            } else {
+                console.error("Unexpected error:", err);
+            }
+            console.error("Login failed:", errorMessage);
+            setError(errorMessage);
         }
     };
 

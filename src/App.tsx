@@ -1,6 +1,7 @@
-import  {useState, useMemo } from "react";
-import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
+import {useMemo, useState} from "react";
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import AppRoutes from "./routes.tsx";
+import {AuthProvider} from "./auth/AuthContext.tsx";
 
 function App() {
     const [darkMode, setDarkMode] = useState(false);
@@ -16,10 +17,18 @@ function App() {
     );
 
     return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <AppRoutes darkMode={darkMode} setDarkMode={setDarkMode} />
-        </ThemeProvider>
+        /*  <AuthProvider>	Bietet globalen Zugriff auf Auth-Daten (Login-Status, Username, Logout-Funktion etc.).
+            <ThemeProvider>	Übergibt das theme (Dark/Light Mode) an alle MUI-Komponenten.
+            <CssBaseline>	Setzt ein konsistentes CSS-Reset, damit das Styling auf allen Browsern gleich aussieht.
+            <AppRoutes>	Deine App-Routing-Komponente, steuert die Seiten (Home, Login, Dashboard, etc.).
+        */
+
+        <AuthProvider>
+            <ThemeProvider theme={theme}>
+                <CssBaseline/>
+                <AppRoutes darkMode={darkMode} setDarkMode={setDarkMode}/>
+            </ThemeProvider>
+        </AuthProvider>
     );
 }
 

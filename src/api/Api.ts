@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getToken, isTokenExpired, removeToken} from '../auth/Auth.ts';
+import {getToken, isTokenExpired, removeToken} from '../auth/AuthUtils.ts';
 
 const axiosInstance = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
