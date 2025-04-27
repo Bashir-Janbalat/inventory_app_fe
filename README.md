@@ -31,12 +31,12 @@ src/
 │   ├── CategoryApi.ts           # API-Logik für Kategoriebearbeitung
 │   ├── SupplierApi.ts           # API-Logik für Lieferantenbezogene Operationen
 │   ├── BrandApi.ts              # API-Logik für Markenbezogene Operationen
-│   └── AuthApi.ts               # API-Logik für Authentifizierung (Login, Signup)
 │
 ├── auth/
 │   ├── AuthApi.ts               # Authentifizierungslogik (JWT-Token)
 │   ├── AuthContext.tsx          # Kontext für Authentifizierungsstatus
 │   ├── AuthUtils.ts             # Hilfsfunktionen für das Authentifizierungsmanagement
+│   ├── UseAuth.ts             
 │
 ├── components/
 │   ├── filter/  
