@@ -2,7 +2,7 @@ import {useEffect} from 'react';
 import {Container, Paper, Typography} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
 import LoginForm from '../components/LoginForm';
-import {useAuth} from "../auth/AuthContext.tsx";
+import {useAuth} from "../auth/UseAuth.ts";
 import {removeToken} from "../auth/AuthUtils.ts";
 
 const LoginPage = () => {

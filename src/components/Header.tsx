@@ -2,7 +2,7 @@ import React from "react";
 import {AppBar, Avatar, Box, Button, IconButton, Toolbar, Typography} from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
 import {Brightness4, Brightness7} from "@mui/icons-material";
-import {useAuth} from "../auth/AuthContext.tsx";
+import {useAuth} from "../auth/UseAuth.ts";
 
 
 interface HeaderProps {

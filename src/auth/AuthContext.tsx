@@ -1,5 +1,5 @@
-import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react';
-import {getToken, getSubjectFromToken, isLoggedIn, removeToken} from './AuthUtils.ts';
+import React, {createContext, ReactNode, useEffect, useState} from 'react';
+import {getSubjectFromToken, getToken, isLoggedIn, removeToken} from './AuthUtils.ts';
 
 interface AuthContextType {
     authenticated: boolean;
@@ -13,7 +13,7 @@ interface AuthProviderProps {
     children: ReactNode;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     const [authenticated, setAuthenticated] = useState<boolean>(isLoggedIn());
@@ -43,10 +43,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     );
 };
 
-export const useAuth = (): AuthContextType => {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error("useAuth must be used within an AuthProvider");
-    }
-    return context;
-};
+export default AuthContext;
+
+
