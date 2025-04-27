@@ -1,88 +1,143 @@
-# React-Frontend für das Inventory-App (mit TypeScript + Vite)
 
-Dies ist das Frontend der Lagerverwaltungsanwendung. Es kommuniziert mit einem Spring Boot Backend unter Verwendung von JWT-Authentifizierung.
+# Inventory App Frontend
 
-## 🛠 Verwendete Technologien
-
-- [React](https://reactjs.org/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Vite](https://vitejs.dev/)
-- [Axios](https://axios-http.com/)
-- [React Router](https://reactrouter.com/) 
-- [JWT-Authentifizierung](https://jwt.io/)
+Frontend für das Inventarverwaltungssystem, gebaut mit **React**, **Vite**, **TypeScript** und **Material UI**.
 
 ---
 
-## 📁 Projektstruktur
-````
+## 🛠️ Tech Stack
+
+- **React** 19.0.0
+- **Vite** 6.3.2
+- **TypeScript** ~5.7.2
+- **Material UI** 7.0.2
+- **Zustand** 4.4.7
+- **React Router** 7.5.1
+- **Axios** 1.8.4
+- **Formik** 2.4.6
+- **JWT Decode** 4.0.0
+- **Yup** 1.6.1
+- **Emotion (for styling)** @emotion/react 11.14.0, @emotion/styled 11.14.0
+
+---
+
+## 📂 Projektstruktur
+
+```
+src/
 ├── api/
-│   ├── AxiosInstance.ts         # Base API logic for making HTTP requests
-│   ├── AuthApi.ts     # API logic for authentication (login, signup)
-│   └── ProductApi.ts  # API logic for product-related operations
+│   ├── AxiosInstance.ts         # Grundlegende API-Logik für HTTP-Anfragen
+│   ├── ProductApi.ts            # API-Logik für produktbezogene Operationen
+│   ├── CategoryApi.ts           # API-Logik für Kategoriebearbeitung
+│   ├── SupplierApi.ts           # API-Logik für Lieferantenbezogene Operationen
+│   ├── BrandApi.ts              # API-Logik für Markenbezogene Operationen
+│   └── AuthApi.ts               # API-Logik für Authentifizierung (Login, Signup)
 │
 ├── auth/
-│   ├── Auth.ts        # Authentication logic (handling JWT tokens)
-│   └── UseAuth.ts     # Custom hook for authentication management (login, logout)
+│   ├── AuthApi.ts               # Authentifizierungslogik (JWT-Token)
+│   ├── AuthContext.tsx          # Kontext für Authentifizierungsstatus
+│   ├── AuthUtils.ts             # Hilfsfunktionen für das Authentifizierungsmanagement
 │
 ├── components/
-│   ├── LoginForm.tsx  # Form component for logging in
-│   ├── ProductCard.tsx # Card component to display a product
-│   ├── ProductList.tsx # List component for displaying products
-│   └── ProtectedRoute.tsx # Wrapper component to protect routes
-│   ├── Header.tsx     # Header component (with logout button)
-│   └── Footer.tsx     # Footer component (includes copyright info)
+│   ├── filter/  
+│   │   └── ProductFilters.tsx   # Filterkomponente für Produkte
+│   ├── LoginForm.tsx            # Formular-Komponente für Login
+│   ├── ProductCard.tsx          # Kartenkomponente zur Anzeige eines Produkts
+│   ├── ProductList.tsx          # Listenkomponente für die Anzeige von Produkten
+│   ├── ProtectedRoute.tsx       # Wrapper-Komponente zum Schutz von Routen
+│   ├── Header.tsx               # Kopfzeilenkomponente (mit Logout-Schaltfläche)
+│   ├── Footer.tsx               # Footer-Komponente (mit Copyright-Info)
+│   ├── SignUpForm.tsx           # Signup-Formular-Komponente
 │
 ├── pages/
-│   ├── LoginPage.tsx   # Page component for login
-│   ├── NotFoundPage.tsx # Page component for 404 errors
-│   ├── ProductPage.tsx  # Page component for individual product details
-│   └── SignupPage.tsx  # Page component for signup
+│   ├── LoginPage.tsx            # Seite für Login
+│   ├── NotFoundPage.tsx         # Seite für 404-Fehler
+│   ├── ProductPage.tsx          # Seite für einzelne Produktdetails
+│   └── SignupPage.tsx           # Seite für Signup
 │
 ├── types/
-│   ├── ProductDTO.ts    # Product data structure
-│   └── UserDTO.ts       # User data structure
+│   ├── ProductDTO.ts            # Produkt-Datenstruktur
+│   ├── BrandDTO.ts              # Marken-Datenstruktur
+│   ├── CategoryDTO.ts           # Kategorie-Datenstruktur
+│   ├── SupplierDTO.ts           # Lieferanten-Datenstruktur
+│   ├── UserDTO.ts               # Benutzer-Datenstruktur
+│   └── PagedResponseDTO.ts      # Struktur für paginierte Antworten
 │
-├── App.tsx              # Main app component, sets up routing
-├── main.tsx             # Entry point of the app
-├── routes.tsx           # Handles routing of the app
-└── vite-env.d.ts        # TypeScript environment types for Vite
-
-````
-
----
-
-## 🔐 Authentifizierungsablauf (JWT)
-
-1. Der Benutzer meldet sich über `/auth/login` an.
-2. Das JWT-Token wird im `localStorage` gespeichert.
-3. Axios fügt automatisch `Authorization: Bearer <token>` zu allen Anfragen hinzu.
-4. Geschützte API-Endpunkte sind nur mit gültigem Token erreichbar.
+├── App.tsx                      # Haupt-App-Komponente, die das Routing einrichtet
+├── main.tsx                     # Einstiegspunkt der App
+├── routes.tsx                   # Handhabt das Routing der App
+└── vite-env.d.ts                # TypeScript-Umgebungstypen für Vite
+└── .env                         # Umgebungsvariablen für die App
+└── Dockerfile                   # Dockerfile zur Containerisierung der App
+└── docker-compose.inventory_app_fe.yml  # Docker-Compose-Konfiguration für die App
+```
 
 ---
 
-## 🚀 Projektstart
+## 🚀 Installation
 
 ```bash
+# Repository klonen
+git clone https://github.com/Bashir-Janbalat/inventory_app_fe.git
+
+# In das Projektverzeichnis wechseln
+cd inventory_app_fe
+
 # Abhängigkeiten installieren
 npm install
+# oder
+yarn install
+```
 
-# Entwicklungsserver starten
+---
+
+## ⚙️ Umgebungsvariablen einrichten
+
+Erstelle eine `.env`-Datei im Projektstammverzeichnis:
+
+```env
+VITE_APP_API_BASE_URL=http://deine-api-url.com
+```
+
+---
+
+## 🏃‍♂️ Die App ausführen
+
+```bash
 npm run dev
-````
+# oder
+yarn dev
+```
 
-📦 Umgebungsvariablen
+Die App wird lokal unter [http://localhost:5173](http://localhost:5173) ausgeführt.
 
-Du kannst Umgebungsvariablen in einer .env Datei definieren, zB.:
+---
 
-    VITE_API_URL=http://localhost:8081/api
+## 🐳 Docker Setup
 
-Und in AxiosInstance.ts wie folgt verwenden:
+### App im Docker-Container ausführen
 
-    baseURL: import.meta.env.VITE_API_URL
+```bash
+# Docker-Image erstellen
+npm run docker:build
 
+# Docker-Container starten
 
-🤝 Link zum Backend
-Das Spring Boot Backend findest du hier: [inventory_app (GitHub)](https://github.com/Bashir-Janbalat/inventory_app)
+npm run docker:up
 
-**Autor:** [Bashir Janbalat](https://github.com/Bashir-Janbalat)
+# Docker-Container stoppen
 
+npm run docker:down
+```
+
+---
+
+## 📋 Features
+
+- **Authentifizierung**: Login, Signup und JWT-Token-Handling.
+- **Produktverwaltung**: Anzeige, Erstellung, Bearbeitung und Löschung von Produkten.
+- **Kategorieverwaltung**: Verwaltung von Produktkategorien.
+- **Lieferantenverwaltung**: Verwaltung der Lieferanten für Produkte.
+- **Markenverwaltung**: Verwaltung von Marken.
+- **Filter**: Produktfilter-Funktionalität.
+- **Formularvalidierung**: Mit React Hook Form und Yup.
