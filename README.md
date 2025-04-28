@@ -1,5 +1,5 @@
 
-# Inventory App Frontend
+# 📦 Inventory Management System
 
 Frontend für das Inventarverwaltungssystem, gebaut mit **React**, **Vite**, **TypeScript** und **Material UI**.
 
@@ -9,7 +9,7 @@ Frontend für das Inventarverwaltungssystem, gebaut mit **React**, **Vite**, **T
 
 - **React** 19.0.0
 - **Vite** 6.3.2
-- **TypeScript** ~5.7.2
+- **TypeScript** 5.7.3
 - **Material UI** 7.0.2
 - **Zustand** 4.4.7
 - **React Router** 7.5.1
@@ -17,7 +17,7 @@ Frontend für das Inventarverwaltungssystem, gebaut mit **React**, **Vite**, **T
 - **Formik** 2.4.6
 - **JWT Decode** 4.0.0
 - **Yup** 1.6.1
-- **Emotion (for styling)** @emotion/react 11.14.0, @emotion/styled 11.14.0
+- **Emotion (for styling)** @emotion/react 11.14.0, @emotion/styled 11.14.0,@mui/icons-material 7.0.2
 
 ---
 

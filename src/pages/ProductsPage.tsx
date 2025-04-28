@@ -158,14 +158,23 @@ const ProductPage: React.FC = () => {
                             </Grid>
                         </Box>
 
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            fullWidth
-                            sx={{mt: 4, py: 1.5, fontSize: '16px'}}
-                        >
-                            Add to Cart
-                        </Button>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                sx={{ flex: 1, mr: 1, py: 1.5, fontSize: '16px' }}
+                            >
+                                Update
+                            </Button>
+
+                            <Button
+                                variant="contained"
+                                color="error"
+                                sx={{ flex: 1, ml: 1, py: 1.5, fontSize: '16px' }}
+                            >
+                                Delete
+                            </Button>
+                        </Box>
                     </CardContent>
                 </Card>
             )}

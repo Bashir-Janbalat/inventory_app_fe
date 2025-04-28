@@ -1,8 +1,9 @@
 import React from 'react';
-import {FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField} from '@mui/material';
+import {Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField} from '@mui/material';
 import {CategoryDTO} from "../../types/CategoryDTO.ts";
 import {BrandDTO} from "../../types/BrandDTO.ts";
 import {SupplierDTO} from "../../types/SupplierDTO.ts";
+import AddIcon from "@mui/icons-material/Add";
 
 
 export interface ProductFiltersProps {
@@ -57,6 +58,15 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
     return (
         <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
+
+            <Button
+                variant="contained"
+                color="primary"
+                startIcon={<AddIcon />}
+                sx={{ py: 1, px: 3, fontSize: '16px', height: '50px' }}
+            >
+                Create
+            </Button>
 
             <FormControl sx={{ minWidth: 120 }}>
                 <InputLabel>Sort by</InputLabel>
@@ -127,7 +137,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 <InputLabel>Supplier</InputLabel>
                 <Select
                     value={supplierName}
-                    label="Supplieres"
+                    label="Suppliers"
                     onChange={resetPageAndSetSelect(setSupplierName)}
                 >
                     <MenuItem value="">All</MenuItem>

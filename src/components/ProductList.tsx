@@ -51,7 +51,7 @@ const ProductList: React.FC = () => {
         setLoading(true);
         try {
             const productResponse =
-                await getProducts(page - 1, size, sortBy, sortDirection, searchBy, categoryName, brandName,supplierName);
+                await getProducts(page - 1, size, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName);
             setProducts(productResponse.content);
             setTotalPages(productResponse.totalPages);
         } catch (error) {
@@ -63,7 +63,7 @@ const ProductList: React.FC = () => {
 
     useEffect(() => {
         fetchProducts();
-    }, [page, sortBy, sortDirection, searchBy, categoryName, brandName,supplierName]);
+    }, [page, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName]);
 
 
     useEffect(() => {
@@ -76,7 +76,8 @@ const ProductList: React.FC = () => {
     };
 
     return (
-        <Container sx={{py: 4, backgroundColor: 'background.default', minHeight: '100vh', overflow: 'auto', height: '100%'}} >
+        <Container
+            sx={{py: 4, backgroundColor: 'background.default', minHeight: '100vh', overflow: 'auto', height: '100%'}}>
             <ProductFilters
                 sortBy={sortBy}
                 sortDirection={sortDirection}
@@ -98,7 +99,7 @@ const ProductList: React.FC = () => {
             {
                 loading ? (<Grid container justifyContent="center"><CircularProgress/></Grid>) : (
                     <>
-                        <Grid container spacing={4}  sx={{ minHeight: '400px' }}>
+                        <Grid container spacing={4} sx={{minHeight: '400px'}}>
                             {products.map((product) => (
                                 <Grid size={3} key={product.id}>
                                     <ProductCard product={product} onClick={() => handleProductClick(product.id)}/>

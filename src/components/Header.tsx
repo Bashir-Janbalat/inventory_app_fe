@@ -8,17 +8,18 @@ import {useAuth} from "../auth/UseAuth.ts";
 interface HeaderProps {
     darkMode: boolean;
     setDarkMode: (mode: boolean) => void;
+    toggleSidebar: (openOrClose?: boolean) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode}) => {
+const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) => {
     const navigate = useNavigate();
     const {authenticated: isAuthenticated, subject: username, logout} = useAuth();
 
     const handleLogout = () => {
         logout();
         navigate("/");
+        toggleSidebar(false);
     };
-
 
     return (
         <AppBar position="static" sx={{backgroundColor: darkMode ? "#333" : "#f5f7fa", boxShadow: 4, mb: 4}}>
@@ -37,7 +38,7 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode}) => {
                         textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)", // إضافة تأثير الظل
                     }}
                 >
-                    Inventory Manager
+                    Inventory Management System
                 </Typography>
 
                 {/* Right Side: Buttons + Divider + Username */}
@@ -50,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode}) => {
                         <>
                             {/* Buttons Section */}
                             <Box sx={{display: "flex", gap: 1}}>
-                                <Button variant="outlined" color="primary" component={Link} to="/dashboard"
+                                <Button variant="outlined" color="primary" onClick={() => toggleSidebar()}
                                         sx={{fontWeight: "bold", boxShadow: 2}}>
                                     Dashboard
                                 </Button>
@@ -65,7 +66,12 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode}) => {
                             </Box>
 
                             {/* Divider */}
-                            <Box sx={{width: 1, height: 35, borderLeft: "1px solid rgba(255, 255, 255, 0.5)", mx: 2}}/>
+                            <Box sx={{
+                                width: 1,
+                                height: 35,
+                                borderLeft: "1px solid rgba(255, 255, 255, 0.5)",
+                                mx: 2
+                            }}/>
 
                             {/* Username + Avatar */}
                             <Box sx={{display: "flex", alignItems: "center", gap: 1}}>
