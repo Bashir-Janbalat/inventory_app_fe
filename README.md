@@ -64,7 +64,7 @@ src/
 │   └── PagedResponseDTO.ts      # Struktur für paginierte Antworten
 │
 ├── App.tsx                      # Haupt-App-Komponente, die das Routing einrichtet
-├── main.tsx                     # Einstiegspunkt der App
+├── Main.tsx                     # Einstiegspunkt der App
 ├── AppRoutes.tsx                   # Handhabt das Routing der App
 └── vite-env.d.ts                # TypeScript-Umgebungstypen für Vite
 └── .env                         # Umgebungsvariablen für die App

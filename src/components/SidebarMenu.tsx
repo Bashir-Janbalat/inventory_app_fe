@@ -1,5 +1,5 @@
 import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import { Category, LocalMall, Storefront } from '@mui/icons-material';
+import { Category, LocalMall, Storefront, PermIdentity } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 
 const SidebarMenu = () => {
@@ -9,7 +9,7 @@ const SidebarMenu = () => {
         { text: 'Products', icon: <LocalMall />, path: '/products' },
         { text: 'Categories', icon: <Category />, path: '/categories' },
         { text: 'Brands', icon: <Storefront />, path: '/brands' },
-        { text: 'Suppliers', icon: <Storefront />, path: '/suppliers' },
+        { text: 'Suppliers', icon: <PermIdentity />, path: '/suppliers' },
     ];
 
     return (
