@@ -22,7 +22,13 @@ const LoginPage = () => {
 
         return (
             <Container maxWidth="sm">
-                <Paper elevation={3} sx={{padding: 4, marginTop: 8}}>
+                <Paper
+                    elevation={3}
+                    sx={{
+                        p: { xs: 2, sm: 4 },
+                        mt: { xs: 4, sm: 8 },
+                    }}
+                >
                     <Typography variant="h4" align="center" gutterBottom>
                         Login
                     </Typography>

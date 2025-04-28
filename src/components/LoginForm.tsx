@@ -36,7 +36,7 @@ const LoginForm = () => {
     };
 
     return (
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 2}}>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: { xs: 2, sm: 3 }}}>
             {error && <Alert severity="error">{error}</Alert>}
             <TextField
                 label="Username"
@@ -61,11 +61,18 @@ const LoginForm = () => {
                 variant="contained"
                 color="primary"
                 fullWidth
-                sx={{mt: 2}}
+                sx={{mt: 2,py: 1.5}}
             >
                 Login
             </Button>
-            <Typography variant="body2" align="center" sx={{mt: 2}}>
+            <Typography
+                variant="body2"
+                align="center"
+                sx={{
+                    mt: { xs: 2, sm: 3 },
+                    fontSize: { xs: '0.8rem', sm: '1rem' },
+                }}
+            >
                 Don't have an account? <Link to="/signup">Sign Up</Link>
             </Typography>
         </Box>

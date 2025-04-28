@@ -65,7 +65,7 @@ src/
 │
 ├── App.tsx                      # Haupt-App-Komponente, die das Routing einrichtet
 ├── main.tsx                     # Einstiegspunkt der App
-├── routes.tsx                   # Handhabt das Routing der App
+├── AppRoutes.tsx                   # Handhabt das Routing der App
 └── vite-env.d.ts                # TypeScript-Umgebungstypen für Vite
 └── .env                         # Umgebungsvariablen für die App
 └── Dockerfile                   # Dockerfile zur Containerisierung der App

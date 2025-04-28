@@ -6,6 +6,9 @@ import ProductList from "./components/ProductList.tsx";
 import SignUpPage from "./pages/SignUpPage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import Layout from "./components/Layout.tsx";
+import Categories from "./pages/Categories.tsx";
+import Brands from "./pages/Brands.tsx"
+import Suppliers from "./pages/Suppliers.tsx"
 
 interface AppRoutesProps {
     darkMode: boolean;
@@ -29,6 +32,9 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
                     {/* geschützte Seiten */}
                     <Route path="products" element={<ProtectedRoute><ProductList/></ProtectedRoute>}/>
                     <Route path="products/:id" element={<ProtectedRoute><ProductPage/></ProtectedRoute>}/>
+                    <Route path="categories" element={<ProtectedRoute><Categories /></ProtectedRoute>} />
+                    <Route path="brands" element={<ProtectedRoute><Brands /></ProtectedRoute>} />
+                    <Route path="suppliers" element={<ProtectedRoute><Suppliers /></ProtectedRoute>} />
 
                     {/* 404 Seite */}
                     <Route path="*" element={<ProtectedRoute><NotFoundPage/></ProtectedRoute>}/>

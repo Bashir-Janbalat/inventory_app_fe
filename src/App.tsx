@@ -1,6 +1,6 @@
 import {useMemo, useState} from "react";
 import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
-import AppRoutes from "./routes.tsx";
+import AppRoutes from "./AppRoutes.tsx";
 import {AuthProvider} from "./auth/AuthContext.tsx";
 
 function App() {

@@ -22,8 +22,16 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
     };
 
     return (
-        <AppBar position="static" sx={{backgroundColor: darkMode ? "#333" : "#f5f7fa", boxShadow: 4, mb: 4}}>
-            <Toolbar sx={{display: "flex", justifyContent: "space-between", alignItems: "center"}}>
+        <AppBar position="fixed" sx={{backgroundColor: darkMode ? "#333" : "#f5f7fa", boxShadow: 4, mb: 4}}>
+            <Toolbar
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    flexWrap: { xs: "wrap", sm: "nowrap" }, // على الموبايل: العناصر تلتف للأسفل
+                    gap: 2, // مسافة بين العناصر عند الالتفاف
+                }}
+            >
                 {/* Left Side: Logo */}
                 <Typography
                     variant="h6"
@@ -33,9 +41,11 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
                         color: darkMode ? "white" : "primary.main",
                         textDecoration: "none",
                         fontWeight: "bold",
-                        fontSize: "1.7rem",  // جعل الحجم أكبر
-                        letterSpacing: 1.5,  // توسيع المسافات بين الحروف
-                        textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)", // إضافة تأثير الظل
+                        fontSize: { xs: "1.2rem", sm: "1.7rem" }, // أصغر على الموبايل
+                        letterSpacing: 1.5,
+                        textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
+                        textAlign: { xs: "center", sm: "left" }, // وسط في الموبايل
+                        width: { xs: "100%", sm: "auto" },
                     }}
                 >
                     Inventory Management System
@@ -74,7 +84,15 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
                             }}/>
 
                             {/* Username + Avatar */}
-                            <Box sx={{display: "flex", alignItems: "center", gap: 1}}>
+                            <Box
+                                sx={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: { xs: 1, sm: 2 },
+                                    flexDirection: { xs: "column", sm: "row" }, // على موبايل: عمودي، على لابتوب: أفقي
+                                    width: { xs: "100%", sm: "auto" }, // يجعل البوكس يأخذ عرض كامل على الموبايل
+                                }}
+                            >
                                 <Avatar sx={{width: 35, height: 35, bgcolor: "primary.main"}}>
                                     {username ? username.charAt(0).toUpperCase() : "U"}
                                 </Avatar>

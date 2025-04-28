@@ -77,7 +77,8 @@ const ProductList: React.FC = () => {
 
     return (
         <Container
-            sx={{py: 4, backgroundColor: 'background.default', minHeight: '100vh', overflow: 'auto', height: '100%'}}>
+            sx={{py: 4,mt:{lg: 2,md:2 ,xs: 0},
+                backgroundColor: 'background.default', minHeight: '100vh', overflow: 'auto', height: '100%'}}>
             <ProductFilters
                 sortBy={sortBy}
                 sortDirection={sortDirection}
