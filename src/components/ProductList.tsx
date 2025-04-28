@@ -27,7 +27,7 @@ const ProductList: React.FC = () => {
     const [categoryName, setCategoryName] = useState<string>('');
     const [brandName, setBrandName] = useState<string>('');
     const [supplierName, setSupplierName] = useState<string>('');
-    const size = 6;
+    const size = 4;
 
     const fetchInitialData = async () => {
         setLoading(true);
@@ -76,7 +76,7 @@ const ProductList: React.FC = () => {
     };
 
     return (
-        <Container sx={{py: 4}}>
+        <Container sx={{py: 4, backgroundColor: 'background.default', minHeight: '100vh', overflow: 'auto', height: '100%'}} >
             <ProductFilters
                 sortBy={sortBy}
                 sortDirection={sortDirection}
@@ -98,9 +98,9 @@ const ProductList: React.FC = () => {
             {
                 loading ? (<Grid container justifyContent="center"><CircularProgress/></Grid>) : (
                     <>
-                        <Grid container spacing={4}>
+                        <Grid container spacing={4}  sx={{ minHeight: '400px' }}>
                             {products.map((product) => (
-                                <Grid key={product.id}>
+                                <Grid size={3} key={product.id}>
                                     <ProductCard product={product} onClick={() => handleProductClick(product.id)}/>
                                 </Grid>
                             ))}

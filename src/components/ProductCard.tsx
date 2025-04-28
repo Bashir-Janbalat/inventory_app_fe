@@ -1,19 +1,20 @@
 import React from 'react';
-import {ProductDTO} from '../types/ProductDTO.ts';
-import {Box, Button, Card, CardContent, CardMedia, Typography} from '@mui/material';
+import { ProductDTO } from '../types/ProductDTO.ts';
+import { Box, Button, Card, CardContent, CardMedia, Typography } from '@mui/material';
 
 interface ProductCardProps {
     product: ProductDTO;
     onClick: () => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({product, onClick}) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, onClick }) => {
     return (
         <Card
             onClick={onClick}
             raised
             sx={{
-                width: 300,
+                width: '100%',
+                maxWidth: 300,
                 height: 500,
                 display: 'flex',
                 flexDirection: 'column',
@@ -32,7 +33,7 @@ const ProductCard: React.FC<ProductCardProps> = ({product, onClick}) => {
                 height="200"
                 image={product.images[0]?.imageUrl || '/default-image.jpg'}
                 alt={product.images[0]?.altText || product.name}
-                sx={{objectFit: 'cover', flexShrink: 0}}
+                sx={{ objectFit: 'cover', flexShrink: 0 }}
             />
 
             <CardContent
@@ -87,7 +88,7 @@ const ProductCard: React.FC<ProductCardProps> = ({product, onClick}) => {
                 </Typography>
             </CardContent>
 
-            <Box sx={{p: 1}}>
+            <Box sx={{ p: 1 }}>
                 <Button variant="contained" color="primary" fullWidth>View Details</Button>
             </Box>
         </Card>

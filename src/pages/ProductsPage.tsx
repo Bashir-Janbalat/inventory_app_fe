@@ -52,7 +52,7 @@ const ProductPage: React.FC = () => {
             {product && (
                 <Card
                     sx={{
-                        maxWidth: 800,
+                        maxWidth: 600,
                         mx: 'auto',
                         boxShadow: 4,
                         borderRadius: 3,
