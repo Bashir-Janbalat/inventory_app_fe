@@ -7,13 +7,15 @@ import {getCategories} from "../api/CategoryApi.ts";
 import {getBrands} from "../api/BrandApi.ts";
 import {getSuppliers} from "../api/SupplierApi.ts";
 import {getProducts} from "../api/ProductApi.ts";
-import {CircularProgress, Container, Grid, Typography} from "@mui/material";
+import {Container, Typography} from "@mui/material";
 import ProductFilters from "../components/filters/ProductFilters.tsx";
-import ProductList from "../components/ProductList.tsx";
+import ProductList from "../components/products/ProductList.tsx";
+import Loading from "../components/LoadingProps.tsx";
 
 
 const Products: React.FC = () => {
-    const [loading, setLoading] = useState(true);
+    const [loadingProducts, setLoadingProducts] = useState(true);
+    const [loadingInitialData, setLoadingInitialData] = useState(true);
     const [page, setPage] = useState(1);
     const [sortBy, setSortBy] = useState<'name' | 'price'>('name');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
@@ -29,7 +31,7 @@ const Products: React.FC = () => {
     const size = 6;
 
     const fetchInitialData = async () => {
-        setLoading(true);
+        setLoadingInitialData(true);
         try {
             const [categoriesResponse, brandsResponse, suppliersResponse] = await Promise.all([
                 getCategories(),
@@ -42,12 +44,12 @@ const Products: React.FC = () => {
         } catch (error) {
             console.error('Error fetching initial data:', error);
         } finally {
-            setLoading(false);
+            setLoadingInitialData(false);
         }
     };
 
     const fetchProducts = async () => {
-        setLoading(true);
+        setLoadingProducts(true);
         try {
             const productResponse =
                 await getProducts(page - 1, size, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName);
@@ -56,7 +58,7 @@ const Products: React.FC = () => {
         } catch (error) {
             console.error('Error fetching products:', error);
         } finally {
-            setLoading(false);
+            setLoadingProducts(false);
         }
     };
 
@@ -68,8 +70,12 @@ const Products: React.FC = () => {
         fetchInitialData();
     }, []);
 
+    if (loadingProducts || loadingInitialData) {
+        return <Loading fullScreen message="Loading products..."/>;
+    }
+
     return (
-        <Container sx={{py: 4, pt: {xs: '80px', sm: '80px'}, minHeight: '100vh',overflow: 'auto', height: '100%'}}>
+        <Container>
             <Typography variant="h4" sx={{mb: 4, fontWeight: 'bold'}}>Products</Typography>
             <ProductFilters
                 sortBy={sortBy}
@@ -89,16 +95,12 @@ const Products: React.FC = () => {
                 setSupplierName={setSupplierName}
                 setPage={setPage}
             />
-            {
-                loading ?
-                    (<Grid container justifyContent="center"><CircularProgress/></Grid>) :
-                    (<ProductList
-                        products={products}
-                        totalPages={totalPages}
-                        page={page}
-                        setPage={setPage}
-                    ></ProductList>)
-            }
+            <ProductList
+                products={products}
+                totalPages={totalPages}
+                page={page}
+                setPage={setPage}
+            ></ProductList>
 
         </Container>
     );

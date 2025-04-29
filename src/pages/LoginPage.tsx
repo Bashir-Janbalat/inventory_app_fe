@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import {Container, Paper, Typography} from '@mui/material';
 import {useNavigate} from 'react-router-dom';
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/auth/LoginForm.tsx';
 import {useAuth} from "../auth/UseAuth.ts";
 import {removeToken} from "../auth/AuthUtils.ts";
 

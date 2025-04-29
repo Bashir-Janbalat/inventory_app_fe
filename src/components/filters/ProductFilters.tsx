@@ -3,7 +3,6 @@ import {
     Button,
     Container,
     FormControl,
-    Grid,
     InputLabel,
     MenuItem,
     Select,
@@ -53,118 +52,95 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
     };
 
     return (
-        <Container >
-            <Stack spacing={2} marginBottom={3}>
-                <Grid container spacing={2} alignItems="center">
-                    <Grid size={{xs: 12, sm: "auto"}}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            startIcon={<AddIcon/>}
-                            fullWidth
-                            style={{minHeight: 50}}
-                        >
-                            Create
-                        </Button>
-                    </Grid>
+        <Container>
+            <Stack direction={{xs: 'column', sm: 'column', md: 'row'}} spacing={2} marginBottom={2}>
+                <Button fullWidth
+                        variant="contained"
+                        color="primary"
+                        startIcon={<AddIcon/>}
+                        style={{minHeight: 50}}
+                >
+                    Create
+                </Button>
+                <FormControl fullWidth>
+                    <InputLabel>Sort by</InputLabel>
+                    <Select
+                        value={sortBy}
+                        label="Sort by"
+                        onChange={(e) => resetPageAndSetSelect(setSortBy)(e)}
+                    >
+                        <MenuItem value="name">Name</MenuItem>
+                        <MenuItem value="price">Price</MenuItem>
+                    </Select>
+                </FormControl>
 
-                    <Grid size={{xs: 12, sm: "auto"}}>
-                        <Grid container spacing={2}>
-                            <Grid size={{xs: 12, sm: 6, md: 4, lg: 2}}>
-                                <FormControl fullWidth>
-                                    <InputLabel>Sort by</InputLabel>
-                                    <Select
-                                        value={sortBy}
-                                        label="Sort by"
-                                        onChange={(e) => resetPageAndSetSelect(setSortBy)(e)}
-                                    >
-                                        <MenuItem value="name">Name</MenuItem>
-                                        <MenuItem value="price">Price</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </Grid>
+                <FormControl fullWidth>
+                    <InputLabel>Direction</InputLabel>
+                    <Select
+                        value={sortDirection}
+                        label="Direction"
+                        onChange={(e) => resetPageAndSetSelect(setSortDirection)(e)}
+                    >
+                        <MenuItem value="asc">asc ↑</MenuItem>
+                        <MenuItem value="desc">desc ↓</MenuItem>
+                    </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                    <TextField
+                        fullWidth
+                        label="Search by name"
+                        value={searchBy}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            resetPageAndSetInput(setSearchBy)(e)
+                        }
+                    />
+                </FormControl>
 
-                            <Grid size={{xs: 12, sm: 6, md: 4, lg: 2}}>
-                                <FormControl fullWidth>
-                                    <InputLabel>Direction </InputLabel>
-                                    <Select
-                                        value={sortDirection}
-                                        label="Direction"
-                                        onChange={(e) => resetPageAndSetSelect(setSortDirection)(e)}
-                                    >
-                                        <MenuItem value="asc">Ascending ↑</MenuItem>
-                                        <MenuItem value="desc">Descending ↓</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </Grid>
+                <FormControl fullWidth>
+                    <InputLabel>Category</InputLabel>
+                    <Select
+                        value={categoryName}
+                        label="Category"
+                        onChange={(e) => resetPageAndSetSelect(setCategoryName)(e)}
+                    >
+                        <MenuItem value="">All</MenuItem>
+                        {categories.map((cat) => (
+                            <MenuItem key={cat.id} value={cat.name}>
+                                {cat.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
-                            <Grid size={{xs: 12, sm: 6, md: 4, lg: 2}}>
-                                <TextField
-                                    fullWidth
-                                    label="Search by name"
-                                    value={searchBy}
-                                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                                        resetPageAndSetInput(setSearchBy)(e)
-                                    }
-                                />
-                            </Grid>
+                <FormControl fullWidth>
+                    <InputLabel>Brand</InputLabel>
+                    <Select
+                        value={brandName}
+                        label="Brand"
+                        onChange={(e) => resetPageAndSetSelect(setBrandName)(e)}
+                    >
+                        <MenuItem value="">All</MenuItem>
+                        {brands.map((b) => (
+                            <MenuItem key={b.id} value={b.name}>
+                                {b.name}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
 
-                            <Grid size={{xs: 12, sm: 6, md: 4, lg: 2}}>
-                                <FormControl fullWidth>
-                                    <InputLabel>Category</InputLabel>
-                                    <Select
-                                        value={categoryName}
-                                        label="Category"
-                                        onChange={(e) => resetPageAndSetSelect(setCategoryName)(e)}
-                                    >
-                                        <MenuItem value="">All</MenuItem>
-                                        {categories.map((cat) => (
-                                            <MenuItem key={cat.id} value={cat.name}>
-                                                {cat.name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-
-                            <Grid size={{xs: 12, sm: 6, md: 4, lg: 2}}>
-                                <FormControl fullWidth>
-                                    <InputLabel>Brand</InputLabel>
-                                    <Select
-                                        value={brandName}
-                                        label="Brand"
-                                        onChange={(e) => resetPageAndSetSelect(setBrandName)(e)}
-                                    >
-                                        <MenuItem value="">All</MenuItem>
-                                        {brands.map((b) => (
-                                            <MenuItem key={b.id} value={b.name}>
-                                                {b.name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-
-                            <Grid size={{xs: 12, sm: 6, md: 4, lg: 2}}>
-                                <FormControl fullWidth>
-                                    <InputLabel>Supplier</InputLabel>
-                                    <Select
-                                        value={supplierName}
-                                        label="Supplier"
-                                        onChange={(e) => resetPageAndSetSelect(setSupplierName)(e)}
-                                    >
-                                        <MenuItem value="">All</MenuItem>
-                                        {suppliers.map((s) => (
-                                            <MenuItem key={s.id} value={s.name}>
-                                                {s.name}
-                                            </MenuItem>
-                                        ))}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
+                <FormControl fullWidth>
+                    <InputLabel>Supplier</InputLabel>
+                    <Select
+                        value={supplierName}
+                        label="Supplier"
+                        onChange={(e) => resetPageAndSetSelect(setSupplierName)(e)}
+                    >
+                        <MenuItem value="">All</MenuItem>
+                        {suppliers.map((s) => (
+                            <MenuItem key={s.id} value={s.name}>{s.name}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </Stack>
         </Container>
     );

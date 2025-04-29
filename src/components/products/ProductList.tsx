@@ -1,8 +1,8 @@
 import React from 'react';
-import {Grid, Pagination, Stack} from '@mui/material';
-import ProductCard from './ProductCard';
-import {ProductDTO} from "../types/ProductDTO.ts";
+import {Container, Grid, Pagination, Stack} from '@mui/material';
+import {ProductDTO} from "../../types/ProductDTO.ts";
 import {useNavigate} from "react-router-dom";
+import ProductCard from "./ProductCard.tsx";
 
 
 interface ProductsGridProps {
@@ -25,15 +25,18 @@ const ProductList: React.FC<ProductsGridProps> = ({
     };
 
     return (
-        <>
-            <Grid container spacing={4} style={{minHeight: '400px'}}>
-                {products.map((pro) => (
-                    <Grid size={{xs: 12, sm: 6, md: 4}} key={pro.id}>
-                        <ProductCard product={pro} onClick={() => handleProductClick(pro.id)}/>
-                    </Grid>
-                ))}
-            </Grid>
+        <Container>
+            <Stack direction={{xs: 'column', sm: 'column', md: 'row'}}>
+                <Grid container justifyContent="center" alignItems='center' spacing={4}>
+                    {products.map((pro) => (
+                        <Grid key={pro.id}
+                              sx={{xs: 12, sm: 6, md: 4, lg: 4, justifyContent: 'center', alignItems: 'center'}}>
+                            <ProductCard product={pro} onClick={() => handleProductClick(pro.id)}/>
+                        </Grid>
+                    ))}
+                </Grid>
 
+            </Stack>
             <Stack direction="row" justifyContent="center" alignItems="center" marginTop={4}>
                 <Pagination
                     count={totalPages}
@@ -44,7 +47,7 @@ const ProductList: React.FC<ProductsGridProps> = ({
                     shape="rounded"
                 />
             </Stack>
-        </>
+        </Container>
     );
 };
 

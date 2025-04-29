@@ -1,37 +1,62 @@
-import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
-import { Category, LocalMall, Storefront, PermIdentity } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+import {Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography} from '@mui/material';
+import LocalMallIcon from '@mui/icons-material/LocalMall';
+import CategoryIcon from '@mui/icons-material/Category';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import {useNavigate} from 'react-router-dom';
 
-const SidebarMenu = () => {
+type SidebarMenuProps = {
+    toggleSidebar: () => void;
+};
+
+const SidebarMenu = ({toggleSidebar}: SidebarMenuProps) => {
     const navigate = useNavigate();
 
     const menuItems = [
-        { text: 'Products', icon: <LocalMall />, path: '/products' },
-        { text: 'Categories', icon: <Category />, path: '/categories' },
-        { text: 'Brands', icon: <Storefront />, path: '/brands' },
-        { text: 'Suppliers', icon: <PermIdentity />, path: '/suppliers' },
+        {text: 'Products', icon: <LocalMallIcon fontSize="large"/>, path: '/products'},
+        {text: 'Categories', icon: <CategoryIcon fontSize="large"/>, path: '/categories'},
+        {text: 'Brands', icon: <StorefrontIcon fontSize="large"/>, path: '/brands'},
+        {text: 'Suppliers', icon: <PermIdentityIcon fontSize="large"/>, path: '/suppliers'},
     ];
 
+    function handleClick(path: string): void {
+        navigate(path);
+        toggleSidebar();
+    }
+
     return (
-        <List>
-            {menuItems.map((item, index) => (
-                <ListItemButton
-                    key={index}
-                    onClick={() => navigate(item.path)}
-                    sx={{
-                        borderRadius: 2,
-                        mx: 1,
-                        my: 0.5,
-                        '&:hover': {
-                            backgroundColor: 'rgba(0, 0, 0, 0.04)',
-                        },
-                    }}
-                >
-                    <ListItemIcon>{item.icon}</ListItemIcon>
-                    <ListItemText primary={item.text} />
-                </ListItemButton>
-            ))}
-        </List>
+        <Box width="100%">
+            <List>
+                {menuItems.map((item, index) => (
+                    <ListItem key={index} disablePadding>
+                        <ListItemButton
+                            onClick={() => handleClick(item.path)}
+                            sx={{
+                                width: '100%',
+                                flexDirection: 'column', // Stack icon and text vertically
+                                py: 2, // vertical padding
+                            }}
+                        >
+                            <ListItemIcon
+                                sx={{
+                                    justifyContent: 'center',
+                                    display: 'flex',
+                                    minWidth: 0,
+                                    mb: 1,
+                                }}
+                            >
+                                {item.icon}
+                            </ListItemIcon>
+                            <ListItemText
+                                primary={
+                                    <Typography align="center" variant="body1">{item.text}</Typography>
+                                }
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+        </Box>
     );
 };
 

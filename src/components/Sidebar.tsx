@@ -1,5 +1,5 @@
 import React from 'react';
-import { Drawer, useMediaQuery, useTheme } from '@mui/material';
+import {Drawer, useMediaQuery, useTheme} from '@mui/material';
 import SidebarMenu from './SidebarMenu';
 
 interface SidebarProps {
@@ -7,7 +7,7 @@ interface SidebarProps {
     toggleSidebar: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ open, toggleSidebar }) => {
+const Sidebar: React.FC<SidebarProps> = ({open, toggleSidebar}) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -15,24 +15,10 @@ const Sidebar: React.FC<SidebarProps> = ({ open, toggleSidebar }) => {
         <Drawer
             open={open}
             onClose={toggleSidebar}
+            anchor='top'
             variant={isMobile ? 'temporary' : 'persistent'}
-            anchor="left"
-            ModalProps={{
-                keepMounted: true,
-            }}
-            slotProps={{
-                paper: {
-                    sx: {
-                        width: 250,
-                        marginTop: '70px',
-                        borderRight: '1px solid rgba(0, 0, 0, 0.12)',
-                        boxShadow: '2px 0 8px rgba(0, 0, 0, 0.15)',
-                        backgroundColor: (theme) => theme.palette.background.paper,
-                    }
-                }
-            }}
         >
-            <SidebarMenu />
+            <SidebarMenu toggleSidebar={toggleSidebar} />
         </Drawer>
     );
 };

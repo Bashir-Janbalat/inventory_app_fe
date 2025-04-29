@@ -1,9 +1,9 @@
 import {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import {Alert, Box, Button, TextField, Typography} from '@mui/material';
-import {login} from '../auth/AuthApi.tsx';
-import {getSubjectFromToken, saveToken} from "../auth/AuthUtils.ts";
-import {useAuth} from "../auth/UseAuth.ts";
+import {login} from '../../api/AuthApi.tsx';
+import {getSubjectFromToken, saveToken} from "../../auth/AuthUtils.ts";
+import {useAuth} from "../../auth/UseAuth.ts";
 
 
 const LoginForm = () => {

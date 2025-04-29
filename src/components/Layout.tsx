@@ -23,21 +23,13 @@ const Layout: React.FC<LayoutProps> = ({darkMode, setDarkMode}) => {
     }
 
     return (
-        <Box display="flex" flexDirection="column" minHeight="100vh">
+        <Box display="flex" flexDirection="column" minHeight="100vh" >
             <Header darkMode={darkMode} setDarkMode={setDarkMode} toggleSidebar={toggleSidebar}/>
 
             <Box display="flex" flex={1}>
 
                 <Sidebar open={sidebarOpen} toggleSidebar={toggleSidebar}/>
-
-                <Container
-                    sx={{
-                        flexGrow: 1,
-                        p: 4, // Padding
-                        marginLeft: sidebarOpen ? '250px' : '0',
-                        transition: 'margin 0.3s',
-                    }}
-                >
+                <Container sx={{ py: 4,pt: { xs: '80px', sm: '80px' },minHeight: '100vh',overflow: 'auto', height: '100%' }}>
                     <Outlet/>
                 </Container>
             </Box>

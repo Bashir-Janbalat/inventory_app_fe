@@ -59,7 +59,7 @@ const ProductPage: React.FC = () => {
     }
 
     return (
-        <Container sx={{ py: 4 }} maxWidth="md">
+        <Container sx={{ py: 4 }} maxWidth="sm">
             <Card
                 sx={{
                     maxWidth: 800,

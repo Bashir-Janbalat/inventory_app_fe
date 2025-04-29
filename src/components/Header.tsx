@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    flexWrap: { xs: "wrap", sm: "nowrap" }, // على الموبايل: العناصر تلتف للأسفل
+                    flexWrap: {xs: "wrap", sm: "nowrap"}, // على الموبايل: العناصر تلتف للأسفل
                     gap: 2, // مسافة بين العناصر عند الالتفاف
                 }}
             >
@@ -41,11 +41,12 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
                         color: darkMode ? "white" : "primary.main",
                         textDecoration: "none",
                         fontWeight: "bold",
-                        fontSize: { xs: "1.2rem", sm: "1.7rem" }, // أصغر على الموبايل
+                        fontSize: {xs: "1.2rem", sm: "1.7rem"}, // أصغر على الموبايل
                         letterSpacing: 1.5,
                         textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
-                        textAlign: { xs: "center", sm: "left" }, // وسط في الموبايل
-                        width: { xs: "100%", sm: "auto" },
+                        textAlign: {xs: "center", sm: "left"}, // وسط في الموبايل
+                        width: {xs: "100%", sm: "auto"},
+                        display: {xs: 'none', sm: 'none', md: 'block'}
                     }}
                 >
                     Inventory Management System
@@ -88,9 +89,9 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
                                 sx={{
                                     display: "flex",
                                     alignItems: "center",
-                                    gap: { xs: 1, sm: 2 },
-                                    flexDirection: { xs: "column", sm: "row" }, // على موبايل: عمودي، على لابتوب: أفقي
-                                    width: { xs: "100%", sm: "auto" }, // يجعل البوكس يأخذ عرض كامل على الموبايل
+                                    gap: {xs: 1, sm: 2},
+                                    flexDirection: {xs: "column", sm: "row"}, // على موبايل: عمودي، على لابتوب: أفقي
+                                    width: {xs: "100%", sm: "auto"}, // يجعل البوكس يأخذ عرض كامل على الموبايل
                                 }}
                             >
                                 <Avatar sx={{width: 35, height: 35, bgcolor: "primary.main"}}>
