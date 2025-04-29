@@ -10,7 +10,7 @@ import {getProducts} from "../api/ProductApi.ts";
 import {Container, Typography} from "@mui/material";
 import ProductFilters from "../components/filters/ProductFilters.tsx";
 import ProductList from "../components/products/ProductList.tsx";
-import Loading from "../components/LoadingProps.tsx";
+import Loading from "../components/base/LoadingProps.tsx";
 
 
 const Products: React.FC = () => {

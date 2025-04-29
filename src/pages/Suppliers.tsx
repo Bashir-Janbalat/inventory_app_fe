@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {SupplierDTO} from '../types/SupplierDTO';
 import {getSuppliers} from '../api/SupplierApi.ts';
-import Loading from "../components/LoadingProps.tsx";
+import Loading from "../components/base/LoadingProps.tsx";
 import SupplierList from "../components/suppliers/SupplierList.tsx";
 
 const Suppliers: React.FC = () => {

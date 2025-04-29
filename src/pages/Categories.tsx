@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {CategoryDTO} from '../types/CategoryDTO';
 import {getCategories} from '../api/CategoryApi.ts';
-import Loading from "../components/LoadingProps.tsx";
+import Loading from "../components/base/LoadingProps.tsx";
 import CategoryList from '../components/categories/CategoryList.tsx';
 
 const Categories: React.FC = () => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Drawer, useMediaQuery, useTheme} from '@mui/material';
-import SidebarMenu from './SidebarMenu';
+import SidebarMenu from './SidebarMenu.tsx';
 
 interface SidebarProps {
     open: boolean;

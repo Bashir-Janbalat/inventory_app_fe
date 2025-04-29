@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import {Box, Container} from '@mui/material';
 import {Outlet} from 'react-router-dom';
-import Header from './Header';
-import Sidebar from './Sidebar';
-import Footer from './Footer';
+import Header from './Header.tsx';
+import Sidebar from './Sidebar.tsx';
+import Footer from './Footer.tsx';
 
 interface LayoutProps {
     darkMode: boolean;
