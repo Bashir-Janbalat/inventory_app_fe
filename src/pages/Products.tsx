@@ -21,12 +21,12 @@ const Products: React.FC = () => {
     const {
         error: fetchingProductsError,
         handleError: handleFetchingProductsError,
-        resetError: resetErrorProductsErrors
+        resetError: resetFetchingProductsError
     } = useApiErrorHandler();
     const {
         error: fetchingInitialDataError,
         handleError: handleFetchInitialDataError,
-        resetError: restInitialDataErrors
+        resetError: resetFetchingInitialDataError
     } = useApiErrorHandler();
 
     const [page, setPage] = useState(1);
@@ -85,13 +85,13 @@ const Products: React.FC = () => {
     }
     if (fetchingProductsError) {
         return <ErrorMessage message={fetchingProductsError} onRetry={() => {
-            resetErrorProductsErrors();
+            resetFetchingProductsError();
             fetchProducts();
         }}/>;
     }
     if (fetchingInitialDataError) {
         return <ErrorMessage message={fetchingInitialDataError} onRetry={() => {
-            restInitialDataErrors();
+            resetFetchingInitialDataError();
             fetchInitialData();
         }}/>;
     }
