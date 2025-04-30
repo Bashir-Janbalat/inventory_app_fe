@@ -61,7 +61,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
             setMessage(message);
             if (!serverLogoutSuccess) {
                 console.error("Logout on server failed, but proceeding with local logout.");
-                setMessage("Logout was successful locally, but there was an issue logging out on the server.");
+                setMessage(message + ", there was an issue logging out on the server.");
             }
             setSuccessfullyLogout(true);
         } catch (error) {
