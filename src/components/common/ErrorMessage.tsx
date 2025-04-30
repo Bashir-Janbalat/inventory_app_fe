@@ -19,7 +19,7 @@ export const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, onRetry }) 
                 severity="error"
                 sx={{
                     width: '100%',
-                    maxWidth: { xs: 300, sm: 400, md: 500 },
+                    maxWidth: { xs: 300, sm: 400, md: 500, lg: 600, xl: 700 },
                     mb: 2,
                     textAlign: 'center'
                 }}

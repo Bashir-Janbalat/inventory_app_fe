@@ -1,6 +1,6 @@
 import React from "react";
 import {AppBar, Avatar, Box, Button, IconButton, Toolbar, Typography} from "@mui/material";
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {Brightness4, Brightness7} from "@mui/icons-material";
 import {useAuth} from "../../hooks/useAuth.ts";
 
@@ -12,13 +12,10 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) => {
-    const navigate = useNavigate();
     const {authenticated: isAuthenticated, subject: username, logout} = useAuth();
 
     const handleLogout = () => {
         logout();
-        navigate("/");
-        toggleSidebar(false);
     };
 
     return (

@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {Container, Typography} from "@mui/material";
-import {Navigate} from "react-router-dom";
 import {ProductDTO} from "../types/ProductDTO.ts";
 import {CategoryDTO} from "../types/CategoryDTO.ts";
 import {SupplierDTO} from "../types/SupplierDTO.ts";
@@ -22,8 +21,12 @@ const Products: React.FC = () => {
     const {
         error: fetchingProductsError,
         handleError: handleFetchingProductsError,
-        sessionExpired,
-        resetError
+        resetError: resetErrorProductsErrors
+    } = useApiErrorHandler();
+    const {
+        error: fetchingInitialDataError,
+        handleError: handleFetchInitialDataError,
+        resetError: restInitialDataErrors
     } = useApiErrorHandler();
 
     const [page, setPage] = useState(1);
@@ -52,7 +55,7 @@ const Products: React.FC = () => {
             setSuppliers(suppliersResponse.content);
         }, (error) => {
             console.error('Error fetching initial data:', error);
-            handleFetchingProductsError(error);
+            handleFetchInitialDataError(error);
         });
     };
 
@@ -77,16 +80,19 @@ const Products: React.FC = () => {
         fetchInitialData();
     }, []);
 
-    if (sessionExpired) {
-        return <Navigate to="/login" replace/>;
-    }
     if (loadingProducts || loadingInitialData) {
         return <Loading fullScreen message="Loading products..."/>;
     }
     if (fetchingProductsError) {
         return <ErrorMessage message={fetchingProductsError} onRetry={() => {
-            resetError();
+            resetErrorProductsErrors();
             fetchProducts();
+        }}/>;
+    }
+    if (fetchingInitialDataError) {
+        return <ErrorMessage message={fetchingInitialDataError} onRetry={() => {
+            restInitialDataErrors();
+            fetchInitialData();
         }}/>;
     }
 
