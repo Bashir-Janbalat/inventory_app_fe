@@ -36,7 +36,7 @@ src/
 │   ├── AuthApi.ts               # Authentifizierungslogik (JWT-Token)
 │   ├── AuthContext.tsx          # Kontext für Authentifizierungsstatus
 │   ├── AuthUtils.ts             # Hilfsfunktionen für das Authentifizierungsmanagement
-│   ├── UseAuth.ts             
+│   ├── useAuth.ts             
 │
 ├── components/
 │   ├── filter/  

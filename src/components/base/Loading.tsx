@@ -1,12 +1,12 @@
 import React from 'react';
 import {Box, CircularProgress, Typography} from '@mui/material';
 
-type LoadingProps = {
+type Loading = {
     fullScreen?: boolean;
     message?: string;
 };
 
-const Loading: React.FC<LoadingProps> = ({fullScreen = false, message = 'Loading...'}) => {
+const Loading: React.FC<Loading> = ({fullScreen = false, message = 'Loading...'}) => {
     return (
         <Box
             display="flex"

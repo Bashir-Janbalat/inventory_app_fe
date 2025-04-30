@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from "react";
+import {Container, Typography} from "@mui/material";
+import {Navigate} from "react-router-dom";
 import {ProductDTO} from "../types/ProductDTO.ts";
 import {CategoryDTO} from "../types/CategoryDTO.ts";
 import {SupplierDTO} from "../types/SupplierDTO.ts";
@@ -7,15 +9,23 @@ import {getCategories} from "../api/CategoryApi.ts";
 import {getBrands} from "../api/BrandApi.ts";
 import {getSuppliers} from "../api/SupplierApi.ts";
 import {getProducts} from "../api/ProductApi.ts";
-import {Container, Typography} from "@mui/material";
 import ProductFilters from "../components/filters/ProductFilters.tsx";
 import ProductList from "../components/products/ProductList.tsx";
-import Loading from "../components/base/LoadingProps.tsx";
-
+import {ErrorMessage} from "../components/common/ErrorMessage.tsx";
+import {useApiErrorHandler} from "../hooks/useApiErrorHandler.ts";
+import Loading from "../components/base/Loading.tsx";
+import {useLoading} from "../hooks/useLoading.ts";
 
 const Products: React.FC = () => {
-    const [loadingProducts, setLoadingProducts] = useState(true);
-    const [loadingInitialData, setLoadingInitialData] = useState(true);
+    const {loading: loadingProducts, withLoading: withLoadingProducts} = useLoading();
+    const {loading: loadingInitialData, withLoading: withLoadingInitialData} = useLoading();
+    const {
+        error: fetchingProductsError,
+        handleError: handleFetchingProductsError,
+        sessionExpired,
+        resetError
+    } = useApiErrorHandler();
+
     const [page, setPage] = useState(1);
     const [sortBy, setSortBy] = useState<'name' | 'price'>('name');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
@@ -31,8 +41,7 @@ const Products: React.FC = () => {
     const size = 6;
 
     const fetchInitialData = async () => {
-        setLoadingInitialData(true);
-        try {
+        await withLoadingInitialData(async () => {
             const [categoriesResponse, brandsResponse, suppliersResponse] = await Promise.all([
                 getCategories(),
                 getBrands(),
@@ -40,26 +49,24 @@ const Products: React.FC = () => {
             ]);
             setCategories(categoriesResponse.content);
             setBrands(brandsResponse.content);
-            setSuppliers(suppliersResponse.content)
-        } catch (error) {
+            setSuppliers(suppliersResponse.content);
+        }, (error) => {
             console.error('Error fetching initial data:', error);
-        } finally {
-            setLoadingInitialData(false);
-        }
+            handleFetchingProductsError(error);
+        });
     };
 
     const fetchProducts = async () => {
-        setLoadingProducts(true);
-        try {
-            const productResponse =
-                await getProducts(page - 1, size, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName);
+        await withLoadingProducts(async () => {
+            const productResponse = await getProducts(
+                page - 1, size, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName
+            );
             setProducts(productResponse.content);
             setTotalPages(productResponse.totalPages);
-        } catch (error) {
+        }, (error) => {
             console.error('Error fetching products:', error);
-        } finally {
-            setLoadingProducts(false);
-        }
+            handleFetchingProductsError(error);
+        });
     };
 
     useEffect(() => {
@@ -70,8 +77,17 @@ const Products: React.FC = () => {
         fetchInitialData();
     }, []);
 
+    if (sessionExpired) {
+        return <Navigate to="/login" replace/>;
+    }
     if (loadingProducts || loadingInitialData) {
         return <Loading fullScreen message="Loading products..."/>;
+    }
+    if (fetchingProductsError) {
+        return <ErrorMessage message={fetchingProductsError} onRetry={() => {
+            resetError();
+            fetchProducts();
+        }}/>;
     }
 
     return (
@@ -100,11 +116,9 @@ const Products: React.FC = () => {
                 totalPages={totalPages}
                 page={page}
                 setPage={setPage}
-            ></ProductList>
-
+            />
         </Container>
     );
-
 };
-export default Products;
 
+export default Products;

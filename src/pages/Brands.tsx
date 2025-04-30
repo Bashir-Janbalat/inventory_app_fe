@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {BrandDTO} from '../types/BrandDTO';
-import Loading from "../components/base/LoadingProps.tsx";
+import Loading from "../components/base/Loading.tsx";
 import BrandList from "../components/brands/BrandList.tsx";
 import {getBrands} from "../api/BrandApi.ts";
 

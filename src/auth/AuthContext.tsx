@@ -12,8 +12,15 @@ interface AuthContextType {
 interface AuthProviderProps {
     children: ReactNode;
 }
+const defaultAuthContext: AuthContextType = {
+    authenticated: false,
+    subject: null,
+    setAuthenticated: () => {},
+    setSubject: () => {},
+    logout: () => {},
+};
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType >(defaultAuthContext);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     const [authenticated, setAuthenticated] = useState<boolean>(isLoggedIn());
