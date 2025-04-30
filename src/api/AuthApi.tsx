@@ -1,5 +1,6 @@
 import {UserDTO} from "../types/UserDTO.ts";
 import axios, {AxiosError} from 'axios';
+import {getToken} from "../auth/AuthUtils.ts";
 
 interface LoginResponse {
     accessToken: string;
@@ -15,11 +16,11 @@ interface ErrorResponse {
     statusCode?: number;
 }
 
-const baseURL = import.meta.env.VITE_API_BASE_URL;
+const baseURL = import.meta.env.VITE_API_BASE_URL + "/auth";
 
 export const login = async (username: string, password: string): Promise<LoginResponse> => {
     try {
-        const response = await axios.post(baseURL + '/auth/login', {username, password});
+        const response = await axios.post(baseURL + '/login', {username, password});
         return response.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -43,7 +44,7 @@ const handleAxiosError = (error: unknown): string => {
 
 export const signup = async (user: UserDTO): Promise<SignUpResponse> => {
     try {
-        const response = await axios.post(baseURL + '/auth/signup', user);
+        const response = await axios.post(baseURL + '/signup', user);
 
         if (response.status === 201) {
             return {
@@ -53,15 +54,36 @@ export const signup = async (user: UserDTO): Promise<SignUpResponse> => {
         } else {
             const errorMessage = response.data?.message || "An unexpected error occurred.";
             return {
-                message: errorMessage, // Fehlernachricht der API
-                statusCode: response.status || 400, // Default-Statuscode
+                message: errorMessage,
+                statusCode: response.status || 400,
             };
         }
     } catch (error) {
         const errorMessage = handleAxiosError(error);
         return {
-            message: errorMessage, // Fehlernachricht
-            statusCode: 400, // Statuscode im Fehlerfall
+            message: errorMessage,
+            statusCode: 400,
         };
     }
 };
+
+export const logoutServerSide = async (): Promise<boolean> => {
+    try {
+        const token = getToken();
+        if (!token) {
+            console.warn("No token found for logout.");
+            return false;
+        }
+        const response = await axios.post(baseURL + '/logout', {}, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        });
+
+        return response.status === 200;
+    } catch (error) {
+        console.error("Logout server-side failed:", error);
+        return false;
+    }
+};
+

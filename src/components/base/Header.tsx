@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
     const {authenticated: isAuthenticated, subject: username, logout} = useAuth();
 
     const handleLogout = () => {
-        logout();
+        logout(false,"You have been successfully logged out");
     };
 
     return (
@@ -25,8 +25,8 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
-                    flexWrap: {xs: "wrap", sm: "nowrap"}, // على الموبايل: العناصر تلتف للأسفل
-                    gap: 2, // مسافة بين العناصر عند الالتفاف
+                    flexWrap: {xs: "wrap", sm: "nowrap"},
+                    gap: 2,
                 }}
             >
                 {/* Left Side: Logo */}
@@ -38,10 +38,10 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
                         color: darkMode ? "white" : "primary.main",
                         textDecoration: "none",
                         fontWeight: "bold",
-                        fontSize: {xs: "1.2rem", sm: "1.7rem"}, // أصغر على الموبايل
+                        fontSize: {xs: "1.2rem", sm: "1.7rem"},
                         letterSpacing: 1.5,
                         textShadow: "2px 2px 4px rgba(0, 0, 0, 0.3)",
-                        textAlign: {xs: "center", sm: "left"}, // وسط في الموبايل
+                        textAlign: {xs: "center", sm: "left"},
                         width: {xs: "100%", sm: "auto"},
                         display: {xs: 'none', sm: 'none', md: 'block'}
                     }}
@@ -87,8 +87,8 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
                                     display: "flex",
                                     alignItems: "center",
                                     gap: {xs: 1, sm: 2},
-                                    flexDirection: {xs: "column", sm: "row"}, // على موبايل: عمودي، على لابتوب: أفقي
-                                    width: {xs: "100%", sm: "auto"}, // يجعل البوكس يأخذ عرض كامل على الموبايل
+                                    flexDirection: {xs: "column", sm: "row"},
+                                    width: {xs: "100%", sm: "auto"},
                                 }}
                             >
                                 <Avatar sx={{width: 35, height: 35, bgcolor: "primary.main"}}>

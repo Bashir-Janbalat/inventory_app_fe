@@ -10,7 +10,7 @@ export function useApiErrorHandler() {
 
     const handleError = (errorInput: unknown) => {
         if (errorInput instanceof TokenInvalidOrExpiredError) {
-            logout();
+            logout(true, errorInput.message);
             return;
         }
         if (axios.isAxiosError(errorInput)) {

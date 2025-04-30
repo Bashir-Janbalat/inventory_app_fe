@@ -7,6 +7,10 @@ interface ErrorResponseData {
 export function getAxiosErrorMessage(error: AxiosError): string {
     if (error.response) {
         const {status, statusText, data} = error.response;
+
+        if (status === 401) {
+            return 'Unauthorized access. Please login again.';
+        }
         const errorData = data as ErrorResponseData;
 
         const serverMessage = errorData?.message?.trim();
