@@ -11,24 +11,10 @@ import {getProducts} from "../api/ProductApi.ts";
 import ProductFilters from "../components/filters/ProductFilters.tsx";
 import ProductList from "../components/products/ProductList.tsx";
 import {ErrorMessage} from "../components/common/ErrorMessage.tsx";
-import {useApiErrorHandler} from "../hooks/useApiErrorHandler.ts";
 import Loading from "../components/base/Loading.tsx";
-import {useLoading} from "../hooks/useLoading.ts";
+import {useFetcher} from "../hooks/useFetcher.ts";
 
 const Products: React.FC = () => {
-    const {loading: loadingProducts, withLoading: withLoadingProducts} = useLoading();
-    const {loading: loadingInitialData, withLoading: withLoadingInitialData} = useLoading();
-    const {
-        error: fetchingProductsError,
-        handleError: handleFetchingProductsError,
-        resetError: resetFetchingProductsError
-    } = useApiErrorHandler();
-    const {
-        error: fetchingInitialDataError,
-        handleError: handleFetchInitialDataError,
-        resetError: resetFetchingInitialDataError
-    } = useApiErrorHandler();
-
     const [page, setPage] = useState(1);
     const [sortBy, setSortBy] = useState<'name' | 'price'>('name');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
@@ -43,34 +29,30 @@ const Products: React.FC = () => {
     const [brands, setBrands] = useState<BrandDTO[]>([]);
     const size = 6;
 
-    const fetchInitialData = async () => {
-        await withLoadingInitialData(async () => {
+    const {loading: productLoading, error: fetchingProductsError, fetchData: fetchProducts} = useFetcher<ProductDTO[]>(
+        async () => {
+            const productResponse = await getProducts(page - 1, size, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName);
+            setProducts(productResponse.content);
+            setTotalPages(productResponse.totalPages);
+            return productResponse.content;
+        });
+
+    const {error: initialDataError, loading: initialDataLoading, fetchData: fetchInitialData} = useFetcher(
+        async () => {
             const [categoriesResponse, brandsResponse, suppliersResponse] = await Promise.all([
                 getCategories(),
                 getBrands(),
-                getSuppliers()
+                getSuppliers(),
             ]);
             setCategories(categoriesResponse.content);
             setBrands(brandsResponse.content);
             setSuppliers(suppliersResponse.content);
-        }, (error) => {
-            console.error('Error fetching initial data:', error);
-            handleFetchInitialDataError(error);
+            return {
+                categories: categoriesResponse.content,
+                brands: brandsResponse.content,
+                suppliers: suppliersResponse.content,
+            };
         });
-    };
-
-    const fetchProducts = async () => {
-        await withLoadingProducts(async () => {
-            const productResponse = await getProducts(
-                page - 1, size, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName
-            );
-            setProducts(productResponse.content);
-            setTotalPages(productResponse.totalPages);
-        }, (error) => {
-            console.error('Error fetching products:', error);
-            handleFetchingProductsError(error);
-        });
-    };
 
     useEffect(() => {
         fetchProducts();
@@ -80,18 +62,16 @@ const Products: React.FC = () => {
         fetchInitialData();
     }, []);
 
-    if (loadingProducts || loadingInitialData) {
+    if (productLoading || initialDataLoading) {
         return <Loading fullScreen message="Loading products..."/>;
     }
     if (fetchingProductsError) {
         return <ErrorMessage message={fetchingProductsError} onRetry={() => {
-            resetFetchingProductsError();
-            fetchProducts();
+            fetchProducts()
         }}/>;
     }
-    if (fetchingInitialDataError) {
-        return <ErrorMessage message={fetchingInitialDataError} onRetry={() => {
-            resetFetchingInitialDataError();
+    if (initialDataError) {
+        return <ErrorMessage message={initialDataError} onRetry={() => {
             fetchInitialData();
         }}/>;
     }
