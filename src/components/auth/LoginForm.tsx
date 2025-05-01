@@ -1,9 +1,11 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import {Alert, Box, Button, TextField, Typography} from '@mui/material';
+import {Box, Button, TextField, Typography} from '@mui/material';
 import {login} from '../../api/AuthApi.tsx';
 import {getSubjectFromToken, saveToken} from "../../auth/AuthUtils.ts";
 import {useAuth} from "../../hooks/useAuth.ts";
+import {MessageType} from "../../types/MessageType.ts";
+import AutoHideAlert from "../common/AutoHideAlert.tsx";
 
 
 const LoginForm = () => {
@@ -16,6 +18,10 @@ const LoginForm = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            if (!username || !password) {
+                setError('Please fill in all required fields.');
+                return;
+            }
             const response = await login(username, password);
             saveToken(response.accessToken);
             if (response.accessToken) {
@@ -37,7 +43,7 @@ const LoginForm = () => {
 
     return (
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: { xs: 2, sm: 3 }}}>
-            {error && <Alert severity="error">{error}</Alert>}
+            {error && <AutoHideAlert message={error} type={MessageType.error} timeoutDuration={3000} />}
             <TextField
                 label="Username"
                 type="text"

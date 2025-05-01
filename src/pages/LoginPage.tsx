@@ -1,10 +1,11 @@
 import {useEffect} from 'react';
-import {Alert, Container, Paper, Typography} from '@mui/material';
+import {Container, Paper, Typography} from '@mui/material';
 import {useLocation, useNavigate} from 'react-router-dom';
 import LoginForm from '../components/auth/LoginForm.tsx';
 import {useAuth} from "../hooks/useAuth.ts";
 import {removeToken} from "../auth/AuthUtils.ts";
-import SuccessMessage from "../components/common/SuccessMessage.tsx";
+import AutoHideAlert from "../components/common/AutoHideAlert.tsx";
+import {MessageType} from "../types/MessageType.ts";
 
 const LoginPage = () => {
         const navigate = useNavigate();
@@ -34,12 +35,8 @@ const LoginPage = () => {
                     <Typography variant="h4" align="center" gutterBottom>
                         Login
                     </Typography>
-                    {errorMessage && (
-                        <Alert severity="error" sx={{mb: 2}}>
-                            {errorMessage}
-                        </Alert>
-                    )}
-                    {successMessage && <SuccessMessage message={successMessage}/>}
+                    {successMessage && <AutoHideAlert message={errorMessage} type={MessageType.error}/>}
+                    {successMessage && <AutoHideAlert message={successMessage} type={MessageType.success}/>}
 
                     <LoginForm/>
                 </Paper>
