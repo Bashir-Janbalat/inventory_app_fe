@@ -1,31 +1,44 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {CategoryDTO} from '../types/CategoryDTO';
 import {getCategories} from '../api/CategoryApi.ts';
 import Loading from "../components/base/Loading.tsx";
 import CategoryList from '../components/categories/CategoryList.tsx';
+import {useFetcher} from "../hooks/useFetcher.ts";
+import {ErrorMessage} from "../components/common/ErrorMessage.tsx";
 
 const Categories: React.FC = () => {
     const [categories, setCategories] = useState<CategoryDTO[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const size = 18;
+
+    const fetchCategories = useCallback(async () => {
+        const pagedResponse = await getCategories(page - 1, size);
+        setCategories(pagedResponse.content);
+        setTotalPages(pagedResponse.totalPages);
+        return pagedResponse.content;
+    }, [page]);
+
+    const {fetchData, loading, error} = useFetcher<CategoryDTO[]>(fetchCategories);
+
 
     useEffect(() => {
-        (async () => {
-            try {
-                const data = await getCategories();
-                setCategories(data.content);
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-            } finally {
-                setLoading(false);
-            }
-        })();
-    }, []);
+        void fetchData();
+    }, [fetchData]);
 
     if (loading) {
         return <Loading fullScreen message="Loading Categories..."/>;
     }
+    if (error) {
+        return <ErrorMessage message={error} onRetry={() => {
+            void fetchData();
+        }}/>;
+    }
 
-    return (<CategoryList categories={categories}/>
+    return (<CategoryList items={categories}
+                          totalPages={totalPages}
+                          page={page}
+                          setPage={setPage}/>
     );
 };
 

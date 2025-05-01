@@ -3,21 +3,15 @@ import {Container, Grid, Pagination, Stack} from '@mui/material';
 import {ProductDTO} from "../../types/ProductDTO.ts";
 import {useNavigate} from "react-router-dom";
 import ProductCard from "./ProductCard.tsx";
+import {CustomGridProps} from "../../types/CustomGridProps.ts";
 
 
-interface ProductsGridProps {
-    products: ProductDTO[];
-    totalPages: number;
-    page: number;
-    setPage: (value: number) => void;
-}
-
-const ProductList: React.FC<ProductsGridProps> = ({
-                                                      products,
-                                                      totalPages,
-                                                      page,
-                                                      setPage,
-                                                  }) => {
+const ProductList: React.FC<CustomGridProps<ProductDTO>> = ({
+                                                                items,
+                                                                totalPages,
+                                                                page,
+                                                                setPage,
+                                                            }) => {
     const navigate = useNavigate();
 
     const handleProductClick = (id: number) => {
@@ -28,7 +22,7 @@ const ProductList: React.FC<ProductsGridProps> = ({
         <Container>
             <Stack direction={{xs: 'column', sm: 'column', md: 'row'}}>
                 <Grid container justifyContent="center" alignItems='center' spacing={4}>
-                    {products.map((pro) => (
+                    {items.map((pro) => (
                         <Grid key={pro.id}
                               sx={{xs: 12, sm: 6, md: 4, lg: 4, justifyContent: 'center', alignItems: 'center'}}>
                             <ProductCard product={pro} onClick={() => handleProductClick(pro.id)}/>

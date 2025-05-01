@@ -4,7 +4,13 @@ import {CategoryDTO} from "../types/CategoryDTO.ts";
 
 
 export const getCategories =
-    async (): Promise<PagedResponseDTO<CategoryDTO>> => {
-        const response = await axiosInstance.get("/categories");
+    async (page?: number, size?: number): Promise<PagedResponseDTO<CategoryDTO>> => {
+        const response = await axiosInstance.get("/categories", {
+            params: {
+                page,
+                size
+            }
+        });
         return response.data as PagedResponseDTO<CategoryDTO>;
-    };
+    }
+;

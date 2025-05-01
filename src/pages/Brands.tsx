@@ -1,32 +1,47 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {BrandDTO} from '../types/BrandDTO';
 import Loading from "../components/base/Loading.tsx";
 import BrandList from "../components/brands/BrandList.tsx";
 import {getBrands} from "../api/BrandApi.ts";
+import {useFetcher} from "../hooks/useFetcher.ts";
+import {ErrorMessage} from "../components/common/ErrorMessage.tsx";
 
 const Brands: React.FC = () => {
     const [brands, setBrands] = useState<BrandDTO[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const size = 18;
+
+    const fetchBrands = useCallback(async () => {
+        const pagedResponse = await getBrands(page - 1, size);
+        setBrands(pagedResponse.content);
+        setTotalPages(pagedResponse.totalPages);
+        return pagedResponse.content;
+    }, [page]);
+
+    const {fetchData, loading, error} = useFetcher<BrandDTO[]>(fetchBrands);
+
 
     useEffect(() => {
-        (async () => {
-            try {
-                const data = await getBrands();
-                setBrands(data.content);
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-            } finally {
-                setLoading(false);
-            }
-        })();
-    }, []);
+        void fetchData();
+    }, [fetchData]);
 
     if (loading) {
         return <Loading fullScreen message="Loading Brands..."/>;
     }
+    if (error) {
+        return <ErrorMessage message={error} onRetry={() => {
+            void fetchData();
+        }}/>;
+    }
 
     return (
-        <BrandList brands={brands} />
+        <BrandList items={brands}
+                   totalPages={totalPages}
+                   page={page}
+                   setPage={setPage}
+        />
+
     );
 };
 

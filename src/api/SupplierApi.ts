@@ -4,7 +4,12 @@ import {SupplierDTO} from "../types/SupplierDTO.ts";
 
 
 export const getSuppliers =
-    async (): Promise<PagedResponseDTO<SupplierDTO>> => {
-        const response = await axiosInstance.get("/suppliers");
+    async (page?: number, size?: number): Promise<PagedResponseDTO<SupplierDTO>> => {
+        const response = await axiosInstance.get("/suppliers", {
+            params: {
+                page,
+                size
+            }
+        });
         return response.data as PagedResponseDTO<SupplierDTO>;
     };

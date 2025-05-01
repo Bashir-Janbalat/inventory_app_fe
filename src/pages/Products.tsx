@@ -15,7 +15,6 @@ import Loading from "../components/base/Loading.tsx";
 import {useFetcher} from "../hooks/useFetcher.ts";
 
 const Products: React.FC = () => {
-    const [page, setPage] = useState(1);
     const [sortBy, setSortBy] = useState<'name' | 'price'>('name');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
     const [searchBy, setSearchBy] = useState<string>('');
@@ -23,13 +22,14 @@ const Products: React.FC = () => {
     const [brandName, setBrandName] = useState<string>('');
     const [supplierName, setSupplierName] = useState<string>('');
     const [products, setProducts] = useState<ProductDTO[]>([]);
-    const [totalPages, setTotalPages] = useState(1);
     const [categories, setCategories] = useState<CategoryDTO[]>([]);
     const [suppliers, setSuppliers] = useState<SupplierDTO[]>([]);
     const [brands, setBrands] = useState<BrandDTO[]>([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
     const size = 6;
 
-    const {loading: productLoading, error: fetchingProductsError, fetchData: fetchProducts} = useFetcher<ProductDTO[]>(
+    const {fetchData: fetchProducts, loading: productLoading, error: fetchingProductsError} = useFetcher<ProductDTO[]>(
         async () => {
             const productResponse = await getProducts(page - 1, size, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName);
             setProducts(productResponse.content);
@@ -37,7 +37,7 @@ const Products: React.FC = () => {
             return productResponse.content;
         });
 
-    const {error: initialDataError, loading: initialDataLoading, fetchData: fetchInitialData} = useFetcher(
+    const {fetchData: fetchInitialData, loading: initialDataLoading, error: initialDataError} = useFetcher(
         async () => {
             const [categoriesResponse, brandsResponse, suppliersResponse] = await Promise.all([
                 getCategories(),
@@ -98,7 +98,7 @@ const Products: React.FC = () => {
                 setPage={setPage}
             />
             <ProductList
-                products={products}
+                items={products}
                 totalPages={totalPages}
                 page={page}
                 setPage={setPage}

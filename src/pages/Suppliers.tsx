@@ -1,32 +1,45 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {SupplierDTO} from '../types/SupplierDTO';
 import {getSuppliers} from '../api/SupplierApi.ts';
 import Loading from "../components/base/Loading.tsx";
 import SupplierList from "../components/suppliers/SupplierList.tsx";
+import {useFetcher} from "../hooks/useFetcher.ts";
+import {ErrorMessage} from "../components/common/ErrorMessage.tsx";
 
 const Suppliers: React.FC = () => {
     const [suppliers, setSuppliers] = useState<SupplierDTO[]>([]);
-    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const size = 18;
+
+    const fetchCategories = useCallback(async () => {
+        const pagedResponse = await getSuppliers(page - 1, size);
+        setSuppliers(pagedResponse.content);
+        setTotalPages(pagedResponse.totalPages);
+        return pagedResponse.content;
+    }, [page]);
+
+    const {fetchData, loading, error} = useFetcher<SupplierDTO[]>(fetchCategories);
+
 
     useEffect(() => {
-        (async () => {
-            try {
-                const data = await getSuppliers();
-                setSuppliers(data.content);
-            } catch (error) {
-                console.error('Error fetching categories:', error);
-            } finally {
-                setLoading(false);
-            }
-        })();
-    }, []);
+        void fetchData();
+    }, [fetchData]);
 
     if (loading) {
-        return <Loading fullScreen message="Suppliers Brands..."/>;
+        return <Loading fullScreen message="Loading Suppliers..."/>;
+    }
+    if (error) {
+        return <ErrorMessage message={error} onRetry={() => {
+            void fetchData();
+        }}/>;
     }
 
     return (
-        <SupplierList suppliers={suppliers} />
+        <SupplierList items={suppliers}
+                      totalPages={totalPages}
+                      page={page}
+                      setPage={setPage}/>
     );
 };
 
