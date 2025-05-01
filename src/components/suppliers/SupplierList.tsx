@@ -1,7 +1,8 @@
 import React from 'react';
 import {SupplierDTO} from '../../types/SupplierDTO.ts';
-import {Card, CardContent, Container, Grid, Pagination, Stack, Typography} from '@mui/material';
+import {Button,Card, CardContent, Container, Grid, Pagination, Stack, Typography} from '@mui/material';
 import {CustomGridProps} from "../../types/CustomGridProps.ts";
+import AddIcon from "@mui/icons-material/Add";
 
 
 const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setPage, totalPages}) => {
@@ -11,6 +12,14 @@ const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setP
                 Suppliers
             </Typography>
             <Grid container spacing={3}>
+                <Button fullWidth
+                        variant="contained"
+                        color="primary"
+                        startIcon={<AddIcon/>}
+                        style={{minHeight: 50}}
+                >
+                    Create
+                </Button>
                 {items.map((supplier) => (
                     <Grid size={{xs: 12, sm: 6, md: 4}} key={supplier.id}>
                         <Card>

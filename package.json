@@ -19,6 +19,7 @@
     "@mui/material": "^7.0.2",
     "axios": "^1.8.4",
     "formik": "^2.4.6",
+    "formik-mui": "^5.0.0-alpha.1",
     "jwt-decode": "^4.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

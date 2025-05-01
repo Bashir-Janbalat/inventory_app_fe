@@ -1,48 +1,59 @@
 import {useEffect} from 'react';
-import {Container, Paper, Typography} from '@mui/material';
 import {useLocation, useNavigate} from 'react-router-dom';
-import LoginForm from '../components/auth/LoginForm.tsx';
 import {useAuth} from "../hooks/useAuth.ts";
-import {removeToken} from "../auth/AuthUtils.ts";
+import {getSubjectFromToken, removeToken, saveToken} from "../auth/AuthUtils.ts";
+import {FormField} from "../types/FormField.ts";
+import CreateComponent from "../components/common/CreateComponent.tsx";
+import {PageType} from "../types/PageType.ts";
+import {login} from "../api/AuthApi.tsx";
 import AutoHideAlert from "../components/common/AutoHideAlert.tsx";
 import {MessageType} from "../types/MessageType.ts";
 
 const LoginPage = () => {
-        const navigate = useNavigate();
-        const {authenticated} = useAuth();
-        const location = useLocation();
-        const {error: errorMessage, success: successMessage} = location.state || {};
+    const navigate = useNavigate();
+    const {authenticated, setAuthenticated, setSubject} = useAuth();
+    const location = useLocation();
 
-        useEffect(() => {
-                if (authenticated) {
-                    navigate('/products');
-                } else {
-                    removeToken();
-                }
+    const {error: stateErrorMessage, success: stateSuccessMessage} = location.state || {};
+    const loginFields: FormField[] = [
+        {name: 'username', label: 'Username', required: true},
+        {name: 'password', label: 'password', type: 'password', required: true}];
 
-            }, [authenticated, navigate]
-        );
 
-        return (
-            <Container maxWidth="sm">
-                <Paper
-                    elevation={3}
-                    sx={{
-                        p: {xs: 2, sm: 4},
-                        mt: {xs: 4, sm: 8},
-                    }}
-                >
-                    <Typography variant="h4" align="center" gutterBottom>
-                        Login
-                    </Typography>
-                    {successMessage && <AutoHideAlert message={errorMessage} type={MessageType.error}/>}
-                    {successMessage && <AutoHideAlert message={successMessage} type={MessageType.success}/>}
+    useEffect(() => {
+            removeToken();
 
-                    <LoginForm/>
-                </Paper>
-            </Container>
-        );
-    }
-;
+        }, [authenticated, navigate]
+    );
+
+    const handleSubmit = async (values: Record<string, string>) => {
+        const {username, password} = values;
+        const response = await login(username, password);
+
+        if (!response.accessToken) {
+            throw new Error('Login failed: No access token received.');
+        }
+
+        saveToken(response.accessToken);
+        setAuthenticated(true);
+        setSubject(getSubjectFromToken(response.accessToken));
+        navigate('/products');
+    };
+
+    return (
+        <div>
+            {stateErrorMessage &&
+                <AutoHideAlert message={stateErrorMessage} type={MessageType.error} timeoutDuration={3000}/>}
+            {stateSuccessMessage &&
+                <AutoHideAlert message={stateSuccessMessage} type={MessageType.success} timeoutDuration={3000}/>}
+            <CreateComponent page={PageType.login}
+                             title="Login"
+                             fields={loginFields}
+                             submitButtonText={'Login'}
+                             onSubmit={handleSubmit}/>
+        </div>
+
+    );
+};
 
 export default LoginPage;

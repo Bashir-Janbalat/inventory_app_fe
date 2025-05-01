@@ -2,14 +2,10 @@ import {UserDTO} from "../types/UserDTO.ts";
 import axios from 'axios';
 import {getToken} from "../auth/AuthUtils.ts";
 import {getAxiosError} from "../utils/ErrorUtils.ts";
+import {ApiResponse} from "../types/ApiResponse.ts";
 
 interface LoginResponse {
     accessToken: string;
-}
-
-interface SignUpResponse {
-    message: string;
-    statusCode?: number;
 }
 
 const baseURL = import.meta.env.VITE_API_BASE_URL + "/auth";
@@ -23,7 +19,7 @@ export const login = async (username: string, password: string): Promise<LoginRe
     }
 };
 
-export const signup = async (user: UserDTO): Promise<SignUpResponse> => {
+export const signup = async (user: UserDTO): Promise<ApiResponse> => {
     try {
         const response = await axios.post(baseURL + '/signup', user);
         if (response.status === 201) {
