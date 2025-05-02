@@ -27,6 +27,7 @@ const CreateCategory: React.FC = () => {
             fields={categoryFields}
             onSubmit={handleCreateCategory}
             submitButtonText={'Create'}
+            backTo = {'/categories'}
         />
     );
 };

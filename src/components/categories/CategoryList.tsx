@@ -4,7 +4,7 @@ import {Button, Card, CardContent, Container, Grid, Pagination, Stack, Typograph
 import {CustomGridProps} from "../../types/CustomGridProps.ts";
 import AddIcon from "@mui/icons-material/Add";
 import ActionButtons from "../common/ActionButtonsProps.tsx";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 
 const CategoryList: React.FC<CustomGridProps<CategoryDTO>> = ({items, page, setPage, totalPages}) => {
@@ -13,6 +13,7 @@ const CategoryList: React.FC<CustomGridProps<CategoryDTO>> = ({items, page, setP
     function goToCreateCategory() {
         navigate('/createCategory');
     }
+
     function handleDeleteCategory() {
         console.log('Delete Category');
     }
@@ -59,7 +60,7 @@ const CategoryList: React.FC<CustomGridProps<CategoryDTO>> = ({items, page, setP
                         </Card>
                         <ActionButtons id={category.id!}
                                        onDelete={handleDeleteCategory}
-                                       navigateTo={`/categories/update/`+ category.id}
+                                       navigateTo={`/categories/update/` + category.id}
                         />
                     </Grid>
                 ))}

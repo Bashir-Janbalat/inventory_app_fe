@@ -28,6 +28,7 @@ const CreateSupplier: React.FC = () => {
             fields={supplierFields}
             onSubmit={handleCreateSupplier}
             submitButtonText={'Create'}
+            backTo={'/suppliers'}
         />
     );
 };

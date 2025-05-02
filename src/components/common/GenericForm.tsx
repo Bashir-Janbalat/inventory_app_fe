@@ -6,11 +6,13 @@ import * as Yup from "yup";
 import {GenericFormProps} from "../../types/GenericFormProps.ts";
 import {PageType} from "../../types/PageType.ts";
 import {Link as RouterLink} from "react-router";
+import {useNavigate} from "react-router-dom";
 
-const GenericForm: React.FC<GenericFormProps> = ({page, title, fields, submitButtonText, onSubmit}) => {
+const GenericForm: React.FC<GenericFormProps> = ({page, title, fields, submitButtonText, onSubmit, backTo}) => {
     const [apiError, setApiError] = useState<string | null>(null);
     const [apiSuccess, setApiSuccess] = useState<string | null>(null);
     const [pageType, setPageType] = useState<PageType>(PageType.signup);
+    const navigate = useNavigate();
 
     useEffect(() => {
         setPageType(page)
@@ -44,6 +46,9 @@ const GenericForm: React.FC<GenericFormProps> = ({page, title, fields, submitBut
             return schema;
         }, {} as Record<string, Yup.AnySchema>)
     );
+    const handleBack = () => {
+        navigate(-1);
+    };
 
     return (
         <Box
@@ -120,6 +125,11 @@ const GenericForm: React.FC<GenericFormProps> = ({page, title, fields, submitBut
                                 >
                                     {isSubmitting ? "Loading..." : submitButtonText}
                                 </Button>
+                                {backTo && (
+                                    <Button variant="outlined" color="secondary" onClick={handleBack}>
+                                        Back
+                                    </Button>
+                                )}
                                 {apiError && (
                                     <Alert severity="error" sx={{mt: 2, align: "center"}}>
                                         {apiError}

@@ -27,6 +27,7 @@ const CreateBrand: React.FC = () => {
             fields={brandFields}
             onSubmit={handleCreateBrand}
             submitButtonText={'Create'}
+            backTo={'/brands'}
         />
     );
 };

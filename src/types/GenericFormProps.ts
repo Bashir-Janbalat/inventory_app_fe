@@ -7,4 +7,5 @@ export interface GenericFormProps {
     fields: FormField[];
     submitButtonText: string
     onSubmit: (values: Record<string, string>) => void;
+    backTo?: string;
 }
