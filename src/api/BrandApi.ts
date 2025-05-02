@@ -13,8 +13,7 @@ export const getBrands =
                 }
             });
             return response.data as PagedResponseDTO<BrandDTO>;
-        } catch
-            (error) {
+        } catch (error) {
             const errorMessage = getAxiosError(error);
             throw new Error(errorMessage);
         }

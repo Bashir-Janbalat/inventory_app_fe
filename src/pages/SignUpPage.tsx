@@ -23,10 +23,10 @@ const SignUpPage: React.FC = () => {
             password: values.password,
         };
 
-        const response = await signup(userDTO);
+        const status = await signup(userDTO);
 
-        if (!response || response.statusCode !== 201) {
-            throw new Error(response?.message || "Registration failed.");
+        if (status !== 201) {
+            throw new Error("Registration failed.");
         }
 
         navigate("/login");

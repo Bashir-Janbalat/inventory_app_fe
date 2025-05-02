@@ -51,22 +51,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         }
     }, []);
 
-    const logout = async (expired = false, message = "") => {
+    const logout = async (expired = false, message = ""): Promise<void> => {
         try {
-            const serverLogoutSuccess = await logoutServerSide();
+            const isServerLogouted = expired ? false : await logoutServerSide();
+
             removeToken();
             setAuthenticated(false);
             setSubject(null);
             setSessionExpired(expired);
-            setMessage(message);
-            if (!serverLogoutSuccess) {
-                console.error("Logout on server failed, but proceeding with local logout.");
-                setMessage(message + ", there was an issue logging out on the server.");
+
+            if (message) {
+                setMessage(message);
+            } else if (expired) {
+                setMessage("Your session has expired. Please log in again.");
+            } else if (isServerLogouted) {
+                setMessage("Successfully logged out.");
+            } else {
+                setMessage("Logout completed locally.");
             }
-            setSuccessfullyLogout(true);
-        } catch (error) {
-            console.error("Error during logout:", error);
-            setMessage("An error occurred while logging out.");
+            console.log("Logout completed.");
+            setSuccessfullyLogout(isServerLogouted);
+        } catch (error: unknown) {
+            console.error(error);
+            const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
+            setMessage(errorMessage);
         }
     };
 

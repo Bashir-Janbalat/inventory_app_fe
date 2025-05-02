@@ -13,6 +13,7 @@ interface ErrorResponseData {
     message: string;
     path: string;
 }
+const pleaseLogInAgain = "Your session has expired. Please log in again.";
 
 axiosInstance.interceptors.request.use(
     (config) => {
@@ -20,7 +21,7 @@ axiosInstance.interceptors.request.use(
         if (token) {
             if (isTokenExpired(token)) {
                 removeToken();
-                return Promise.reject(new TokenInvalidOrExpiredError("Your session has expired. Please log in again."));
+                return Promise.reject(new TokenInvalidOrExpiredError(pleaseLogInAgain));
             }
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -37,7 +38,7 @@ axiosInstance.interceptors.response.use(
                 const message = (error.response.data as ErrorResponseData)?.message;
                 if (message && message.includes('Token blacklisted')) {
                     removeToken();
-                    return Promise.reject(new TokenInvalidOrExpiredError('Your session is no longer valid. Please log in again'));
+                    return Promise.reject(new TokenInvalidOrExpiredError(pleaseLogInAgain));
                 }
             }
         }

@@ -2,7 +2,6 @@ import {UserDTO} from "../types/UserDTO.ts";
 import axios from 'axios';
 import {getToken} from "../auth/AuthUtils.ts";
 import {getAxiosError} from "../utils/ErrorUtils.ts";
-import {ApiResponse} from "../types/ApiResponse.ts";
 
 interface LoginResponse {
     accessToken: string;
@@ -19,18 +18,13 @@ export const login = async (username: string, password: string): Promise<LoginRe
     }
 };
 
-export const signup = async (user: UserDTO): Promise<ApiResponse> => {
+export const signup = async (user: UserDTO): Promise<number> => {
     try {
         const response = await axios.post(baseURL + '/signup', user);
-        if (response.status === 201) {
-            return {message: "Account created successfully!", statusCode: response.status};
-        } else {
-            const errorMessage = response.data?.message || "An unexpected error occurred.";
-            return {message: errorMessage, statusCode: response.status || 400};
-        }
+        return response.status;
     } catch (error) {
         const errorMessage = getAxiosError(error);
-        return {message: errorMessage, statusCode: 400};
+        throw new Error(errorMessage);
     }
 };
 
@@ -49,8 +43,8 @@ export const logoutServerSide = async (): Promise<boolean> => {
 
         return response.status === 200;
     } catch (error) {
-        console.error("Logout server-side failed:", getAxiosError(error));
-        return false;
+        const errorMessage = getAxiosError(error);
+        throw new Error(errorMessage);
     }
 };
 

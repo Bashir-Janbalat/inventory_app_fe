@@ -8,13 +8,15 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({children}) => {
     const {authenticated, sessionExpired, message, isSuccessfullyLogout} = useAuth();
-
+    const pleaseLogInAgain = "Your session has expired. Please log in again.";
+    const successMessage = "You have been successfully logged out";
+    let state: { error?: string; success?: string } | undefined = undefined;
     if (!authenticated) {
-        let state: { error?: string; success?: string } | undefined = undefined;
-        if (sessionExpired && message) {
-            state = {error: message};
-        } else if (isSuccessfullyLogout && message) {
-            state = {success: message};
+        if (sessionExpired) {
+            state = {error: message || pleaseLogInAgain};
+        }
+        if (isSuccessfullyLogout) {
+            state = {success: message || successMessage};
         }
 
         return <Navigate to="/login" replace state={state}/>;

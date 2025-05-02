@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useAuth} from "../hooks/useAuth.ts";
 import {getSubjectFromToken, saveToken} from "../auth/AuthUtils.ts";
@@ -6,29 +6,31 @@ import {FormField} from "../types/FormField.ts";
 import CreateComponent from "../components/common/CreateComponent.tsx";
 import {PageType} from "../types/PageType.ts";
 import {login} from "../api/AuthApi.tsx";
-import AutoHideAlert from "../components/common/AutoHideAlert.tsx";
-import {MessageType} from "../types/MessageType.ts";
+import {Alert} from "@mui/material";
 
 const LoginPage = () => {
     const navigate = useNavigate();
-    const {authenticated, setAuthenticated, setSubject, logout} = useAuth();
+    const {authenticated, setAuthenticated, setSubject} = useAuth();
     const location = useLocation();
+    const [stateSuccessMessage, setStateSuccessMessage] = useState(null);
+    const [stateErrorMessage, setStateErrorMessage] = useState(null);
 
-    const {error: stateErrorMessage, success: stateSuccessMessage} = location.state || {};
     const loginFields: FormField[] = [
         {name: 'username', label: 'Username', required: true},
         {name: 'password', label: 'password', type: 'password', required: true}];
 
 
     useEffect(() => {
+        setStateSuccessMessage(location.state?.success);
+        setStateErrorMessage(location.state?.error);
         if (authenticated) {
             navigate('/products');
-        } else {
-            logout();
         }
     }, [authenticated, navigate]);
 
     const handleSubmit = async (values: Record<string, string>) => {
+        setStateSuccessMessage(null);
+        setStateErrorMessage(null);
         const {username, password} = values;
         const response = await login(username, password);
 
@@ -44,10 +46,8 @@ const LoginPage = () => {
 
     return (
         <div>
-            {stateErrorMessage &&
-                <AutoHideAlert message={stateErrorMessage} type={MessageType.error} timeoutDuration={3000}/>}
-            {stateSuccessMessage &&
-                <AutoHideAlert message={stateSuccessMessage} type={MessageType.success} timeoutDuration={3000}/>}
+            {stateErrorMessage && <Alert severity="error" sx={{mb: 2}}>{stateErrorMessage}</Alert>}
+            {stateSuccessMessage && <Alert severity="success" sx={{mb: 2}}>{stateSuccessMessage}</Alert>}
             <CreateComponent page={PageType.login}
                              title="Login"
                              fields={loginFields}
