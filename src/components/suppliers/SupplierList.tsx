@@ -1,14 +1,21 @@
 import React from 'react';
 import {SupplierDTO} from '../../types/SupplierDTO.ts';
-import {Button,Card, CardContent, Container, Grid, Pagination, Stack, Typography} from '@mui/material';
+import {Button, Card, CardContent, Container, Grid, Pagination, Stack, Typography} from '@mui/material';
 import {CustomGridProps} from "../../types/CustomGridProps.ts";
 import AddIcon from "@mui/icons-material/Add";
+import ActionButtons from "../common/ActionButtonsProps.tsx";
+import {useNavigate} from "react-router-dom";
 
 
 const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setPage, totalPages}) => {
+    const navigate = useNavigate();
 
     function goToCreateSupplier() {
+        navigate('/createSupplier');
+    }
 
+    function handleDeleteBrand() {
+        console.log('Delete brand');
     }
 
     return (
@@ -28,8 +35,23 @@ const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setP
                 </Button>
                 {items.map((supplier) => (
                     <Grid size={{xs: 12, sm: 6, md: 4}} key={supplier.id}>
-                        <Card>
-                            <CardContent>
+                        <Card sx={(theme) => ({
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            border: `1px solid ${theme.palette.divider}`,
+                            boxShadow: theme.shadows[3],
+                            borderRadius: 2,
+                            padding: 2,
+                            width: '100%',
+                            backgroundColor: theme.palette.background.paper,
+                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                            '&:hover': {
+                                transform: 'translateY(-5px)',
+                                boxShadow: theme.shadows[6],
+                            }
+                        })}>
+                            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                                 <Typography variant="h6" gutterBottom>
                                     {supplier.name}
                                 </Typography>
@@ -38,6 +60,10 @@ const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setP
                                 </Typography>
                             </CardContent>
                         </Card>
+                        <ActionButtons id={supplier.id!}
+                                       onDelete={handleDeleteBrand}
+                                       navigateTo={`/supplier/update/` + supplier.id}
+                        />
                     </Grid>
                 ))}
             </Grid>

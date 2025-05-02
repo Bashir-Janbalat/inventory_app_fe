@@ -1,6 +1,5 @@
 export interface SupplierDTO {
-    id: number
+    id?: number
     name: string;
-    supplierName: string;
     contactEmail: string;
 }

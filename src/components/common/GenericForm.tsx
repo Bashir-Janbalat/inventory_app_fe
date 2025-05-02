@@ -94,6 +94,13 @@ const GenericForm: React.FC<GenericFormProps> = ({page, title, fields, submitBut
                                         variant="outlined"
                                         fullWidth
                                         required={field.required}
+                                        autoComplete={
+                                            field.type === "password"
+                                                ? (pageType === PageType.login ? "current-password" : "new-password")
+                                                : field.type === "email"
+                                                    ? "email"
+                                                    : "on"
+                                        }
                                     />
                                 ))}
 
