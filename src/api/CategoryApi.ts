@@ -18,5 +18,31 @@ export const getCategories =
             const errorMessage = getAxiosError(error);
             throw new Error(errorMessage);
         }
+    };
+export const createCategory = async (category: CategoryDTO): Promise<number> => {
+    try {
+        const response = await axiosInstance.post('/categories', category);
+        return response.status;
+    } catch (error) {
+        const errorMessage = getAxiosError(error);
+        throw new Error(errorMessage);
     }
-;
+}
+export const getCategoryById = async (id: number): Promise<CategoryDTO> => {
+    try {
+        const response = await axiosInstance.get(`/categories/${id}`);
+        return response.data;
+    } catch (error) {
+        const errorMessage = getAxiosError(error);
+        throw new Error(errorMessage);
+    }
+};
+export const updateCategory = async (id: number, categoryDto: CategoryDTO): Promise<CategoryDTO> => {
+    try {
+        const response = await axiosInstance.put(`/categories/${id}`, categoryDto);
+        return response.data;
+    } catch (error) {
+        const errorMessage = getAxiosError(error);
+        throw new Error(errorMessage);
+    }
+};

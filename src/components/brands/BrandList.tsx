@@ -61,8 +61,6 @@ const BrandList: React.FC<CustomGridProps<BrandDTO>> = ({items, totalPages, setP
                                        onDelete={handleDeleteBrand}
                                        navigateTo={`/brands/update/`+ brand.id}
                         />
-
-
                     </Grid>
                 ))}
             </Grid>

@@ -13,6 +13,8 @@ import CreateBrand from "./components/brands/CreateBrand.tsx";
 import UpdateBrand from "./components/brands/UpdateBrand.tsx";
 import CreateSupplier from "./components/suppliers/CreateSupplier.tsx";
 import UpdateSupplier from "./components/suppliers/UpdateSupplier.tsx";
+import UpdateCategory from "./components/categories/UpdateCategory.tsx";
+import CreateCategory from "./components/categories/CreateCategory.tsx";
 
 interface AppRoutesProps {
     darkMode: boolean;
@@ -36,13 +38,15 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
                     {/* geschützte Seiten */}
                     <Route path="products" element={<ProtectedRoute><Products/></ProtectedRoute>}/>
                     <Route path="products/:id" element={<ProtectedRoute><ProductPage/></ProtectedRoute>}/>
-                    <Route path="categories" element={<ProtectedRoute><Categories /></ProtectedRoute>} />
-                    <Route path="brands" element={<ProtectedRoute><Brands /></ProtectedRoute>} />
-                    <Route path="brands/update/:id" element={<ProtectedRoute><UpdateBrand /></ProtectedRoute>} />
-                    <Route path="createBrand" element={<ProtectedRoute><CreateBrand/></ProtectedRoute>} />
-                    <Route path="suppliers" element={<ProtectedRoute><Suppliers /></ProtectedRoute>} />
-                    <Route path="supplier/update/:id" element={<ProtectedRoute><UpdateSupplier /></ProtectedRoute>} />
-                    <Route path="createSupplier" element={<ProtectedRoute><CreateSupplier/></ProtectedRoute>} />
+                    <Route path="categories" element={<ProtectedRoute><Categories/></ProtectedRoute>}/>
+                    <Route path="categories/update/:id" element={<ProtectedRoute><UpdateCategory/></ProtectedRoute>}/>
+                    <Route path="createCategory" element={<ProtectedRoute><CreateCategory/></ProtectedRoute>}/>
+                    <Route path="brands" element={<ProtectedRoute><Brands/></ProtectedRoute>}/>
+                    <Route path="brands/update/:id" element={<ProtectedRoute><UpdateBrand/></ProtectedRoute>}/>
+                    <Route path="createBrand" element={<ProtectedRoute><CreateBrand/></ProtectedRoute>}/>
+                    <Route path="suppliers" element={<ProtectedRoute><Suppliers/></ProtectedRoute>}/>
+                    <Route path="supplier/update/:id" element={<ProtectedRoute><UpdateSupplier/></ProtectedRoute>}/>
+                    <Route path="createSupplier" element={<ProtectedRoute><CreateSupplier/></ProtectedRoute>}/>
 
                     <Route path="*" element={<ProtectedRoute><NotFoundPage/></ProtectedRoute>}/>
                 </Route>
