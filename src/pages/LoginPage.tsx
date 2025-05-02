@@ -1,7 +1,7 @@
 import {useEffect} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useAuth} from "../hooks/useAuth.ts";
-import {getSubjectFromToken, removeToken, saveToken} from "../auth/AuthUtils.ts";
+import {getSubjectFromToken, saveToken} from "../auth/AuthUtils.ts";
 import {FormField} from "../types/FormField.ts";
 import CreateComponent from "../components/common/CreateComponent.tsx";
 import {PageType} from "../types/PageType.ts";
@@ -11,7 +11,7 @@ import {MessageType} from "../types/MessageType.ts";
 
 const LoginPage = () => {
     const navigate = useNavigate();
-    const {authenticated, setAuthenticated, setSubject} = useAuth();
+    const {authenticated, setAuthenticated, setSubject, logout} = useAuth();
     const location = useLocation();
 
     const {error: stateErrorMessage, success: stateSuccessMessage} = location.state || {};
@@ -21,10 +21,12 @@ const LoginPage = () => {
 
 
     useEffect(() => {
-            removeToken();
-
-        }, [authenticated, navigate]
-    );
+        if (authenticated) {
+            navigate('/products');
+        } else {
+            logout();
+        }
+    }, [authenticated, navigate]);
 
     const handleSubmit = async (values: Record<string, string>) => {
         const {username, password} = values;

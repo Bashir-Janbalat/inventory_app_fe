@@ -6,6 +6,11 @@ import AddIcon from "@mui/icons-material/Add";
 
 
 const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setPage, totalPages}) => {
+
+    function goToCreateSupplier() {
+
+    }
+
     return (
         <Container>
             <Typography variant="h4" sx={{mb: 4, fontWeight: 'bold'}}>
@@ -17,6 +22,7 @@ const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setP
                         color="primary"
                         startIcon={<AddIcon/>}
                         style={{minHeight: 50}}
+                        onClick={goToCreateSupplier}
                 >
                     Create
                 </Button>

@@ -1,7 +1,6 @@
 import {useCallback, useContext, useState} from 'react';
 import AuthContext from "../auth/AuthContext.tsx";
 import {TokenInvalidOrExpiredError} from "../errors/TokenInvalidOrExpiredError.ts";
-import {getAxiosError} from "../utils/ErrorUtils.ts";
 
 export function useFetcher<T>(fetcher: () => Promise<T>) {
     const [data, setData] = useState<T>();
@@ -27,7 +26,11 @@ export function useFetcher<T>(fetcher: () => Promise<T>) {
             logout(true, errorInput.message);
             return;
         }
-        setError(getAxiosError(errorInput));
+        if (errorInput instanceof Error) {
+            setError(errorInput.message);
+            return;
+        }
+        setError("Unexpected error occurred.");
     };
 
     return {data, error, loading, fetchData};

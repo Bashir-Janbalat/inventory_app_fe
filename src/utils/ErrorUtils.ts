@@ -1,19 +1,15 @@
 import axios, {AxiosError} from "axios";
-
-interface ErrorResponseData {
-    message: string;
-    statusCode?: number;
-}
+import {ApiResponse} from "../types/ApiResponse.ts";
 
 export function getAxiosError(error: unknown): string {
     if (axios.isAxiosError(error)) {
-        const axiosError = error as AxiosError<ErrorResponseData>;
+        const axiosError = error as AxiosError<ApiResponse>;
         if (axiosError.response) {
             const {status, statusText, data} = axiosError.response;
             if (status === 401) {
                 return 'Unauthorized access. Please login again.';
             }
-            const errorData = data as ErrorResponseData;
+            const errorData = data as ApiResponse;
             const serverMessage = errorData?.message?.trim();
             const fallbackMessage = statusText || 'Unknown server error';
             return `Error ${status}: ${serverMessage || fallbackMessage}`;

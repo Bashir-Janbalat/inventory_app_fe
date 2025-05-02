@@ -10,6 +10,7 @@ import Brands from "./pages/Brands.tsx"
 import Suppliers from "./pages/Suppliers.tsx"
 import Products from "./pages/Products.tsx";
 import CreateBrand from "./components/brands/CreateBrand.tsx";
+import UpdateBrand from "./components/brands/UpdateBrand.tsx";
 
 interface AppRoutesProps {
     darkMode: boolean;
@@ -35,6 +36,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
                     <Route path="products/:id" element={<ProtectedRoute><ProductPage/></ProtectedRoute>}/>
                     <Route path="categories" element={<ProtectedRoute><Categories /></ProtectedRoute>} />
                     <Route path="brands" element={<ProtectedRoute><Brands /></ProtectedRoute>} />
+                    <Route path="brands/update/:id" element={<ProtectedRoute><UpdateBrand /></ProtectedRoute>} />
                     <Route path="createBrand" element={<ProtectedRoute><CreateBrand/></ProtectedRoute>} />
                     <Route path="suppliers" element={<ProtectedRoute><Suppliers /></ProtectedRoute>} />
 

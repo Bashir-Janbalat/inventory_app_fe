@@ -13,14 +13,10 @@ const CreateBrand: React.FC = () => {
         {name: 'name', label: 'Brand Name', required: true}];
 
     const handleCreateBrand = async (values: Record<string, string>) => {
-        const brand: BrandDTO = { name: values.name };
-
-        const apiResponse = await createBrand(brand);
-
-        if (apiResponse.statusCode === 201) {
+        const brand: BrandDTO = {name: values.name};
+        const status = await createBrand(brand);
+        if (status === 201) {
             navigate("/brands");
-        } else {
-            throw new Error(apiResponse.message || "Unexpected error occurred while creating the brand.");
         }
     };
 
