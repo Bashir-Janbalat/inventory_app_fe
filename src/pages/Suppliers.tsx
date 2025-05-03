@@ -10,7 +10,7 @@ const Suppliers: React.FC = () => {
     const [suppliers, setSuppliers] = useState<SupplierDTO[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const size = 18;
+    const size = 9;
 
     const fetchCategories = useCallback(async () => {
         const pagedResponse = await getSuppliers(page - 1, size);

@@ -46,3 +46,12 @@ export const updateCategory = async (id: number, categoryDto: CategoryDTO): Prom
         throw new Error(errorMessage);
     }
 };
+export const getCategorySize = async (): Promise<number> => {
+    try {
+        const response = await axiosInstance.get(`/categories/category-size`);
+        return response.data;
+    } catch (error) {
+        const errorMessage = getAxiosError(error);
+        throw new Error(errorMessage);
+    }
+};

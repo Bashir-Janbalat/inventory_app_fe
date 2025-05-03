@@ -4,9 +4,9 @@ import {ProductDTO} from "../types/ProductDTO.ts";
 import {CategoryDTO} from "../types/CategoryDTO.ts";
 import {SupplierDTO} from "../types/SupplierDTO.ts";
 import {BrandDTO} from "../types/BrandDTO.ts";
-import {getCategories} from "../api/CategoryApi.ts";
-import {getBrands} from "../api/BrandApi.ts";
-import {getSuppliers} from "../api/SupplierApi.ts";
+import {getCategories, getCategorySize} from "../api/CategoryApi.ts";
+import {getBrands, getBrandSize} from "../api/BrandApi.ts";
+import {getSuppliers, getSupplierSize} from "../api/SupplierApi.ts";
 import {getProducts} from "../api/ProductApi.ts";
 import ProductFilters from "../components/filters/ProductFilters.tsx";
 import ProductList from "../components/products/ProductList.tsx";
@@ -39,10 +39,15 @@ const Products: React.FC = () => {
 
     const {fetchData: fetchInitialData, loading: initialDataLoading, error: initialDataError} = useFetcher(
         async () => {
+            const [categorySize, brandSize, supplierSize] = await Promise.all([
+                getCategorySize(),
+                getBrandSize(),
+                getSupplierSize(),
+            ]);
             const [categoriesResponse, brandsResponse, suppliersResponse] = await Promise.all([
-                getCategories(),
-                getBrands(),
-                getSuppliers(),
+                getCategories(page - 1,categorySize),
+                getBrands(page - 1, brandSize),
+                getSuppliers(page - 1, supplierSize),
             ]);
             setCategories(categoriesResponse.content);
             setBrands(brandsResponse.content);

@@ -46,3 +46,12 @@ export const updateSupplier = async (id: number, supplier: SupplierDTO): Promise
         throw new Error(errorMessage);
     }
 };
+export const getSupplierSize = async (): Promise<number> => {
+    try {
+        const response = await axiosInstance.get(`/suppliers/supplier-size`);
+        return response.data;
+    } catch (error) {
+        const errorMessage = getAxiosError(error);
+        throw new Error(errorMessage);
+    }
+};

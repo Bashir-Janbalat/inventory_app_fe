@@ -46,3 +46,12 @@ export const updateBrand = async (id: number, brandDto: BrandDTO): Promise<Brand
         throw new Error(errorMessage);
     }
 };
+export const getBrandSize = async (): Promise<number> => {
+    try {
+        const response = await axiosInstance.get(`/brands/brand-size`);
+        return response.data;
+    } catch (error) {
+        const errorMessage = getAxiosError(error);
+        throw new Error(errorMessage);
+    }
+};

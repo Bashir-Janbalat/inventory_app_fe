@@ -10,7 +10,7 @@ const Categories: React.FC = () => {
     const [categories, setCategories] = useState<CategoryDTO[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const size = 18;
+    const size = 9;
 
     const fetchCategories = useCallback(async () => {
         const pagedResponse = await getCategories(page - 1, size);

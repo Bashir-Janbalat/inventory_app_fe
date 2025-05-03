@@ -10,7 +10,7 @@ const Brands: React.FC = () => {
     const [brands, setBrands] = useState<BrandDTO[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const size = 12;
+    const size = 9;
 
     const fetchBrands = useCallback(async () => {
         const pagedResponse = await getBrands(page - 1, size);
