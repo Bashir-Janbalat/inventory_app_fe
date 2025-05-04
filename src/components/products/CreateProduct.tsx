@@ -144,7 +144,7 @@ const CreateProduct: React.FC = () => {
     }
 
     return (
-        <Box sx={{p: 2}}>
+        <Box sx={{p: 2}} border={1} borderRadius={2} borderColor="primary.main">
             <Typography variant="h5" gutterBottom>
                 Create Product
             </Typography>
@@ -295,9 +295,6 @@ const CreateProduct: React.FC = () => {
                 </Grid>
                 {/* Attributes Section */}
                 <Grid size={{xs: 12}}>
-                    <Typography variant="h6" gutterBottom>
-                        Product Attributes
-                    </Typography>
                     {product.productAttributes.map((attr, index) => (
                         <Grid container spacing={1} key={index}>
                             <Grid size={{xs: 12, sm: 6}}>
@@ -327,16 +324,13 @@ const CreateProduct: React.FC = () => {
                             </Grid>
                         </Grid>
                     ))}
-                    <Button variant="contained" sx={{mt: 2}} onClick={addAttribute}>
+                    <Button variant="contained" color='info' sx={{mt: 2, width: '80%',display:'block', mr:'auto', ml:'auto' }} onClick={addAttribute}>
                         Add Attribute
                     </Button>
                 </Grid>
 
                 {/* Images Section */}
                 <Grid size={{xs: 12}}>
-                    <Typography variant="h6" gutterBottom sx={{mt: 4}}>
-                        Product Images
-                    </Typography>
                     {product.images.map((img, index) => (
                         <Grid container spacing={1} key={index}>
                             <Grid size={{xs: 12, sm: 6}}>
@@ -366,7 +360,7 @@ const CreateProduct: React.FC = () => {
                             </Grid>
                         </Grid>
                     ))}
-                    <Button variant="contained" sx={{mt: 2}} onClick={addImage}>
+                    <Button variant="contained" color='info' sx={{mt: 2, width: '80%',display:'block', mr:'auto', ml:'auto' }} onClick={addImage}>
                         Add Image
                     </Button>
                 </Grid>
@@ -378,6 +372,7 @@ const CreateProduct: React.FC = () => {
                             color="primary"
                             onClick={() => handleSubmit()}
                             sx={{px: 4, py: 1}}
+                            fullWidth
                         >
                             Submit Product
                         </Button>
