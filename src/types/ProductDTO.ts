@@ -14,13 +14,16 @@ interface stockDTO {
 }
 
 export interface ProductDTO {
-    id: number;
+    id?: number;
     name: string;
     sku: string;
     description?: string;
     price: number;
+    categoryID?: number;
     categoryName?: string;
+    brandID?: number;
     brandName?: string;
+    supplierID?: number;
     supplierName?: string;
     supplierContactEmail?: string;
     images: ImageDTO [];

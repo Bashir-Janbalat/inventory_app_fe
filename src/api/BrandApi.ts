@@ -1,7 +1,7 @@
 import axiosInstance from './AxiosInstance.ts';
 import {PagedResponseDTO} from "../types/PagedResponseDTO.ts";
 import {BrandDTO} from "../types/BrandDTO.ts";
-import {getAxiosError} from "../utils/ErrorUtils.ts";
+import {getDetailedApiError} from "../utils/ErrorUtils.ts";
 
 export const getBrands =
     async (page?: number, size?: number): Promise<PagedResponseDTO<BrandDTO>> => {
@@ -14,8 +14,7 @@ export const getBrands =
             });
             return response.data as PagedResponseDTO<BrandDTO>;
         } catch (error) {
-            const errorMessage = getAxiosError(error);
-            throw new Error(errorMessage);
+            throw getDetailedApiError(error);
         }
     }
 
@@ -24,8 +23,7 @@ export const createBrand = async (brand: BrandDTO): Promise<number> => {
         const response = await axiosInstance.post('/brands', brand);
         return response.status;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 }
 export const getBrandById = async (id: number): Promise<BrandDTO> => {
@@ -33,8 +31,7 @@ export const getBrandById = async (id: number): Promise<BrandDTO> => {
         const response = await axiosInstance.get(`/brands/${id}`);
         return response.data;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 };
 export const updateBrand = async (id: number, brandDto: BrandDTO): Promise<BrandDTO> => {
@@ -42,8 +39,7 @@ export const updateBrand = async (id: number, brandDto: BrandDTO): Promise<Brand
         const response = await axiosInstance.put(`/brands/${id}`, brandDto);
         return response.data;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 };
 export const getBrandSize = async (): Promise<number> => {
@@ -51,7 +47,6 @@ export const getBrandSize = async (): Promise<number> => {
         const response = await axiosInstance.get(`/brands/brand-size`);
         return response.data;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 };

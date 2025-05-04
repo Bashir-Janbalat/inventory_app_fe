@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getToken, isTokenExpired, removeToken} from '../auth/AuthUtils.ts';
+import {getToken, isTokenExpired} from '../auth/AuthUtils.ts';
 import {TokenInvalidOrExpiredError} from "../errors/TokenInvalidOrExpiredError.ts";
 
 const axiosInstance = axios.create({
@@ -20,7 +20,7 @@ axiosInstance.interceptors.request.use(
         const token = getToken();
         if (token) {
             if (isTokenExpired(token)) {
-                removeToken();
+                console.warn("Token expired. Removing token.");
                 return Promise.reject(new TokenInvalidOrExpiredError(pleaseLogInAgain));
             }
             config.headers.Authorization = `Bearer ${token}`;
@@ -37,7 +37,6 @@ axiosInstance.interceptors.response.use(
             if (error.response.status === 401) {
                 const message = (error.response.data as ErrorResponseData)?.message;
                 if (message && message.includes('Token blacklisted')) {
-                    removeToken();
                     return Promise.reject(new TokenInvalidOrExpiredError(pleaseLogInAgain));
                 }
             }

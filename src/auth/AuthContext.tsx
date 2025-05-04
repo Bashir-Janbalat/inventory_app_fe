@@ -69,7 +69,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
             } else {
                 setMessage("Logout completed locally.");
             }
-            console.log("Logout completed.");
             setSuccessfullyLogout(isServerLogouted);
         } catch (error: unknown) {
             console.error(error);

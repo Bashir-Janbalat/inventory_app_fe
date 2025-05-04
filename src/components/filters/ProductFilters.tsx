@@ -14,6 +14,7 @@ import {CategoryDTO} from "../../types/CategoryDTO.ts";
 import {BrandDTO} from "../../types/BrandDTO.ts";
 import {SupplierDTO} from "../../types/SupplierDTO.ts";
 import AddIcon from "@mui/icons-material/Add";
+import {useNavigate} from "react-router-dom";
 
 export interface ProductFiltersProps {
     sortBy: 'name' | 'price';
@@ -40,7 +41,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                                                            setSortBy, setSortDirection, setSearchBy,
                                                            setCategoryName, setBrandName, setSupplierName, setPage,
                                                        }) => {
-
+    const navigate = useNavigate();
     const resetPageAndSetSelect = <T extends string>(setter: (value: T) => void) => (e: SelectChangeEvent) => {
         setter(e.target.value as T);
         setPage(1);
@@ -50,6 +51,9 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
         setter(e.target.value);
         setPage(1);
     };
+    const goToCreateProduct = () => {
+        navigate('/createProduct');
+    }
 
     return (
         <Container>
@@ -59,6 +63,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                         color="primary"
                         startIcon={<AddIcon/>}
                         style={{minHeight: 50}}
+                        onClick={goToCreateProduct}
                 >
                     Create
                 </Button>

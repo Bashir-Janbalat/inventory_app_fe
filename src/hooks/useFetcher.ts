@@ -1,6 +1,6 @@
 import {useCallback, useContext, useState} from 'react';
 import AuthContext from "../auth/AuthContext.tsx";
-import {TokenInvalidOrExpiredError} from "../errors/TokenInvalidOrExpiredError.ts";
+import {DetailedApiError} from "../errors/DetailedApiError.ts";
 
 export function useFetcher<T>(fetcher: () => Promise<T>) {
     const [data, setData] = useState<T>();
@@ -15,14 +15,17 @@ export function useFetcher<T>(fetcher: () => Promise<T>) {
             const response = await fetcher();
             setData(response);
         } catch (err) {
-            handleError(err);
+            if (err instanceof DetailedApiError) {
+                handleError(err as DetailedApiError);
+            }
+            throw err;
         } finally {
             setLoading(false);
         }
     }, [fetcher]);
 
-    const handleError = (errorInput: unknown) => {
-        if (errorInput instanceof TokenInvalidOrExpiredError) {
+    const handleError = (errorInput: DetailedApiError) => {
+        if (errorInput.status === 401) {
             logout(true, errorInput.message);
             return;
         }

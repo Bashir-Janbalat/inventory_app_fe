@@ -1,7 +1,7 @@
 import {UserDTO} from "../types/UserDTO.ts";
 import axios from 'axios';
 import {getToken} from "../auth/AuthUtils.ts";
-import {getAxiosError} from "../utils/ErrorUtils.ts";
+import {getDetailedApiError} from "../utils/ErrorUtils.ts";
 
 interface LoginResponse {
     accessToken: string;
@@ -14,7 +14,7 @@ export const login = async (username: string, password: string): Promise<LoginRe
         const response = await axios.post(baseURL + '/login', {username, password});
         return response.data;
     } catch (error) {
-        throw new Error(getAxiosError(error));
+        throw new Error(getDetailedApiError(error).message);
     }
 };
 
@@ -23,8 +23,7 @@ export const signup = async (user: UserDTO): Promise<number> => {
         const response = await axios.post(baseURL + '/signup', user);
         return response.status;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 };
 
@@ -43,8 +42,7 @@ export const logoutServerSide = async (): Promise<boolean> => {
 
         return response.status === 200;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 };
 

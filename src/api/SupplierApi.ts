@@ -1,7 +1,7 @@
 import axiosInstance from './AxiosInstance.ts';
 import {PagedResponseDTO} from "../types/PagedResponseDTO.ts";
 import {SupplierDTO} from "../types/SupplierDTO.ts";
-import {getAxiosError} from "../utils/ErrorUtils.ts";
+import {getDetailedApiError} from "../utils/ErrorUtils.ts";
 
 
 export const getSuppliers =
@@ -15,8 +15,7 @@ export const getSuppliers =
             });
             return response.data as PagedResponseDTO<SupplierDTO>;
         } catch (error) {
-            const errorMessage = getAxiosError(error);
-            throw new Error(errorMessage);
+            throw getDetailedApiError(error);
         }
     };
 export const createSupplier = async (supplier: SupplierDTO): Promise<number> => {
@@ -24,8 +23,7 @@ export const createSupplier = async (supplier: SupplierDTO): Promise<number> => 
         const response = await axiosInstance.post('/suppliers', supplier);
         return response.status;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 }
 export const getSupplierById = async (id: number): Promise<SupplierDTO> => {
@@ -33,8 +31,7 @@ export const getSupplierById = async (id: number): Promise<SupplierDTO> => {
         const response = await axiosInstance.get(`/suppliers/${id}`);
         return response.data;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 };
 export const updateSupplier = async (id: number, supplier: SupplierDTO): Promise<SupplierDTO> => {
@@ -42,8 +39,7 @@ export const updateSupplier = async (id: number, supplier: SupplierDTO): Promise
         const response = await axiosInstance.put(`/suppliers/${id}`, supplier);
         return response.data;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 };
 export const getSupplierSize = async (): Promise<number> => {
@@ -51,7 +47,6 @@ export const getSupplierSize = async (): Promise<number> => {
         const response = await axiosInstance.get(`/suppliers/supplier-size`);
         return response.data;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 };

@@ -1,7 +1,7 @@
 import axiosInstance from './AxiosInstance.ts';
 import {PagedResponseDTO} from "../types/PagedResponseDTO.ts";
 import {CategoryDTO} from "../types/CategoryDTO.ts";
-import {getAxiosError} from "../utils/ErrorUtils.ts";
+import {getDetailedApiError} from "../utils/ErrorUtils.ts";
 
 
 export const getCategories =
@@ -15,8 +15,7 @@ export const getCategories =
             });
             return response.data as PagedResponseDTO<CategoryDTO>;
         } catch (error) {
-            const errorMessage = getAxiosError(error);
-            throw new Error(errorMessage);
+            throw getDetailedApiError(error);
         }
     };
 export const createCategory = async (category: CategoryDTO): Promise<number> => {
@@ -24,8 +23,7 @@ export const createCategory = async (category: CategoryDTO): Promise<number> => 
         const response = await axiosInstance.post('/categories', category);
         return response.status;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 }
 export const getCategoryById = async (id: number): Promise<CategoryDTO> => {
@@ -33,8 +31,7 @@ export const getCategoryById = async (id: number): Promise<CategoryDTO> => {
         const response = await axiosInstance.get(`/categories/${id}`);
         return response.data;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 };
 export const updateCategory = async (id: number, categoryDto: CategoryDTO): Promise<CategoryDTO> => {
@@ -42,8 +39,7 @@ export const updateCategory = async (id: number, categoryDto: CategoryDTO): Prom
         const response = await axiosInstance.put(`/categories/${id}`, categoryDto);
         return response.data;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 };
 export const getCategorySize = async (): Promise<number> => {
@@ -51,7 +47,6 @@ export const getCategorySize = async (): Promise<number> => {
         const response = await axiosInstance.get(`/categories/category-size`);
         return response.data;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 };

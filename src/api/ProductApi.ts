@@ -2,7 +2,7 @@ import axiosInstance from './AxiosInstance.ts';
 
 import {ProductDTO} from '../types/ProductDTO';
 import {PagedResponseDTO} from "../types/PagedResponseDTO.ts";
-import {getAxiosError} from "../utils/ErrorUtils.ts";
+import {getDetailedApiError} from "../utils/ErrorUtils.ts";
 
 
 export const getProducts =
@@ -24,8 +24,7 @@ export const getProducts =
             });
             return response.data as PagedResponseDTO<ProductDTO>;
         } catch (error) {
-            const errorMessage = getAxiosError(error);
-            throw new Error(errorMessage);
+            throw getDetailedApiError(error);
         }
     };
 
@@ -34,7 +33,15 @@ export const getProductById = async (id: number): Promise<ProductDTO> => {
         const response = await axiosInstance.get(`/products/${id}`);
         return response.data;
     } catch (error) {
-        const errorMessage = getAxiosError(error);
-        throw new Error(errorMessage);
+        throw getDetailedApiError(error);
     }
 };
+
+export const createProduct = async (product: ProductDTO): Promise<number> => {
+    try {
+        const response = await axiosInstance.post('/products', product);
+        return response.status;
+    } catch (error) {
+        throw getDetailedApiError(error);
+    }
+}
