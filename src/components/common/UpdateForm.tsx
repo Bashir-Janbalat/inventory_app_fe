@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useFetcher} from '../../hooks/useFetcher';
 import {useNavigate} from 'react-router-dom';
-import {Alert, Button, CircularProgress, Container, Stack, TextField, Typography} from '@mui/material';
+import {Alert, Box, Button, CircularProgress, Container, Stack, TextField, Typography} from '@mui/material';
 
 interface UpdateFormProps<T extends object> {
     id: number;
@@ -27,6 +27,7 @@ export function UpdateForm<T extends object>({
     useEffect(() => {
         if (data) setFormValues(data);
     }, [data]);
+
 
     const handleChange = (key: keyof T, value: string) => {
         setFormValues((prev) => ({...prev, [key]: value}));
@@ -79,18 +80,24 @@ export function UpdateForm<T extends object>({
         <Container maxWidth="sm" sx={{mt: 4}}>
             <form onSubmit={handleSubmit}>
                 <Stack spacing={3}>
+                    {Object.entries(formValues).map(([key, value]) => (
+                        <Box key={key} sx={{ mb: 2 }}>
+                                    <TextField
+                                        key={key}
+                                        label={`${key}`}
+                                        value={value}
+                                        onChange={(e) =>
+                                            handleChange(key as keyof T, e.target.value)
+                                        }
+                                        fullWidth
+                                        sx={{ mb: 1, display: (key === "id" ? 'none' : 'block') }}
+                                    />
+                        </Box>
+                    ))}
+                    </Stack>
                     {updateError && (
                         <Alert severity="error">{updateError}</Alert>
                     )}
-                    {Object.entries(formValues).map(([key, value]) => (
-                        <TextField
-                            key={key}
-                            label={key}
-                            value={value as string}
-                            onChange={(e) => handleChange(key as keyof T, e.target.value)}
-                            fullWidth
-                        />
-                    ))}
                     <Stack direction="row" spacing={2}>
                         <Button type="submit" variant="contained" color="primary">
                             Update
@@ -99,7 +106,6 @@ export function UpdateForm<T extends object>({
                             Back
                         </Button>
                     </Stack>
-                </Stack>
             </form>
         </Container>
     );

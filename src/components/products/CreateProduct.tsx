@@ -24,6 +24,7 @@ import {BrandDTO} from "../../types/BrandDTO.ts";
 import {CategoryDTO} from "../../types/CategoryDTO.ts";
 import {useNavigate} from "react-router-dom";
 import {createProduct} from "../../api/ProductApi.ts";
+import {NumericFormat} from "react-number-format";
 
 const initialProduct: ProductDTO = {
     name: "",
@@ -33,7 +34,7 @@ const initialProduct: ProductDTO = {
     productAttributes: [],
     stock: {
         quantity: 0,
-        warehouseLocation: ""
+        warehouse: {name: "", address: ""}
     },
     supplierName: "",
 };
@@ -53,9 +54,9 @@ const CreateProduct: React.FC = () => {
                 getSupplierSize(),
             ]);
             const [categoriesResponse, brandsResponse, suppliersResponse] = await Promise.all([
-                getCategories(0, categorySize),
-                getBrands(0, brandSize),
-                getSuppliers(0, supplierSize),
+                getCategories(0, categorySize === 0 ? 1 : categorySize),
+                getBrands(0, brandSize === 0 ? 1 : brandSize),
+                getSuppliers(0, supplierSize === 0 ? 1 : supplierSize),
             ]);
             setCategories(categoriesResponse.content);
             setBrands(brandsResponse.content);
@@ -142,7 +143,6 @@ const CreateProduct: React.FC = () => {
             fetchInitialData();
         }}/>;
     }
-
     return (
         <Box sx={{p: 2}} border={1} borderRadius={2} borderColor="primary.main">
             <Typography variant="h5" gutterBottom>
@@ -172,12 +172,22 @@ const CreateProduct: React.FC = () => {
                 </Grid>
 
                 <Grid size={{xs: 12, sm: 6, md: 4}}>
-                    <TextField
+                    <NumericFormat
+                        customInput={TextField}
                         label="Price"
                         name="price"
-                        type="number"
                         value={product.price}
-                        onChange={handleChange}
+                        onValueChange={(values) => {
+                            const { floatValue } = values;
+                            setProduct(prev => ({
+                                ...prev,
+                                price: floatValue ?? 0,
+                            }));
+                        }}
+                        thousandSeparator=","
+                        decimalSeparator="."
+                        decimalScale={2}
+                        fixedDecimalScale
                         fullWidth
                     />
                 </Grid>
@@ -215,16 +225,39 @@ const CreateProduct: React.FC = () => {
                 </Grid>
                 <Grid size={{xs: 12, sm: 6}}>
                     <TextField
-                        label="Warehouse Location"
-                        name="warehouseLocation"
-                        value={product.stock.warehouseLocation}
+                        label="Warehouse Name"
+                        name="WarehouseName"
+                        value={product.stock.warehouse.name}
                         onChange={(e) =>
                             setProduct((prev) => ({
                                 ...prev,
                                 stock: {
                                     ...prev.stock,
-                                    warehouseLocation: e.target.value
-                                }
+                                    warehouse: {
+                                        ...prev.stock.warehouse,
+                                        name: e.target.value,
+                                    },
+                                },
+                            }))
+                        }
+                        fullWidth
+                    />
+                </Grid>
+                <Grid size={{xs: 12, sm: 6}}>
+                    <TextField
+                        label="Warehouse address"
+                        name="WarehouseAddress"
+                        value={product.stock.warehouse.address}
+                        onChange={(e) =>
+                            setProduct((prev) => ({
+                                ...prev,
+                                stock: {
+                                    ...prev.stock,
+                                    warehouse: {
+                                        ...prev.stock.warehouse,
+                                        address: e.target.value,
+                                    },
+                                },
                             }))
                         }
                         fullWidth

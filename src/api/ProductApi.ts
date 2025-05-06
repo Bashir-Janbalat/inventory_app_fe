@@ -1,5 +1,4 @@
 import axiosInstance from './AxiosInstance.ts';
-
 import {ProductDTO} from '../types/ProductDTO';
 import {PagedResponseDTO} from "../types/PagedResponseDTO.ts";
 import {getDetailedApiError} from "../utils/ErrorUtils.ts";
@@ -45,3 +44,12 @@ export const createProduct = async (product: ProductDTO): Promise<number> => {
         throw getDetailedApiError(error);
     }
 }
+export const updateProduct = async (id: number, product: ProductDTO): Promise<ProductDTO> => {
+    try {
+        const response = await axiosInstance.put(`/products/${id}`, product);
+        return response.data;
+    } catch (error) {
+        throw getDetailedApiError(error);
+    }
+};
+

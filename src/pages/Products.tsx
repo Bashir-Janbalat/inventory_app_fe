@@ -45,9 +45,9 @@ const Products: React.FC = () => {
                 getSupplierSize(),
             ]);
             const [categoriesResponse, brandsResponse, suppliersResponse] = await Promise.all([
-                getCategories(page - 1,categorySize),
-                getBrands(page - 1, brandSize),
-                getSuppliers(page - 1, supplierSize),
+                getCategories(page - 1,categorySize === 0 ? 1 : categorySize),
+                getBrands(page - 1, brandSize === 0 ? 1 : brandSize),
+                getSuppliers(page - 1, supplierSize === 0 ? 1 : supplierSize),
             ]);
             setCategories(categoriesResponse.content);
             setBrands(brandsResponse.content);

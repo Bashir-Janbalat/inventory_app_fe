@@ -139,7 +139,7 @@ const ProductPage: React.FC = () => {
                             </Grid>
                             <Grid size={12}>
                                 <Typography variant="body1">
-                                    <strong>Warehouse Location:</strong> {product.stock.warehouseLocation}
+                                    <strong>Warehouse address:</strong> {product.stock.warehouse.address}
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -178,7 +178,7 @@ const ProductPage: React.FC = () => {
                             variant="contained"
                             color="primary"
                             sx={{ flex: 1, mr: 1, py: 1.5, fontSize: '16px' }}
-                            onClick={() => navigate(`/products/edit/${product.id}`)}
+                            onClick={() => navigate(`/products/update/${product.id}`)}
                         >
                             Update
                         </Button>

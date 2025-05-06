@@ -72,7 +72,7 @@ const GenericForm: React.FC<GenericFormProps> = ({page, title, fields, submitBut
                         setApiSuccess(null);
 
                         try {
-                            await onSubmit(values);
+                            onSubmit(values);
                             setApiSuccess("Successfully submitted!");
                             resetForm();
                         } catch (error: unknown) {

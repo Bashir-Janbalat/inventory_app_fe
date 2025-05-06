@@ -16,6 +16,7 @@ import UpdateSupplier from "./components/suppliers/UpdateSupplier.tsx";
 import UpdateCategory from "./components/categories/UpdateCategory.tsx";
 import CreateCategory from "./components/categories/CreateCategory.tsx";
 import CreateProduct from "./components/products/CreateProduct.tsx";
+import UpdateProduct from "./components/products/UpdateProduct.tsx";
 
 interface AppRoutesProps {
     darkMode: boolean;
@@ -40,6 +41,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
                     <Route path="products" element={<ProtectedRoute><Products/></ProtectedRoute>}/>
                     <Route path="createProduct" element={<ProtectedRoute><CreateProduct/></ProtectedRoute>}/>
                     <Route path="products/:id" element={<ProtectedRoute><ProductPage/></ProtectedRoute>}/>
+                    <Route path="products/update/:id" element={<ProtectedRoute><UpdateProduct/></ProtectedRoute>}/>
                     <Route path="categories" element={<ProtectedRoute><Categories/></ProtectedRoute>}/>
                     <Route path="categories/update/:id" element={<ProtectedRoute><UpdateCategory/></ProtectedRoute>}/>
                     <Route path="createCategory" element={<ProtectedRoute><CreateCategory/></ProtectedRoute>}/>
