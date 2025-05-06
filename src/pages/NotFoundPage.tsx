@@ -19,13 +19,13 @@ const NotFoundPage: React.FC = () => {
                 404
             </Typography>
             <Typography variant="h5" gutterBottom>
-                Seite nicht gefunden
+                Page not found.
             </Typography>
             <Typography variant="body1" mb={4}>
-                Die von dir angeforderte Seite existiert nicht oder wurde verschoben.
+                The page you requested does not exist or has been moved..
             </Typography>
             <Button variant="contained" color="primary" onClick={() => navigate("/")}>
-                Zurück zur Startseite
+                Back to the homepage
             </Button>
         </Box>
     );
