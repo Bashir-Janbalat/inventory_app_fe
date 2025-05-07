@@ -6,6 +6,6 @@ export interface GenericFormProps {
     title: string;
     fields: FormField[];
     submitButtonText: string
-    onSubmit: (values: Record<string, string>) => void;
+    onSubmit: (values: Record<string, string>) => Promise<void>;
     backTo?: string;
 }

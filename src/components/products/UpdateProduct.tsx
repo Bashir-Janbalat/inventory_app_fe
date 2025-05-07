@@ -1,22 +1,36 @@
-import { useParams } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-import { getProductById, updateProduct } from "../../api/ProductApi";
-import { ProductDTO } from "../../types/ProductDTO";
-import { useFetcher } from "../../hooks/useFetcher";
-import { Container, Stack, TextField, Button, MenuItem, Typography, IconButton } from "@mui/material";
+import {useNavigate, useParams} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {getProductById, updateProduct} from "../../api/ProductApi";
+import {ProductDTO} from "../../types/ProductDTO";
+import {useFetcher} from "../../hooks/useFetcher";
+import {
+    Alert,
+    Button,
+    CircularProgress,
+    Container,
+    IconButton,
+    MenuItem,
+    Stack,
+    TextField,
+    Typography
+} from "@mui/material";
 import Loading from "../base/Loading";
-import { ErrorMessage } from "../common/ErrorMessage";
-import { getCategories, getCategorySize } from "../../api/CategoryApi";
-import { getBrands, getBrandSize } from "../../api/BrandApi";
-import { getSuppliers, getSupplierSize } from "../../api/SupplierApi";
-import { Delete } from "@mui/icons-material";
+import {ErrorMessage} from "../common/ErrorMessage";
+import {getCategories, getCategorySize} from "../../api/CategoryApi";
+import {getBrands, getBrandSize} from "../../api/BrandApi";
+import {getSuppliers, getSupplierSize} from "../../api/SupplierApi";
+import {Delete} from "@mui/icons-material";
 import {BrandDTO} from "../../types/BrandDTO.ts";
 import {SupplierDTO} from "../../types/SupplierDTO.ts";
-import {CategoryDTO} from "../../types/CategoryDTO.ts"; // Icon zum Löschen
+import {CategoryDTO} from "../../types/CategoryDTO.ts";
+import {NumericFormat} from "react-number-format"; // Icon zum Löschen
 
 const UpdateProduct = () => {
-    const { id } = useParams<{ id: string }>();
+    const {id} = useParams<{ id: string }>();
     const parsedId = id ? parseInt(id, 10) : undefined;
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [updateError, setUpdateError] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     const [product, setProduct] = useState<ProductDTO>({
         name: "",
@@ -38,7 +52,7 @@ const UpdateProduct = () => {
     const [brands, setBrands] = useState<BrandDTO[]>([]);
     const [suppliers, setSuppliers] = useState<SupplierDTO[]>([]);
 
-    const { fetchData: fetchInitialData, loading: initialDataLoading, error: initialDataError } = useFetcher(
+    const {fetchData: fetchInitialData, loading: initialDataLoading, error: initialDataError} = useFetcher(
         async () => {
             if (parsedId === undefined) throw new Error("No ID provided!");
 
@@ -58,7 +72,14 @@ const UpdateProduct = () => {
             setCategories(categoriesResponse.content);
             setBrands(brandsResponse.content);
             setSuppliers(suppliersResponse.content);
-            setProduct(productResponse);
+            setProduct({
+                ...productResponse,
+                productAttributes: productResponse.productAttributes.map(attr => ({
+                    ...attr,
+                    isInitial: true
+                }))
+            });
+            ;
         }
     );
 
@@ -67,11 +88,11 @@ const UpdateProduct = () => {
     }, []);
 
     if (!parsedId) return <div>No ID provided!</div>;
-    if (initialDataLoading) return <Loading fullScreen message="Loading product..." />;
-    if (initialDataError) return <ErrorMessage message={initialDataError} onRetry={fetchInitialData} />;
+    if (initialDataLoading) return <Loading fullScreen message="Loading product..."/>;
+    if (initialDataError) return <ErrorMessage message={initialDataError} onRetry={fetchInitialData}/>;
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setProduct(prev => ({
             ...prev,
             [name]: name === "price" ? Number(value) : value
@@ -79,7 +100,7 @@ const UpdateProduct = () => {
     };
 
     const handleStockChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setProduct(prev => ({
             ...prev,
             stock: {
@@ -91,64 +112,85 @@ const UpdateProduct = () => {
 
     const handleImageChange = (index: number, field: string, value: string) => {
         const updatedImages = [...product.images];
-        updatedImages[index] = { ...updatedImages[index], [field]: value };
-        setProduct(prev => ({ ...prev, images: updatedImages }));
+        updatedImages[index] = {...updatedImages[index], [field]: value};
+        setProduct(prev => ({...prev, images: updatedImages}));
     };
 
     const addImage = () => {
         setProduct(prev => ({
             ...prev,
-            images: [...prev.images, { imageUrl: "", altText: "" }]
+            images: [...prev.images, {imageUrl: "", altText: ""}]
         }));
     };
 
     const removeImage = (index: number) => {
         const updatedImages = product.images.filter((_, i) => i !== index);
-        setProduct(prev => ({ ...prev, images: updatedImages }));
+        setProduct(prev => ({...prev, images: updatedImages}));
     };
 
     const handleAttributeChange = (index: number, field: string, value: string) => {
         const updatedAttributes = [...product.productAttributes];
-        updatedAttributes[index] = { ...updatedAttributes[index], [field]: value };
-        setProduct(prev => ({ ...prev, productAttributes: updatedAttributes }));
+        updatedAttributes[index] = {...updatedAttributes[index], [field]: value};
+        setProduct(prev => ({...prev, productAttributes: updatedAttributes}));
     };
 
     const addAttribute = () => {
         setProduct(prev => ({
             ...prev,
-            productAttributes: [...prev.productAttributes, { attributeName: "", attributeValue: "" }]
+            productAttributes: [...prev.productAttributes, {attributeName: "", attributeValue: "", isInitial: false}]
         }));
     };
 
     const removeAttribute = (index: number) => {
         const updatedAttributes = product.productAttributes.filter((_, i) => i !== index);
-        setProduct(prev => ({ ...prev, productAttributes: updatedAttributes }));
+        setProduct(prev => ({...prev, productAttributes: updatedAttributes}));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsSubmitting(true);
         try {
-            console.log(product);
-            await updateProduct(parsedId, product);
-        } catch (error) {
-            console.error(error);
-            alert("Failed to update product.");
+            const responseDTO = await updateProduct(parsedId, product);
+            if (responseDTO) {
+                navigate("/products");
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                setUpdateError(err.message);
+            } else {
+                setUpdateError("An unexpected error occurred.");
+            }
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
     return (
-        <Container maxWidth="md" sx={{ mt: 4 }}>
+        <Container maxWidth="md" sx={{mt: 4}}>
             <form onSubmit={handleSubmit}>
                 <Stack spacing={3}>
                     <Typography variant="h4">Update Product</Typography>
 
-                    <TextField label="Name" name="name" value={product.name} onChange={handleChange} fullWidth required />
-                    <TextField label="SKU" name="sku" value={product.sku} onChange={handleChange} fullWidth required />
-                    <TextField label="Description" name="description" value={product.description || ""} onChange={handleChange} fullWidth multiline rows={4} />
-                    <TextField label="Price" name="price" type="number" value={product.price} onChange={handleChange} fullWidth required />
-
+                    <TextField label="Name" name="name" value={product.name} onChange={handleChange} fullWidth
+                               required/>
+                    <TextField label="SKU" name="sku" value={product.sku} onChange={handleChange} fullWidth required/>
+                    <TextField label="Description" name="description" value={product.description || ""}
+                               onChange={handleChange} fullWidth multiline rows={4}/>
+                    <NumericFormat
+                        onChange={handleChange}
+                        customInput={TextField}
+                        label="Price"
+                        name="price"
+                        value={product.price}
+                        thousandSeparator=","
+                        decimalSeparator="."
+                        decimalScale={2}
+                        fixedDecimalScale
+                        fullWidth
+                    />
                     {/* Category */}
-                    <TextField select label="Category" name="categoryID" value={product.categoryID || ""} onChange={handleChange} fullWidth>
+                    <TextField select label="Category" name="categoryID" value={product.categoryID || ""}
+                               onChange={handleChange} fullWidth>
                         {categories.map((category: any) => (
                             <MenuItem key={category.id} value={category.id}>
                                 {category.name}
@@ -157,7 +199,8 @@ const UpdateProduct = () => {
                     </TextField>
 
                     {/* Brand */}
-                    <TextField select label="Brand" name="brandID" value={product.brandID || ""} onChange={handleChange} fullWidth>
+                    <TextField select label="Brand" name="brandID" value={product.brandID || ""} onChange={handleChange}
+                               fullWidth>
                         {brands.map((brand: any) => (
                             <MenuItem key={brand.id} value={brand.id}>
                                 {brand.name}
@@ -166,7 +209,8 @@ const UpdateProduct = () => {
                     </TextField>
 
                     {/* Supplier */}
-                    <TextField select label="Supplier" name="supplierID" value={product.supplierID || ""} onChange={handleChange} fullWidth>
+                    <TextField select label="Supplier" name="supplierID" value={product.supplierID || ""}
+                               onChange={handleChange} fullWidth>
                         {suppliers.map((supplier: any) => (
                             <MenuItem key={supplier.id} value={supplier.id}>
                                 {supplier.name}
@@ -176,9 +220,12 @@ const UpdateProduct = () => {
 
                     {/* Stock */}
                     <Typography variant="h6">Stock</Typography>
-                    <TextField label="Quantity" name="quantity" type="number" value={product.stock?.quantity || 0} onChange={handleStockChange} fullWidth />
-                    <TextField label="Warehouse Name" name="name" value={product.stock?.warehouse?.name || ""} onChange={handleStockChange} fullWidth />
-                    <TextField label="Warehouse Address" name="address" value={product.stock?.warehouse?.address || ""} onChange={handleStockChange} fullWidth />
+                    <TextField label="Quantity" name="quantity" type="number" value={product.stock?.quantity || 0}
+                               onChange={handleStockChange} fullWidth/>
+                    <TextField label="Warehouse Name" name="name" value={product.stock?.warehouse?.name || ""}
+                               onChange={handleStockChange} fullWidth/>
+                    <TextField label="Warehouse Address" name="address" value={product.stock?.warehouse?.address || ""}
+                               onChange={handleStockChange} fullWidth/>
 
                     {/* Images Section */}
                     <Typography variant="h6">Images</Typography>
@@ -197,7 +244,7 @@ const UpdateProduct = () => {
                                 fullWidth
                             />
                             <IconButton onClick={() => removeImage(index)} color="error">
-                                <Delete />
+                                <Delete/>
                             </IconButton>
                         </Stack>
                     ))}
@@ -210,6 +257,7 @@ const UpdateProduct = () => {
                     {product.productAttributes.map((attribute, index) => (
                         <Stack direction="row" spacing={2} alignItems="center" key={index}>
                             <TextField
+                                disabled={attribute.isInitial}
                                 label="Attribute Name"
                                 value={attribute.attributeName}
                                 onChange={(e) => handleAttributeChange(index, "attributeName", e.target.value)}
@@ -222,7 +270,7 @@ const UpdateProduct = () => {
                                 fullWidth
                             />
                             <IconButton onClick={() => removeAttribute(index)} color="error">
-                                <Delete />
+                                <Delete/>
                             </IconButton>
                         </Stack>
                     ))}
@@ -231,8 +279,26 @@ const UpdateProduct = () => {
                     </Button>
 
                     <Button type="submit" variant="contained" color="primary">
-                        Update Product
+                        {isSubmitting ? (
+                            <>
+                                <CircularProgress size={24} color="inherit" sx={{marginRight: 2}}/>
+                                Update...
+                            </>
+                        ) : (
+                            'Update'
+                        )}
                     </Button>
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        onClick={() => navigate(-1)}
+                        fullWidth
+                    >
+                        Back
+                    </Button>
+                    {updateError && (
+                        <Alert severity="error">{updateError}</Alert>
+                    )}
                 </Stack>
             </form>
         </Container>

@@ -19,6 +19,7 @@ export function UpdateForm<T extends object>({
     const [formValues, setFormValues] = useState<Partial<T>>({});
     const navigate = useNavigate();
     const [updateError, setUpdateError] = useState<string | null>(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         fetchData();
@@ -36,7 +37,9 @@ export function UpdateForm<T extends object>({
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!formValues) return;
+        setIsSubmitting(true);
         try {
+            await new Promise((resolve) => setTimeout(resolve, 5000));
             await updater(formValues as T);
             navigate(redirectPath);
         } catch (err) {
@@ -45,6 +48,8 @@ export function UpdateForm<T extends object>({
             } else {
                 setUpdateError("An unexpected error occurred.");
             }
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -81,31 +86,43 @@ export function UpdateForm<T extends object>({
             <form onSubmit={handleSubmit}>
                 <Stack spacing={3}>
                     {Object.entries(formValues).map(([key, value]) => (
-                        <Box key={key} sx={{ mb: 2 }}>
-                                    <TextField
-                                        key={key}
-                                        label={`${key}`}
-                                        value={value}
-                                        onChange={(e) =>
-                                            handleChange(key as keyof T, e.target.value)
-                                        }
-                                        fullWidth
-                                        sx={{ mb: 1, display: (key === "id" ? 'none' : 'block') }}
-                                    />
+                        <Box key={key} sx={{mb: 2}}>
+                            <TextField
+                                key={key}
+                                label={`${key}`}
+                                value={value}
+                                onChange={(e) =>
+                                    handleChange(key as keyof T, e.target.value)
+                                }
+                                fullWidth
+                                sx={{mb: 1, display: (key === "id" ? 'none' : 'block')}}
+                            />
                         </Box>
                     ))}
-                    </Stack>
-                    {updateError && (
-                        <Alert severity="error">{updateError}</Alert>
+                </Stack>
+                {updateError && (
+                    <Alert severity="error">{updateError}</Alert>
+                )}
+                <Stack direction="row" spacing={2}>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        disabled={isSubmitting}
+                        fullWidth
+                    >  {isSubmitting ? (
+                        <>
+                            <CircularProgress size={24} color="inherit" sx={{marginRight: 2}}/>
+                            Update...
+                        </>
+                    ) : (
+                        'Update'
                     )}
-                    <Stack direction="row" spacing={2}>
-                        <Button type="submit" variant="contained" color="primary">
-                            Update
-                        </Button>
-                        <Button variant="outlined" color="secondary" onClick={handleBack}>
-                            Back
-                        </Button>
-                    </Stack>
+                    </Button>
+                    <Button variant="outlined" color="secondary" onClick={handleBack}>
+                        Back
+                    </Button>
+                </Stack>
             </form>
         </Container>
     );

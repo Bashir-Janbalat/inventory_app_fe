@@ -1,13 +1,15 @@
 import React, {ChangeEvent, useEffect, useState} from "react";
 import {
+    Alert,
     Box,
     Button,
+    CircularProgress,
     FormControl,
     Grid,
     IconButton,
     InputLabel,
     MenuItem,
-    Select,
+    Select, Stack,
     TextField,
     Typography
 } from "@mui/material";
@@ -45,6 +47,8 @@ const CreateProduct: React.FC = () => {
     const [brands, setBrands] = useState<BrandDTO[]>([]);
     const [categories, setCategories] = useState<CategoryDTO[]>([]);
     const navigate = useNavigate();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [createError, setCreateError] = useState<string | null>(null);
 
     const {fetchData: fetchInitialData, loading: initialDataLoading, error: initialDataError} = useFetcher(
         async () => {
@@ -108,7 +112,7 @@ const CreateProduct: React.FC = () => {
     const addAttribute = () => {
         setProduct((prev) => ({
             ...prev,
-            productAttributes: [...prev.productAttributes, {attributeName: "", attributeValue: ""}]
+            productAttributes: [...prev.productAttributes, {attributeName: "", attributeValue: "", isInitial: false}]
         }));
     };
     const handleDeleteAttribute = (index: number) => {
@@ -129,12 +133,23 @@ const CreateProduct: React.FC = () => {
 
 
     const handleSubmit = async () => {
-        console.info(product);
-        const status = await createProduct(product);
-        if (status === 201) {
-            navigate("/products");
+        try {
+            setIsSubmitting(true);
+            const status = await createProduct(product);
+            if (status === 201) {
+                navigate("/products");
+            }
+        } catch (err) {
+            if (err instanceof Error) {
+                setCreateError(err.message);
+            } else {
+                setCreateError("An unexpected error occurred.");
+            }
+        } finally {
+            setIsSubmitting(false);
         }
-    };
+    }
+
     if (initialDataLoading) {
         return <Loading fullScreen message="Loading ..."/>;
     }
@@ -178,7 +193,7 @@ const CreateProduct: React.FC = () => {
                         name="price"
                         value={product.price}
                         onValueChange={(values) => {
-                            const { floatValue } = values;
+                            const {floatValue} = values;
                             setProduct(prev => ({
                                 ...prev,
                                 price: floatValue ?? 0,
@@ -357,7 +372,7 @@ const CreateProduct: React.FC = () => {
                             </Grid>
                         </Grid>
                     ))}
-                    <Button variant="contained" color='info' sx={{mt: 2, width: '80%',display:'block', mr:'auto', ml:'auto' }} onClick={addAttribute}>
+                    <Button variant="outlined" onClick={addAttribute}>
                         Add Attribute
                     </Button>
                 </Grid>
@@ -393,23 +408,42 @@ const CreateProduct: React.FC = () => {
                             </Grid>
                         </Grid>
                     ))}
-                    <Button variant="contained" color='info' sx={{mt: 2, width: '80%',display:'block', mr:'auto', ml:'auto' }} onClick={addImage}>
+                    <Button variant="outlined" onClick={addImage}>
                         Add Image
                     </Button>
                 </Grid>
 
-                <Grid size={{xs: 12}}>
-                    <Box sx={{mt: 4, textAlign: "center"}}>
+                <Grid  size={{xs:12}}>
+                    <Stack spacing={2} mt={4} alignItems="center">
                         <Button
                             variant="contained"
                             color="primary"
                             onClick={() => handleSubmit()}
-                            sx={{px: 4, py: 1}}
+                            disabled={isSubmitting}
                             fullWidth
                         >
-                            Submit Product
+                            {isSubmitting ? (
+                                <>
+                                    <CircularProgress size={20} color="inherit" sx={{ mr: 1 }} />
+                                    Creating...
+                                </>
+                            ) : (
+                                'Create Product'
+                            )}
                         </Button>
-                    </Box>
+
+                        <Button
+                            variant="outlined"
+                            color="secondary"
+                            onClick={() => navigate(-1)}
+                            fullWidth
+                        >
+                            Back
+                        </Button>
+                        {createError && (
+                            <Alert severity="error">{createError}</Alert>
+                        )}
+                    </Stack>
                 </Grid>
             </Grid>
         </Box>

@@ -33,11 +33,6 @@ const LoginPage = () => {
         setStateErrorMessage(null);
         const {username, password} = values;
         const response = await login(username, password);
-
-        if (!response.accessToken) {
-            throw new Error('Login failed: No access token received.');
-        }
-
         saveToken(response.accessToken);
         setAuthenticated(true);
         setSubject(getSubjectFromToken(response.accessToken));

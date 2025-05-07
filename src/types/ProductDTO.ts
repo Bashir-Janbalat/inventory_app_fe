@@ -2,6 +2,7 @@ interface ProductAttributeDTO {
     attributeID?: number;
     attributeName: string;
     attributeValue: string;
+    isInitial: boolean;
 }
 
 interface ImageDTO {
