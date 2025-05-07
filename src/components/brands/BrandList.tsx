@@ -5,6 +5,7 @@ import {CustomGridProps} from "../../types/CustomGridProps.ts";
 import AddIcon from "@mui/icons-material/Add";
 import {useNavigate} from "react-router-dom";
 import ActionButtons from "../common/ActionButtonsProps.tsx";
+import HomeIcon from '@mui/icons-material/Home';
 
 
 const BrandList: React.FC<CustomGridProps<BrandDTO>> = ({items, totalPages, setPage, page}) => {
@@ -20,9 +21,20 @@ const BrandList: React.FC<CustomGridProps<BrandDTO>> = ({items, totalPages, setP
 
     return (
         <Container>
-            <Typography variant="h4" sx={{mb: 4, fontWeight: 'bold'}}>
-                Brands
-            </Typography>
+            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 4}}>
+                <Typography variant="h4" sx={{fontWeight: 'bold'}}>
+                    Brands
+                </Typography>
+                <Button
+                    variant="outlined"
+                    color="primary"
+                    startIcon={<HomeIcon />}
+                    onClick={()=> navigate('/') }
+                    sx={{height: 50}}
+                >
+                    Home
+                </Button>
+            </Stack>
             <Grid container spacing={3}>
                 <Button fullWidth
                         variant="contained"
@@ -33,6 +45,7 @@ const BrandList: React.FC<CustomGridProps<BrandDTO>> = ({items, totalPages, setP
                 >
                     Create
                 </Button>
+                <>
                 {items.map((brand) => (
                     <Grid size={{xs: 12, sm: 6, md: 4}} key={brand.id}>
                         <Card sx={(theme) => ({
@@ -63,6 +76,7 @@ const BrandList: React.FC<CustomGridProps<BrandDTO>> = ({items, totalPages, setP
                         />
                     </Grid>
                 ))}
+                </>
             </Grid>
             <Stack direction="row" justifyContent="center" alignItems="center" marginTop={4}>
                 <Pagination

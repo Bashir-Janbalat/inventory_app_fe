@@ -5,6 +5,7 @@ import {CustomGridProps} from "../../types/CustomGridProps.ts";
 import AddIcon from "@mui/icons-material/Add";
 import ActionButtons from "../common/ActionButtonsProps.tsx";
 import {useNavigate} from 'react-router-dom';
+import HomeIcon from '@mui/icons-material/Home';
 
 
 const CategoryList: React.FC<CustomGridProps<CategoryDTO>> = ({items, page, setPage, totalPages}) => {
@@ -20,9 +21,20 @@ const CategoryList: React.FC<CustomGridProps<CategoryDTO>> = ({items, page, setP
 
     return (
         <Container>
-            <Typography variant="h4" sx={{mb: 4, fontWeight: 'bold'}}>
-                Categories
-            </Typography>
+            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 4}}>
+                <Typography variant="h4" sx={{mb: 4, fontWeight: 'bold'}}>
+                    Categories
+                </Typography>
+                <Button
+                    variant="outlined"
+                    color="primary"
+                    startIcon={<HomeIcon />}
+                    onClick={()=> navigate('/') }
+                    sx={{height: 50}}
+                >
+                    Home
+                </Button>
+            </Stack>
             <Grid container spacing={3}>
                 <Button fullWidth
                         variant="contained"
