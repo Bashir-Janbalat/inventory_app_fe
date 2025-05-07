@@ -197,6 +197,14 @@ const ProductPage: React.FC = () => {
                             Delete
                         </Button>
                     </Box>
+                    <Button
+                        variant="outlined"
+                        fullWidth
+                        sx={{mt: 4, py: 1.5, fontSize: '16px'}}
+                        onClick={() => navigate(-1)}
+                    >
+                        Back
+                    </Button>
                 </CardContent>
             </Card>
         </Container>

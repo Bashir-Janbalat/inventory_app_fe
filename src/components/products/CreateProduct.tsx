@@ -420,6 +420,7 @@ const CreateProduct: React.FC = () => {
                             color="primary"
                             onClick={() => handleSubmit()}
                             disabled={isSubmitting}
+                            sx={{mt: 4, py: 1.5, fontSize: '16px'}}
                             fullWidth
                         >
                             {isSubmitting ? (
@@ -434,8 +435,8 @@ const CreateProduct: React.FC = () => {
 
                         <Button
                             variant="outlined"
-                            color="secondary"
                             onClick={() => navigate(-1)}
+                            sx={{mt: 4, py: 1.5, fontSize: '16px'}}
                             fullWidth
                         >
                             Back

@@ -278,7 +278,7 @@ const UpdateProduct = () => {
                         Add Attribute
                     </Button>
 
-                    <Button type="submit" variant="contained" color="primary">
+                    <Button type="submit" variant="contained" color="primary" sx={{mt: 4, py: 1.5, fontSize: '16px'}}>
                         {isSubmitting ? (
                             <>
                                 <CircularProgress size={24} color="inherit" sx={{marginRight: 2}}/>
@@ -290,8 +290,8 @@ const UpdateProduct = () => {
                     </Button>
                     <Button
                         variant="outlined"
-                        color="secondary"
                         onClick={() => navigate(-1)}
+                        sx={{mt: 4, py: 1.5, fontSize: '16px'}}
                         fullWidth
                     >
                         Back
