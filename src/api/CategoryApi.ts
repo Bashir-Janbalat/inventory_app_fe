@@ -50,3 +50,12 @@ export const getCategorySize = async (): Promise<number> => {
         throw getDetailedApiError(error);
     }
 };
+
+export const deleteCategory = async (id: number): Promise<number> => {
+    try {
+        const response = await axiosInstance.delete(`/categories/${id}`);
+        return response.status;
+    } catch (error) {
+        throw getDetailedApiError(error);
+    }
+}

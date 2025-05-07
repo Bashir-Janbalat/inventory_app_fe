@@ -50,3 +50,11 @@ export const getSupplierSize = async (): Promise<number> => {
         throw getDetailedApiError(error);
     }
 };
+export const deleteSupplier = async (id: number): Promise<number> => {
+    try {
+        const response = await axiosInstance.delete(`/suppliers/${id}`);
+        return response.status;
+    } catch (error) {
+        throw getDetailedApiError(error);
+    }
+}

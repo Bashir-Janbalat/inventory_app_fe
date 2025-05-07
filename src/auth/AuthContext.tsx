@@ -1,10 +1,11 @@
 import React, {createContext, ReactNode, useEffect, useState} from 'react';
-import {getSubjectFromToken, getToken, isLoggedIn, removeToken} from './AuthUtils.ts';
+import {getRolesFromToken, getSubjectFromToken, getToken, isLoggedIn, removeToken} from './AuthUtils.ts';
 import {logoutServerSide} from "../api/AuthApi.tsx";
 
 interface AuthContextType {
     authenticated: boolean;
     subject: string | null;
+    roles: string[] | null,
     setAuthenticated: (authenticated: boolean) => void;
     setSubject: (subject: string | null) => void;
     sessionExpired: boolean;
@@ -20,6 +21,7 @@ interface AuthProviderProps {
 const defaultAuthContext: AuthContextType = {
     authenticated: false,
     subject: null,
+    roles: null,
     setAuthenticated: () => {
     },
     setSubject: () => {
@@ -36,6 +38,7 @@ export const AuthContext = createContext<AuthContextType>(defaultAuthContext);
 export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     const [authenticated, setAuthenticated] = useState<boolean>(isLoggedIn());
     const [subject, setSubject] = useState<string | null>(null);
+    const [roles, setRoles] = useState<string[] | null>(null);
     const [sessionExpired, setSessionExpired] = useState(false);
     const [message, setMessage] = useState('');
     const [isSuccessfullyLogout, setSuccessfullyLogout] = useState(false);
@@ -45,6 +48,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
         if (token) {
             setAuthenticated(true);
             setSubject(getSubjectFromToken(token));
+            setRoles(getRolesFromToken(token));
         } else {
             setAuthenticated(false);
             setSubject(null);
@@ -83,6 +87,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
             value={{
                 authenticated,
                 subject,
+                roles,
                 setAuthenticated,
                 setSubject,
                 sessionExpired,

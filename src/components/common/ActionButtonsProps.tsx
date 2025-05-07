@@ -2,6 +2,8 @@ import { Stack, Button, useMediaQuery, useTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {useNavigate} from "react-router-dom";
+import {useContext} from "react";
+import AuthContext from "../../auth/AuthContext.tsx";
 
 interface ActionButtonsProps {
     id: number;
@@ -13,6 +15,8 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ id, onDelete, navigateTo 
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const navigate = useNavigate();
+    const {roles} = useContext(AuthContext);
+    const isAdmin = roles?.includes('ROLE_ADMIN');
 
     const handleUpdate = () => {
         navigate(navigateTo);
@@ -50,6 +54,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ id, onDelete, navigateTo 
                 onClick={handleDelete}
                 fullWidth={isMobile}
                 sx={{ minWidth: 120 }}
+                disabled={!isAdmin}
             >
                 Delete
             </Button>

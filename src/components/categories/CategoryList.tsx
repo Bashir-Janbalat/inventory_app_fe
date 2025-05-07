@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {CategoryDTO} from '../../types/CategoryDTO.ts';
 import {Button, Card, CardContent, Container, Grid, Pagination, Stack, Typography} from '@mui/material';
 import {CustomGridProps} from "../../types/CustomGridProps.ts";
@@ -6,19 +6,44 @@ import AddIcon from "@mui/icons-material/Add";
 import ActionButtons from "../common/ActionButtonsProps.tsx";
 import {useNavigate} from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
+import {deleteCategory} from "../../api/CategoryApi.ts";
+import CustomSnackbar from "../common/CustomSnackbar.tsx";
+import {DetailedApiError} from "../../errors/DetailedApiError.ts";
 
 
 const CategoryList: React.FC<CustomGridProps<CategoryDTO>> = ({items, page, setPage, totalPages}) => {
     const navigate = useNavigate();
+    const [categories, setCategories] = useState<CategoryDTO[]>(items);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');
 
     function goToCreateCategory() {
         navigate('/createCategory');
     }
 
-    function handleDeleteCategory() {
-        console.log('Delete Category');
+    const handleDeleteCategory = async (id: number) => {
+        try {
+            const status = await deleteCategory(id);
+            if (status === 204) {
+                setCategories((prevCategories) => prevCategories.filter((category) => category.id !== id));
+                setSnackbarMessage('Category deleted successfully!');
+                setSnackbarSeverity('success');
+                setSnackbarOpen(true);
+            }
+        } catch (error) {
+            if (error instanceof DetailedApiError) {
+                setSnackbarMessage(error.message);
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
+            } else {
+                throw error;
+            }
+        }
     }
-
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
     return (
         <Container>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 4}}>
@@ -28,8 +53,8 @@ const CategoryList: React.FC<CustomGridProps<CategoryDTO>> = ({items, page, setP
                 <Button
                     variant="outlined"
                     color="primary"
-                    startIcon={<HomeIcon />}
-                    onClick={()=> navigate('/') }
+                    startIcon={<HomeIcon/>}
+                    onClick={() => navigate('/')}
                     sx={{height: 50}}
                 >
                     Home
@@ -46,7 +71,7 @@ const CategoryList: React.FC<CustomGridProps<CategoryDTO>> = ({items, page, setP
                     Create
                 </Button>
 
-                {items.map((category) => (
+                {categories.map((category) => (
                     <Grid size={{xs: 12, sm: 6, md: 4}} key={category.id}>
                         <Card sx={(theme) => ({
                             display: 'flex',
@@ -72,7 +97,8 @@ const CategoryList: React.FC<CustomGridProps<CategoryDTO>> = ({items, page, setP
                         </Card>
                         <ActionButtons id={category.id!}
                                        onDelete={handleDeleteCategory}
-                                       navigateTo={`/categories/update/` + !category.id}
+                                       navigateTo={`/categories/update/` + category.id}
+
                         />
                     </Grid>
                 ))}
@@ -87,6 +113,12 @@ const CategoryList: React.FC<CustomGridProps<CategoryDTO>> = ({items, page, setP
                     shape="rounded"
                 />
             </Stack>
+            <CustomSnackbar
+                open={snackbarOpen}
+                message={snackbarMessage}
+                severity={snackbarSeverity}
+                onClose={handleSnackbarClose}
+            />
         </Container>
     );
 };

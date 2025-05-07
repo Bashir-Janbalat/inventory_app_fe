@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {BrandDTO} from "../../types/BrandDTO.ts";
 import {Button, Card, CardContent, Container, Grid, Pagination, Stack, Typography} from '@mui/material';
 import {CustomGridProps} from "../../types/CustomGridProps.ts";
@@ -6,19 +6,44 @@ import AddIcon from "@mui/icons-material/Add";
 import {useNavigate} from "react-router-dom";
 import ActionButtons from "../common/ActionButtonsProps.tsx";
 import HomeIcon from '@mui/icons-material/Home';
+import {DetailedApiError} from "../../errors/DetailedApiError.ts";
+import CustomSnackbar from "../common/CustomSnackbar.tsx";
+import {deleteBrand} from "../../api/BrandApi.ts";
 
 
 const BrandList: React.FC<CustomGridProps<BrandDTO>> = ({items, totalPages, setPage, page}) => {
     const navigate = useNavigate();
+    const [brands, setBrands] = useState<BrandDTO[]>(items);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');
 
     const goToCreateBrand = () => {
         navigate('/createBrand');
     }
 
-    function handleDeleteBrand() {
-        console.log('Delete brand');
+    const handleDeleteBrand = async(id: number)=> {
+        try {
+            const status = await deleteBrand(id);
+            if (status === 204) {
+                setBrands((prevBrands) => prevBrands.filter((brand) => brand.id !== id));
+                setSnackbarMessage('Brand deleted successfully!');
+                setSnackbarSeverity('success');
+                setSnackbarOpen(true);
+            }
+        } catch (error) {
+            if (error instanceof DetailedApiError) {
+                setSnackbarMessage(error.message);
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
+            } else {
+                throw error;
+            }
+        }
     }
-
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
     return (
         <Container>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 4}}>
@@ -46,7 +71,7 @@ const BrandList: React.FC<CustomGridProps<BrandDTO>> = ({items, totalPages, setP
                     Create
                 </Button>
                 <>
-                {items.map((brand) => (
+                {brands.map((brand) => (
                     <Grid size={{xs: 12, sm: 6, md: 4}} key={brand.id}>
                         <Card sx={(theme) => ({
                             display: 'flex',
@@ -72,7 +97,7 @@ const BrandList: React.FC<CustomGridProps<BrandDTO>> = ({items, totalPages, setP
                         </Card>
                         <ActionButtons id={brand.id!}
                                        onDelete={handleDeleteBrand}
-                                       navigateTo={`/brands/update/`+ !brand.id}
+                                       navigateTo={`/brands/update/`+ brand.id}
                         />
                     </Grid>
                 ))}
@@ -88,6 +113,12 @@ const BrandList: React.FC<CustomGridProps<BrandDTO>> = ({items, totalPages, setP
                     shape="rounded"
                 />
             </Stack>
+            <CustomSnackbar
+                open={snackbarOpen}
+                message={snackbarMessage}
+                severity={snackbarSeverity}
+                onClose={handleSnackbarClose}
+            />
         </Container>
     );
 };

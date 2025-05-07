@@ -1,6 +1,14 @@
-import {jwtDecode, JwtPayload} from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 const TOKEN_KEY = 'access_token';
+
+
+interface JwtPayload {
+    sub: string;
+    roles: { authority: string }[];
+    iat: number;
+    exp: number;
+}
 
 export const saveToken = (token: string) => {
     localStorage.setItem(TOKEN_KEY, token);
@@ -41,3 +49,14 @@ export const getSubjectFromToken = (token: string): string | null => {
         return null;
     }
 };
+
+export const getRolesFromToken = (token: string): string[] | null => {
+    if (!token) return null;
+    try {
+        const decoded = jwtDecode<JwtPayload>(token);
+        return decoded.roles?.map(role => role.authority) || null;
+    } catch (error) {
+        console.error('Error decoding token:', error);
+        return null;
+    }
+}

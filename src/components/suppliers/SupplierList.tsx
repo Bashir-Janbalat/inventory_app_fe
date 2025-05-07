@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {SupplierDTO} from '../../types/SupplierDTO.ts';
 import {Button, Card, CardContent, Container, Grid, Pagination, Stack, Typography} from '@mui/material';
 import {CustomGridProps} from "../../types/CustomGridProps.ts";
@@ -6,19 +6,44 @@ import AddIcon from "@mui/icons-material/Add";
 import ActionButtons from "../common/ActionButtonsProps.tsx";
 import {useNavigate} from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
+import {DetailedApiError} from "../../errors/DetailedApiError.ts";
+import CustomSnackbar from "../common/CustomSnackbar.tsx";
+import {deleteSupplier} from "../../api/SupplierApi.ts";
 
 
 const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setPage, totalPages}) => {
     const navigate = useNavigate();
+    const [suppliers, setSuppliers] = useState<SupplierDTO[]>(items);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');
 
     function goToCreateSupplier() {
         navigate('/createSupplier');
     }
 
-    function handleDeleteBrand() {
-        console.log('Delete brand');
+    const handleDeleteSupplier = async (id: number) => {
+        try {
+            const status = await deleteSupplier(id);
+            if (status === 204) {
+                setSuppliers((prevSuppliers) => prevSuppliers.filter((supplier) => supplier.id !== id));
+                setSnackbarMessage('Supplier deleted successfully!');
+                setSnackbarSeverity('success');
+                setSnackbarOpen(true);
+            }
+        } catch (error) {
+            if (error instanceof DetailedApiError) {
+                setSnackbarMessage(error.message);
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
+            } else {
+                throw error;
+            }
+        }
     }
-
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
     return (
         <Container>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 4}}>
@@ -28,8 +53,8 @@ const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setP
                 <Button
                     variant="outlined"
                     color="primary"
-                    startIcon={<HomeIcon />}
-                    onClick={()=> navigate('/') }
+                    startIcon={<HomeIcon/>}
+                    onClick={() => navigate('/')}
                     sx={{height: 50}}
                 >
                     Home
@@ -45,7 +70,7 @@ const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setP
                 >
                     Create
                 </Button>
-                {items.map((supplier) => (
+                {suppliers.map((supplier) => (
                     <Grid size={{xs: 12, sm: 6, md: 4}} key={supplier.id}>
                         <Card sx={(theme) => ({
                             display: 'flex',
@@ -73,7 +98,7 @@ const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setP
                             </CardContent>
                         </Card>
                         <ActionButtons id={supplier.id!}
-                                       onDelete={handleDeleteBrand}
+                                       onDelete={handleDeleteSupplier}
                                        navigateTo={`/supplier/update/` + !supplier.id}
                         />
                     </Grid>
@@ -89,6 +114,12 @@ const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setP
                     shape="rounded"
                 />
             </Stack>
+            <CustomSnackbar
+                open={snackbarOpen}
+                message={snackbarMessage}
+                severity={snackbarSeverity}
+                onClose={handleSnackbarClose}
+            />
         </Container>
     );
 };
