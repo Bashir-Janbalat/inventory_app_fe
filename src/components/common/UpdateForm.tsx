@@ -27,6 +27,7 @@ export function UpdateForm<T extends object>({
 
     useEffect(() => {
         if (data) setFormValues(data);
+
     }, [data]);
 
 
@@ -39,7 +40,6 @@ export function UpdateForm<T extends object>({
         if (!formValues) return;
         setIsSubmitting(true);
         try {
-            await new Promise((resolve) => setTimeout(resolve, 5000));
             await updater(formValues as T);
             navigate(redirectPath);
         } catch (err) {

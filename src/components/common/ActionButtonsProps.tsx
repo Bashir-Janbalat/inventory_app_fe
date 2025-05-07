@@ -1,6 +1,7 @@
 import { Stack, Button, useMediaQuery, useTheme } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import {useNavigate} from "react-router-dom";
 
 interface ActionButtonsProps {
     id: number;
@@ -11,9 +12,10 @@ interface ActionButtonsProps {
 const ActionButtons: React.FC<ActionButtonsProps> = ({ id, onDelete, navigateTo }) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const navigate = useNavigate();
 
     const handleUpdate = () => {
-        window.location.href = navigateTo; // oder besser navigate(navigateTo) falls du react-router benutzt
+        navigate(navigateTo);
     };
 
     const handleDelete = () => {
@@ -28,6 +30,8 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ id, onDelete, navigateTo 
             sx={{ mt: 2 }}
         >
             <Button
+                id="update-button"
+                name="update-button"
                 variant="contained"
                 color="primary"
                 startIcon={<EditIcon />}
@@ -38,6 +42,8 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ id, onDelete, navigateTo 
                 Update
             </Button>
             <Button
+                id="delete-button"
+                name="delete-button"
                 variant="outlined"
                 color="error"
                 startIcon={<DeleteIcon />}

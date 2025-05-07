@@ -74,7 +74,7 @@ const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setP
                         </Card>
                         <ActionButtons id={supplier.id!}
                                        onDelete={handleDeleteBrand}
-                                       navigateTo={`/supplier/update/` + supplier.id}
+                                       navigateTo={`/supplier/update/` + !supplier.id}
                         />
                     </Grid>
                 ))}

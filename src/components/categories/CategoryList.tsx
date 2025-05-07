@@ -72,7 +72,7 @@ const CategoryList: React.FC<CustomGridProps<CategoryDTO>> = ({items, page, setP
                         </Card>
                         <ActionButtons id={category.id!}
                                        onDelete={handleDeleteCategory}
-                                       navigateTo={`/categories/update/` + category.id}
+                                       navigateTo={`/categories/update/` + !category.id}
                         />
                     </Grid>
                 ))}

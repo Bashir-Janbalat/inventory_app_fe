@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {Container, Typography} from "@mui/material";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
+import {Container, debounce, Typography} from "@mui/material";
 import {ProductDTO} from "../types/ProductDTO.ts";
 import {CategoryDTO} from "../types/CategoryDTO.ts";
 import {SupplierDTO} from "../types/SupplierDTO.ts";
@@ -29,13 +29,15 @@ const Products: React.FC = () => {
     const [totalPages, setTotalPages] = useState(1);
     const size = 6;
 
-    const {fetchData: fetchProducts, loading: productLoading, error: fetchingProductsError} = useFetcher<ProductDTO[]>(
-        async () => {
-            const productResponse = await getProducts(page - 1, size, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName);
-            setProducts(productResponse.content);
-            setTotalPages(productResponse.totalPages);
-            return productResponse.content;
-        });
+    const fetcher = useCallback(async () => {
+        const productResponse = await getProducts(page - 1, size, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName);
+        setProducts(productResponse.content);
+        setTotalPages(productResponse.totalPages);
+        return productResponse.content;
+    }, [page, size, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName]);
+
+    const { fetchData: fetchProducts, loading: productLoading, error: fetchingProductsError } = useFetcher<ProductDTO[]>(fetcher);
+
 
     const {fetchData: fetchInitialData, loading: initialDataLoading, error: initialDataError} = useFetcher(
         async () => {
@@ -58,10 +60,23 @@ const Products: React.FC = () => {
                 suppliers: suppliersResponse.content,
             };
         });
+    const debouncedFetchProducts = useMemo(
+        () =>
+            debounce(() => {
+                fetchProducts();
+            }, 600),
+        [fetchProducts]
+    );
+    useEffect(() => {
+        debouncedFetchProducts();
+        return () => {
+            debouncedFetchProducts.clear()
+        };
+    }, [searchBy, page]);
 
     useEffect(() => {
         fetchProducts();
-    }, [page, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName]);
+    }, [page, sortBy, sortDirection, categoryName, brandName, supplierName]);
 
     useEffect(() => {
         fetchInitialData();

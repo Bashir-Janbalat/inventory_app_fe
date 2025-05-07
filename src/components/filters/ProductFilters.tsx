@@ -42,6 +42,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                                                            setCategoryName, setBrandName, setSupplierName, setPage,
                                                        }) => {
     const navigate = useNavigate();
+
     const resetPageAndSetSelect = <T extends string>(setter: (value: T) => void) => (e: SelectChangeEvent) => {
         setter(e.target.value as T);
         setPage(1);
@@ -51,62 +52,70 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
         setter(e.target.value);
         setPage(1);
     };
+
     const goToCreateProduct = () => {
         navigate('/createProduct');
-    }
+    };
 
     return (
         <Container>
-            <Stack direction={{xs: 'column', sm: 'column', md: 'row'}} spacing={2} marginBottom={2}>
-                <Button fullWidth
-                        variant="contained"
-                        color="primary"
-                        startIcon={<AddIcon/>}
-                        style={{minHeight: 50}}
-                        onClick={goToCreateProduct}
+            <Stack direction={{ xs: 'column', sm: 'column', md: 'row' }} spacing={2} marginBottom={2}>
+
+                <Button
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    startIcon={<AddIcon />}
+                    style={{ minHeight: 50 }}
+                    onClick={goToCreateProduct}
                 >
                     Create
                 </Button>
+
                 <FormControl fullWidth>
-                    <InputLabel>Sort by</InputLabel>
+                    <InputLabel id="sort-by-label">Sort by</InputLabel>
                     <Select
+                        id="sort-by"
+                        labelId="sort-by-label"
                         value={sortBy}
                         label="Sort by"
-                        onChange={(e) => resetPageAndSetSelect(setSortBy)(e)}
+                        onChange={resetPageAndSetSelect(setSortBy)}
                     >
                         <MenuItem value="name">Name</MenuItem>
-                        <MenuItem value="price">Price</MenuItem>
+                        <MenuItem value="sellingPrice">Price</MenuItem>
                     </Select>
                 </FormControl>
 
                 <FormControl fullWidth>
-                    <InputLabel>Direction</InputLabel>
+                    <InputLabel id="sort-direction-label">Direction</InputLabel>
                     <Select
+                        id="sort-direction"
+                        labelId="sort-direction-label"
                         value={sortDirection}
                         label="Direction"
-                        onChange={(e) => resetPageAndSetSelect(setSortDirection)(e)}
+                        onChange={resetPageAndSetSelect(setSortDirection)}
                     >
-                        <MenuItem value="asc">asc ↑</MenuItem>
-                        <MenuItem value="desc">desc ↓</MenuItem>
+                        <MenuItem value="asc">Asc ↑</MenuItem>
+                        <MenuItem value="desc">Desc ↓</MenuItem>
                     </Select>
                 </FormControl>
-                <FormControl fullWidth>
-                    <TextField
-                        fullWidth
-                        label="Search by name"
-                        value={searchBy}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                            resetPageAndSetInput(setSearchBy)(e)
-                        }
-                    />
-                </FormControl>
+
+                <TextField
+                    id="search-by-name"
+                    label="Search by name"
+                    value={searchBy}
+                    onChange={resetPageAndSetInput(setSearchBy)}
+                    fullWidth
+                />
 
                 <FormControl fullWidth>
-                    <InputLabel>Category</InputLabel>
+                    <InputLabel id="category-label">Category</InputLabel>
                     <Select
+                        id="category"
+                        labelId="category-label"
                         value={categoryName}
                         label="Category"
-                        onChange={(e) => resetPageAndSetSelect(setCategoryName)(e)}
+                        onChange={resetPageAndSetSelect(setCategoryName)}
                     >
                         <MenuItem value="">All</MenuItem>
                         {categories.map((cat) => (
@@ -118,34 +127,41 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 </FormControl>
 
                 <FormControl fullWidth>
-                    <InputLabel>Brand</InputLabel>
+                    <InputLabel id="brand-label">Brand</InputLabel>
                     <Select
+                        id="brand"
+                        labelId="brand-label"
                         value={brandName}
                         label="Brand"
-                        onChange={(e) => resetPageAndSetSelect(setBrandName)(e)}
+                        onChange={resetPageAndSetSelect(setBrandName)}
                     >
                         <MenuItem value="">All</MenuItem>
-                        {brands.map((b) => (
-                            <MenuItem key={b.id} value={b.name}>
-                                {b.name}
+                        {brands.map((brand) => (
+                            <MenuItem key={brand.id} value={brand.name}>
+                                {brand.name}
                             </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
 
                 <FormControl fullWidth>
-                    <InputLabel>Supplier</InputLabel>
+                    <InputLabel id="supplier-label">Supplier</InputLabel>
                     <Select
+                        id="supplier"
+                        labelId="supplier-label"
                         value={supplierName}
                         label="Supplier"
-                        onChange={(e) => resetPageAndSetSelect(setSupplierName)(e)}
+                        onChange={resetPageAndSetSelect(setSupplierName)}
                     >
                         <MenuItem value="">All</MenuItem>
-                        {suppliers.map((s) => (
-                            <MenuItem key={s.id} value={s.name}>{s.name}</MenuItem>
+                        {suppliers.map((supplier) => (
+                            <MenuItem key={supplier.id} value={supplier.name}>
+                                {supplier.name}
+                            </MenuItem>
                         ))}
                     </Select>
                 </FormControl>
+
             </Stack>
         </Container>
     );
