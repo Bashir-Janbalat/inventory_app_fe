@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ProductDTO } from '../types/ProductDTO';
-import { getProductById } from '../api/ProductApi.ts';
+import {deleteProduct, getProductById} from '../api/ProductApi.ts';
 import {
     Box,
     Button,
@@ -14,6 +14,8 @@ import {
     Skeleton,
     Typography,
 } from '@mui/material';
+import {DetailedApiError} from "../errors/DetailedApiError.ts";
+import CustomSnackbar from "../components/common/CustomSnackbar.tsx";
 
 const ProductPage: React.FC = () => {
     const { id } = useParams();
@@ -21,6 +23,9 @@ const ProductPage: React.FC = () => {
     const [product, setProduct] = useState<ProductDTO | null>(null);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -39,6 +44,28 @@ const ProductPage: React.FC = () => {
 
         fetchProduct();
     }, [id]);
+
+    const handleDeleteProduct = async(id: number)=> {
+        try {
+            const status = await deleteProduct(id);
+            if (status === 204) {
+                setSnackbarMessage('Product deleted successfully!');
+                setSnackbarSeverity('success');
+                setSnackbarOpen(true);
+            }
+        } catch (error) {
+            if (error instanceof DetailedApiError) {
+                setSnackbarMessage(error.message);
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
+            } else {
+                throw error;
+            }
+        }
+    }
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
 
     if (loading) {
         return (
@@ -187,12 +214,7 @@ const ProductPage: React.FC = () => {
                             variant="contained"
                             color="error"
                             sx={{ flex: 1, ml: 1, py: 1.5, fontSize: '16px' }}
-                            onClick={() => {
-                                // Placeholder for delete logic
-                                if (window.confirm('Are you sure you want to delete this product?')) {
-                                    console.log('Delete action for product ID:', product.id);
-                                }
-                            }}
+                            onClick={() => {handleDeleteProduct(Number(id))}}
                         >
                             Delete
                         </Button>
@@ -207,6 +229,12 @@ const ProductPage: React.FC = () => {
                     </Button>
                 </CardContent>
             </Card>
+            <CustomSnackbar
+                open={snackbarOpen}
+                message={snackbarMessage}
+                severity={snackbarSeverity}
+                onClose={handleSnackbarClose}
+            />
         </Container>
     );
 };

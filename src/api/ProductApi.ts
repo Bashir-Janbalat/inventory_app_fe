@@ -53,3 +53,12 @@ export const updateProduct = async (id: number, product: ProductDTO): Promise<Pr
     }
 };
 
+export const deleteProduct = async (id: number): Promise<number> => {
+    try {
+        const response = await axiosInstance.delete(`/products/${id}`);
+        return response.status;
+    } catch (error) {
+        throw getDetailedApiError(error);
+    }
+}
+

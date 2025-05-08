@@ -72,7 +72,7 @@ const Products: React.FC = () => {
         return () => {
             debouncedFetchProducts.clear()
         };
-    }, [searchBy, page]);
+    }, [searchBy]);
 
     useEffect(() => {
         fetchProducts();
