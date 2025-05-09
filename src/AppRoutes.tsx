@@ -15,7 +15,7 @@ import CreateSupplier from "./components/suppliers/CreateSupplier.tsx";
 import UpdateSupplier from "./components/suppliers/UpdateSupplier.tsx";
 import UpdateCategory from "./components/categories/UpdateCategory.tsx";
 import CreateCategory from "./components/categories/CreateCategory.tsx";
-import ProductForm from "./components/common/ProductForm.tsx";
+import ProductForm from "./components/products/ProductForm.tsx";
 
 interface AppRoutesProps {
     darkMode: boolean;

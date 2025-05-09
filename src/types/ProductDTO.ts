@@ -5,18 +5,18 @@ interface ProductAttributeDTO {
     isInitial: boolean;
 }
 
-interface ImageDTO {
+export interface ImageDTO {
     id?: number;
     imageUrl: string;
     altText: string;
 }
 
-interface stockDTO {
+export interface StockDTO {
     quantity: number;
-    warehouse: Warehouse;
+    warehouse: WarehouseDTO;
 }
 
-interface Warehouse {
+ export interface WarehouseDTO {
     id?: number;
     name: string;
     address: string;
@@ -36,6 +36,6 @@ export interface ProductDTO {
     supplierName?: string;
     images: ImageDTO [];
     productAttributes: ProductAttributeDTO[];
-    stock: stockDTO;
+    stock: StockDTO;
 }
 

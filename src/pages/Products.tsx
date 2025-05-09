@@ -1,18 +1,14 @@
 import React, {useCallback, useEffect, useMemo, useState} from "react";
-import {Container, debounce, Typography} from "@mui/material";
+import {Container, Typography} from "@mui/material";
+import debounce from 'lodash/debounce';
 import {ProductDTO} from "../types/ProductDTO.ts";
-import {CategoryDTO} from "../types/CategoryDTO.ts";
-import {SupplierDTO} from "../types/SupplierDTO.ts";
-import {BrandDTO} from "../types/BrandDTO.ts";
-import {getCategories, getCategorySize} from "../api/CategoryApi.ts";
-import {getBrands, getBrandSize} from "../api/BrandApi.ts";
-import {getSuppliers, getSupplierSize} from "../api/SupplierApi.ts";
 import {getProducts} from "../api/ProductApi.ts";
 import ProductFilters from "../components/filters/ProductFilters.tsx";
 import ProductList from "../components/products/ProductList.tsx";
 import {ErrorMessage} from "../components/common/ErrorMessage.tsx";
 import Loading from "../components/base/Loading.tsx";
 import {useFetcher} from "../hooks/useFetcher.ts";
+import useFetchInitialData from "../hooks/useFetchInitialProductData.ts";
 
 const Products: React.FC = () => {
     const [sortBy, setSortBy] = useState<'name' | 'price'>('name');
@@ -22,12 +18,16 @@ const Products: React.FC = () => {
     const [brandName, setBrandName] = useState<string>('');
     const [supplierName, setSupplierName] = useState<string>('');
     const [products, setProducts] = useState<ProductDTO[]>([]);
-    const [categories, setCategories] = useState<CategoryDTO[]>([]);
-    const [suppliers, setSuppliers] = useState<SupplierDTO[]>([]);
-    const [brands, setBrands] = useState<BrandDTO[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const size = 6;
+    const options = {
+        loadCategories: true,
+        loadBrands: true,
+        loadSuppliers: true,
+        loadWarehouses: false,
+        loadProduct: false,
+    };
 
     const fetcher = useCallback(async () => {
         const productResponse = await getProducts(page - 1, size, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName);
@@ -36,63 +36,55 @@ const Products: React.FC = () => {
         return productResponse.content;
     }, [page, size, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName]);
 
-    const { fetchData: fetchProducts, loading: productLoading, error: fetchingProductsError } = useFetcher<ProductDTO[]>(fetcher);
+    const {
+        fetchData: fetchProducts,
+        loading: productLoading,
+        error: fetchingProductsError
+    } = useFetcher<ProductDTO[]>(fetcher);
 
+    const {
+        fetchData: fetchInitialData,
+        loading: initialDataLoading,
+        error: initialDataError,
+        categories,
+        brands,
+        suppliers
+    } = useFetchInitialData(undefined, options);
 
-    const {fetchData: fetchInitialData, loading: initialDataLoading, error: initialDataError} = useFetcher(
-        async () => {
-            const [categorySize, brandSize, supplierSize] = await Promise.all([
-                getCategorySize(),
-                getBrandSize(),
-                getSupplierSize(),
-            ]);
-            const [categoriesResponse, brandsResponse, suppliersResponse] = await Promise.all([
-                getCategories(page - 1,categorySize === 0 ? 1 : categorySize),
-                getBrands(page - 1, brandSize === 0 ? 1 : brandSize),
-                getSuppliers(page - 1, supplierSize === 0 ? 1 : supplierSize),
-            ]);
-            setCategories(categoriesResponse.content);
-            setBrands(brandsResponse.content);
-            setSuppliers(suppliersResponse.content);
-            return {
-                categories: categoriesResponse.content,
-                brands: brandsResponse.content,
-                suppliers: suppliersResponse.content,
-            };
-        });
     const debouncedFetchProducts = useMemo(
         () =>
             debounce(() => {
-                fetchProducts();
+                fetchProducts().catch(console.error);
             }, 600),
         [fetchProducts]
     );
     useEffect(() => {
-        debouncedFetchProducts();
+        if (searchBy.trim() === '') {
+            fetchProducts().catch(console.error);
+        } else {
+            debouncedFetchProducts();
+        }
         return () => {
-            debouncedFetchProducts.clear()
+            debouncedFetchProducts.cancel();
         };
-    }, [searchBy]);
+    }, [searchBy, debouncedFetchProducts, fetchProducts]);
 
     useEffect(() => {
-        fetchProducts();
-    }, [page, sortBy, sortDirection, categoryName, brandName, supplierName]);
+        fetchProducts().catch(console.error);
+    }, [page, sortBy, sortDirection, categoryName, brandName, supplierName,fetchProducts]);
 
-    useEffect(() => {
-        fetchInitialData();
-    }, []);
 
     if (productLoading || initialDataLoading) {
         return <Loading fullScreen message="Loading products..."/>;
     }
     if (fetchingProductsError) {
         return <ErrorMessage message={fetchingProductsError} onRetry={() => {
-            fetchProducts()
+            fetchProducts().catch(console.error);
         }}/>;
     }
     if (initialDataError) {
         return <ErrorMessage message={initialDataError} onRetry={() => {
-            fetchInitialData();
+            fetchInitialData().catch(console.error);
         }}/>;
     }
 
