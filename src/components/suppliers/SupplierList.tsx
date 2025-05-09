@@ -95,6 +95,12 @@ const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setP
                                 <Typography variant="body2" color="text.secondary">
                                     {supplier.contactEmail || 'No contact information.'}
                                 </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {supplier.phone || 'No phone information.'}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                    {supplier.address || 'No address information.'}
+                                </Typography>
                             </CardContent>
                         </Card>
                         <ActionButtons id={supplier.id!}
