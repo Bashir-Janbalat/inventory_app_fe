@@ -54,7 +54,7 @@ const CategoryList: React.FC<CustomGridProps<CategoryDTO>> = ({items, page, setP
                     variant="outlined"
                     color="primary"
                     startIcon={<HomeIcon/>}
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/products')}
                     sx={{height: 50}}
                 >
                     Home

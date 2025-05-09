@@ -59,23 +59,23 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
     return (
         <Container>
+            <Button
+                fullWidth
+                variant="contained"
+                color="primary"
+                style={{minHeight: 50}}
+                startIcon={<AddIcon/>}
+                onClick={goToCreateProduct}
+                sx={{mb:2}}
+            >
+                Create
+            </Button>
             <Stack direction={{xs: 'column', sm: 'column', md: 'row'}} spacing={2} marginBottom={2}>
-
-                <Button
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AddIcon/>}
-                    style={{minHeight: 50}}
-                    onClick={goToCreateProduct}
-                >
-                    Create
-                </Button>
                 <FormControl fullWidth>
                     <InputLabel id="sort-by-label">Sort By</InputLabel>
                     <Select
                         id="sort-by"
-                        labelId="sort-by-label"  // labelId muss mit der id des InputLabel übereinstimmen
+                        labelId="sort-by-label"
                         name="sort"
                         value={sortBy}
                         onChange={resetPageAndSetSelect(setSortBy)}
