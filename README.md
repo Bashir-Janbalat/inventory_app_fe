@@ -24,55 +24,8 @@ Frontend für das Inventarverwaltungssystem, gebaut mit **React**, **Vite**, **T
 ## 📂 Projektstruktur
 
 ```
-src/
-├── api/
-│   ├── AxiosInstance.ts         # Grundlegende API-Logik für HTTP-Anfragen
-│   ├── ProductApi.ts            # API-Logik für produktbezogene Operationen
-│   ├── CategoryApi.ts           # API-Logik für Kategoriebearbeitung
-│   ├── SupplierApi.ts           # API-Logik für Lieferantenbezogene Operationen
-│   ├── BrandApi.ts              # API-Logik für Markenbezogene Operationen
-│
-├── auth/
-│   ├── AuthApi.ts               # Authentifizierungslogik (JWT-Token)
-│   ├── AuthContext.tsx          # Kontext für Authentifizierungsstatus
-│   ├── AuthUtils.ts             # Hilfsfunktionen für das Authentifizierungsmanagement
-│   ├── useAuth.ts             
-│
-├── components/
-│   ├── filter/  
-│   │   └── ProductFilters.tsx   # Filterkomponente für Produkte
-│   ├── LoginForm.tsx            # Formular-Komponente für Login
-│   ├── ProductCard.tsx          # Kartenkomponente zur Anzeige eines Produkts
-│   ├── ProductList.tsx          # Listenkomponente für die Anzeige von Produkten
-│   ├── ProtectedRoute.tsx       # Wrapper-Komponente zum Schutz von Routen
-│   ├── Header.tsx               # Kopfzeilenkomponente (mit Logout-Schaltfläche)
-│   ├── Footer.tsx               # Footer-Komponente (mit Copyright-Info)
-│   ├── SignUpForm.tsx           # Signup-Formular-Komponente
-│
-├── pages/
-│   ├── LoginPage.tsx            # Seite für Login
-│   ├── NotFoundPage.tsx         # Seite für 404-Fehler
-│   ├── ProductPage.tsx          # Seite für einzelne Produktdetails
-│   └── SignupPage.tsx           # Seite für Signup
-│
-├── types/
-│   ├── ProductDTO.ts            # Produkt-Datenstruktur
-│   ├── BrandDTO.ts              # Marken-Datenstruktur
-│   ├── CategoryDTO.ts           # Kategorie-Datenstruktur
-│   ├── SupplierDTO.ts           # Lieferanten-Datenstruktur
-│   ├── UserDTO.ts               # Benutzer-Datenstruktur
-│   └── PagedResponseDTO.ts      # Struktur für paginierte Antworten
-│
-├── App.tsx                      # Haupt-App-Komponente, die das Routing einrichtet
-├── Main.tsx                     # Einstiegspunkt der App
-├── AppRoutes.tsx                   # Handhabt das Routing der App
-└── vite-env.d.ts                # TypeScript-Umgebungstypen für Vite
-└── .env                         # Umgebungsvariablen für die App
-└── Dockerfile                   # Dockerfile zur Containerisierung der App
-└── docker-compose.inventory_app_fe.yml  # Docker-Compose-Konfiguration für die App
-```
-
 ---
+```
 
 ## 🚀 Installation
 
