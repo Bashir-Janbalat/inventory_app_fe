@@ -59,26 +59,25 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
     return (
         <Container>
-            <Stack direction={{ xs: 'column', sm: 'column', md: 'row' }} spacing={2} marginBottom={2}>
+            <Stack direction={{xs: 'column', sm: 'column', md: 'row'}} spacing={2} marginBottom={2}>
 
                 <Button
                     fullWidth
                     variant="contained"
                     color="primary"
-                    startIcon={<AddIcon />}
-                    style={{ minHeight: 50 }}
+                    startIcon={<AddIcon/>}
+                    style={{minHeight: 50}}
                     onClick={goToCreateProduct}
                 >
                     Create
                 </Button>
-
                 <FormControl fullWidth>
-                    <InputLabel id="sort-by-label">Sort by</InputLabel>
+                    <InputLabel id="sort-by-label">Sort By</InputLabel>
                     <Select
                         id="sort-by"
-                        labelId="sort-by-label"
+                        labelId="sort-by-label"  // labelId muss mit der id des InputLabel übereinstimmen
+                        name="sort"
                         value={sortBy}
-                        label="Sort by"
                         onChange={resetPageAndSetSelect(setSortBy)}
                     >
                         <MenuItem value="name">Name</MenuItem>
@@ -90,6 +89,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     <InputLabel id="sort-direction-label">Direction</InputLabel>
                     <Select
                         id="sort-direction"
+                        name="sort-direction"
                         labelId="sort-direction-label"
                         value={sortDirection}
                         label="Direction"
@@ -102,6 +102,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
                 <TextField
                     id="search-by-name"
+                    name="search-by-name"
                     label="Search by name"
                     value={searchBy}
                     onChange={resetPageAndSetInput(setSearchBy)}
@@ -112,6 +113,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     <InputLabel id="category-label">Category</InputLabel>
                     <Select
                         id="category"
+                        name="category"
                         labelId="category-label"
                         value={categoryName}
                         label="Category"
@@ -130,6 +132,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     <InputLabel id="brand-label">Brand</InputLabel>
                     <Select
                         id="brand"
+                        name="brand"
                         labelId="brand-label"
                         value={brandName}
                         label="Brand"
@@ -148,6 +151,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                     <InputLabel id="supplier-label">Supplier</InputLabel>
                     <Select
                         id="supplier"
+                        name="supplier"
                         labelId="supplier-label"
                         value={supplierName}
                         label="Supplier"
