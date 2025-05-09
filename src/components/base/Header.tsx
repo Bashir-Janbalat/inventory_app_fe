@@ -11,7 +11,7 @@ import {
     Typography,
     useTheme
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
 import { useAuth } from "../../hooks/useAuth.ts";
 
@@ -24,6 +24,7 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar }) => {
     const { authenticated: isAuthenticated, subject: username, logout } = useAuth();
     const theme = useTheme();
+    const navigate = useNavigate();
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -36,9 +37,8 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
         setAnchorEl(null);
     };
 
-    const handleSettings = () => {
-        handleMenuClose();
-        // Hier könntest du z.B. navigate("/settings") einbauen
+    const handleMyProfile = () => {
+        navigate("/profile")
     };
 
     const handleLogout = () => {
@@ -157,7 +157,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
                                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                             >
-                                <MenuItem onClick={handleSettings}>Settings</MenuItem>
+                                <MenuItem onClick={handleMyProfile}>My Profile</MenuItem>
                             </Menu>
                         </>
                     )}

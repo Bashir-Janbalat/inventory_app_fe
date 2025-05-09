@@ -29,7 +29,6 @@ const UpdateSupplier = () => {
 
     return (
         <UpdateForm
-            id={parsedId}
             fetcher={fetcher}
             updater={updater}
             redirectPath="/suppliers"

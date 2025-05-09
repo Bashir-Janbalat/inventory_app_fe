@@ -29,7 +29,6 @@ const UpdateCategory = () => {
 
     return (
         <UpdateForm
-            id={parsedId}
             fetcher={fetcher}
             updater={updater}
             redirectPath="/categories"

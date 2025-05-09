@@ -29,7 +29,6 @@ const UpdateBrand = () => {
 
     return (
         <UpdateForm
-            id={parsedId}
             fetcher={fetcher}
             updater={updater}
             redirectPath="/brands"

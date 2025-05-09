@@ -4,7 +4,6 @@ import {useNavigate} from 'react-router-dom';
 import {Alert, Box, Button, CircularProgress, Container, Stack, TextField, Typography} from '@mui/material';
 
 interface UpdateFormProps<T extends object> {
-    id: number;
     fetcher: () => Promise<T>;
     updater: (data: T) => Promise<void>;
     redirectPath: string;
@@ -54,7 +53,7 @@ export function UpdateForm<T extends object>({
     };
 
     const handleBack = () => {
-        navigate(-1);
+        navigate(redirectPath);
     };
 
     if (loading) {
@@ -88,6 +87,7 @@ export function UpdateForm<T extends object>({
                     {Object.entries(formValues).map(([key, value]) => (
                         <Box key={key} sx={{mb: 2}}>
                             <TextField
+                                id={`${key}`}
                                 key={key}
                                 label={`${key}`}
                                 value={value}

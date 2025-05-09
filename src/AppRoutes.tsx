@@ -16,6 +16,7 @@ import UpdateSupplier from "./components/suppliers/UpdateSupplier.tsx";
 import UpdateCategory from "./components/categories/UpdateCategory.tsx";
 import CreateCategory from "./components/categories/CreateCategory.tsx";
 import ProductForm from "./components/products/ProductForm.tsx";
+import MyProfile from "./components/base/MyProfile.tsx";
 
 interface AppRoutesProps {
     darkMode: boolean;
@@ -37,6 +38,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
                     <Route path="signup" element={<SignUpPage/>}/>
 
                     {/* geschützte Seiten */}
+                    <Route path="profile" element={<ProtectedRoute><MyProfile/></ProtectedRoute>}/>
                     <Route path="products" element={<ProtectedRoute><Products/></ProtectedRoute>}/>
                     <Route path="createProduct" element={<ProtectedRoute><ProductForm isEdit={false}/></ProtectedRoute>}/>
                     <Route path="products/:id" element={<ProtectedRoute><ProductPage/></ProtectedRoute>}/>
