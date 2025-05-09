@@ -1,14 +1,14 @@
-import { useCallback, useState } from 'react';
-import { getCategories, getCategorySize } from '../api/CategoryApi';
-import { getBrands, getBrandSize } from '../api/BrandApi';
-import { getWarehouses } from '../api/Warehous';
-import { getSuppliers, getSupplierSize } from '../api/SupplierApi';
-import { getProductById } from '../api/ProductApi';
-import { CategoryDTO } from '../types/CategoryDTO';
-import { BrandDTO } from '../types/BrandDTO';
-import { SupplierDTO } from '../types/SupplierDTO';
-import { ProductDTO, WarehouseDTO } from '../types/ProductDTO';
-import { useFetcher } from './useFetcher';
+import {useCallback, useState} from 'react';
+import {getCategories, getCategorySize} from '../api/CategoryApi';
+import {getBrands, getBrandSize} from '../api/BrandApi';
+import {getWarehouses} from '../api/Warehous';
+import {getSuppliers, getSupplierSize} from '../api/SupplierApi';
+import {getProductById} from '../api/ProductApi';
+import {CategoryDTO} from '../types/CategoryDTO';
+import {BrandDTO} from '../types/BrandDTO';
+import {SupplierDTO} from '../types/SupplierDTO';
+import {ProductDTO, WarehouseDTO} from '../types/ProductDTO';
+import {useFetcher} from './useFetcher';
 
 type InitialDataOptions = {
     loadCategories?: boolean;
@@ -18,17 +18,25 @@ type InitialDataOptions = {
     loadProduct?: boolean;
 };
 
-const useFetchInitialData = (id?: string, options?: InitialDataOptions) => {
+const useProductFormData = (id?: string, options?: InitialDataOptions) => {
     const [categories, setCategories] = useState<CategoryDTO[]>([]);
     const [brands, setBrands] = useState<BrandDTO[]>([]);
     const [suppliers, setSuppliers] = useState<SupplierDTO[]>([]);
     const [warehouses, setWarehouses] = useState<WarehouseDTO[]>([]);
     const [product, setProduct] = useState<ProductDTO>();
 
-    const fetcher = useCallback(() => {
+    const {
+        loadCategories = false,
+        loadBrands = false,
+        loadSuppliers = false,
+        loadWarehouses = false,
+        loadProduct = false
+    } = options || {};
+
+    const fetcher = useCallback(async () => {
         const tasks: Promise<void>[] = [];
 
-        if (options?.loadCategories) {
+        if (loadCategories) {
             tasks.push(
                 getCategorySize().then((size) =>
                     getCategories(0, size || 1).then((res) => setCategories(res.content))
@@ -36,7 +44,7 @@ const useFetchInitialData = (id?: string, options?: InitialDataOptions) => {
             );
         }
 
-        if (options?.loadBrands) {
+        if (loadBrands) {
             tasks.push(
                 getBrandSize().then((size) =>
                     getBrands(0, size || 1).then((res) => setBrands(res.content))
@@ -44,7 +52,7 @@ const useFetchInitialData = (id?: string, options?: InitialDataOptions) => {
             );
         }
 
-        if (options?.loadSuppliers) {
+        if (loadSuppliers) {
             tasks.push(
                 getSupplierSize().then((size) =>
                     getSuppliers(0, size || 1).then((res) => setSuppliers(res.content))
@@ -52,11 +60,11 @@ const useFetchInitialData = (id?: string, options?: InitialDataOptions) => {
             );
         }
 
-        if (options?.loadWarehouses) {
+        if (loadWarehouses) {
             tasks.push(getWarehouses().then((res) => setWarehouses(res)));
         }
 
-        if (options?.loadProduct && id) {
+        if (loadProduct && id) {
             tasks.push(
                 getProductById(Number(id)).then((productResponse) => {
                     setProduct({
@@ -70,10 +78,10 @@ const useFetchInitialData = (id?: string, options?: InitialDataOptions) => {
             );
         }
 
-        return Promise.all(tasks);
-    }, [id, options]);
+        await Promise.all(tasks);
+    }, [id, loadCategories, loadBrands, loadSuppliers, loadWarehouses, loadProduct]);
 
-    const { fetchData, loading, error } = useFetcher(fetcher);
+    const {fetchData, loading, error} = useFetcher(fetcher);
 
     return {
         fetchData,
@@ -87,4 +95,4 @@ const useFetchInitialData = (id?: string, options?: InitialDataOptions) => {
     };
 };
 
-export default useFetchInitialData;
+export default useProductFormData;

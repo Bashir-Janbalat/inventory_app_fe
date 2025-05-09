@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigate, useParams} from 'react-router-dom';
-import useFetchInitialData from '../../hooks/useFetchInitialProductData';
+import createFetcher from '../../hooks/useProductFormData.ts';
 import {createProduct, updateProduct} from '../../api/ProductApi';
-import {Alert, Button, CircularProgress, Grid} from "@mui/material";
+import {Button, CircularProgress, Grid} from "@mui/material";
 import Loading from "../base/Loading.tsx";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import ProductDetails from "./ProductDetails.tsx";
@@ -13,6 +13,8 @@ import ProductCategory from "./ProductCategory.tsx";
 import ProductBrand from "./ProductBrand.tsx";
 import ProductImages from "./ProductImages.tsx";
 import ProductAttributes from "./ProductAttributes.tsx";
+import {DetailedApiError} from "../../errors/DetailedApiError.ts";
+import CustomSnackbar from "../common/CustomSnackbar.tsx";
 
 const ProductForm = ({isEdit = false}: { isEdit?: boolean }) => {
     const {id} = useParams<{ id: string }>();
@@ -33,10 +35,9 @@ const ProductForm = ({isEdit = false}: { isEdit?: boolean }) => {
         suppliers,
         warehouses,
         product
-    } = useFetchInitialData(id, options);
+    } = createFetcher(id, options);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [err, setErr] = useState<string | null>(null);
     const [formData, setFormData] = useState<ProductDTO>({
         name: '',
         sku: '',
@@ -46,12 +47,13 @@ const ProductForm = ({isEdit = false}: { isEdit?: boolean }) => {
         productAttributes: [],
         stock: {quantity: 0, warehouse: {name: '', address: ''}},
     });
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');
 
     useEffect(() => {
-        if (isEdit && id && !product) {
-            fetchInitialData().catch(console.error);
-        }
-    }, [isEdit, id, fetchInitialData, product]);
+        fetchInitialData().catch(console.error);
+    }, [isEdit, id, fetchInitialData]);
 
     useEffect(() => {
         if (product) {
@@ -72,15 +74,23 @@ const ProductForm = ({isEdit = false}: { isEdit?: boolean }) => {
         try {
             if (isEdit && id) {
                 await updateProduct(Number(id), formData);
+                setSnackbarMessage('Product Update successfully!');
+                setSnackbarSeverity('success');
+                setSnackbarOpen(true);
             } else {
                 await createProduct(formData);
+                setSnackbarMessage('Create Update successfully!');
+                setSnackbarSeverity('success');
+                setSnackbarOpen(true);
             }
             navigate('/products');
         } catch (err) {
-            if (err instanceof Error) {
-                setErr(err.message);
+            if (err instanceof DetailedApiError) {
+                setSnackbarMessage(err.message);
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
             } else {
-                setErr("An unexpected error occurred.");
+                throw error;
             }
         } finally {
             setIsSubmitting(false);
@@ -89,7 +99,9 @@ const ProductForm = ({isEdit = false}: { isEdit?: boolean }) => {
 
     if (loading) return <Loading fullScreen message="Loading..."/>;
     if (error) return <ErrorMessage message={error} onRetry={fetchInitialData}/>;
-
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
     return (
         <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
@@ -124,9 +136,12 @@ const ProductForm = ({isEdit = false}: { isEdit?: boolean }) => {
                 >
                     Back
                 </Button>
-                {err && (
-                    <Alert severity="error">{err}</Alert>
-                )}
+                <CustomSnackbar
+                    open={snackbarOpen}
+                    message={snackbarMessage}
+                    severity={snackbarSeverity}
+                    onClose={handleSnackbarClose}
+                />
             </Grid>
         </form>
     );

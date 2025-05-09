@@ -8,7 +8,7 @@ import ProductList from "../components/products/ProductList.tsx";
 import {ErrorMessage} from "../components/common/ErrorMessage.tsx";
 import Loading from "../components/base/Loading.tsx";
 import {useFetcher} from "../hooks/useFetcher.ts";
-import useFetchInitialData from "../hooks/useFetchInitialProductData.ts";
+import createFetcher from "../hooks/useProductFormData.ts";
 
 const Products: React.FC = () => {
     const [sortBy, setSortBy] = useState<'name' | 'price'>('name');
@@ -49,7 +49,11 @@ const Products: React.FC = () => {
         categories,
         brands,
         suppliers
-    } = useFetchInitialData(undefined, options);
+    } = createFetcher(undefined, options);
+    useEffect(() => {
+        fetchProducts().catch(console.error);
+        fetchInitialData().catch(console.error);
+    }, [page, sortBy, sortDirection, categoryName, brandName, supplierName,fetchProducts,fetchInitialData]);
 
     const debouncedFetchProducts = useMemo(
         () =>
@@ -69,9 +73,7 @@ const Products: React.FC = () => {
         };
     }, [searchBy, debouncedFetchProducts, fetchProducts]);
 
-    useEffect(() => {
-        fetchProducts().catch(console.error);
-    }, [page, sortBy, sortDirection, categoryName, brandName, supplierName,fetchProducts]);
+
 
 
     if (productLoading || initialDataLoading) {
