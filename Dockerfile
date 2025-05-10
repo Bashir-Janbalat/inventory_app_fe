@@ -1,5 +1,5 @@
 # استخدم نسخة Node الرسمية
-FROM node:latest
+FROM node:20-alpine
 
 # تحديد مجلد العمل داخل الحاوية
 WORKDIR /app
