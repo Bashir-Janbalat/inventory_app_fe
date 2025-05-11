@@ -1,7 +1,7 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import LoginPage from './pages/LoginPage.tsx';
 import ProtectedRoute from "./components/auth/ProtectedRoute.tsx";
-import ProductPage from "./pages/ProductsPage.tsx";
+import ProductPage from "./components/products/ProductsPage.tsx";
 import SignUpPage from "./pages/SignUpPage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import Layout from "./components/base/Layout.tsx";

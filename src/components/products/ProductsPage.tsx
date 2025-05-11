@@ -1,24 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ProductDTO } from '../types/ProductDTO';
-import {deleteProduct, getProductById} from '../api/ProductApi.ts';
+import React, {useEffect, useState} from 'react';
+import {useNavigate, useParams} from 'react-router-dom';
+import {ProductDTO} from '../../types/ProductDTO.ts';
+import {deleteProduct, getProductById} from '../../api/ProductApi.ts';
 import {
     Box,
     Button,
     Card,
     CardContent,
     CardMedia,
+    CircularProgress,
     Container,
     Divider,
     Grid,
     Skeleton,
     Typography,
 } from '@mui/material';
-import {DetailedApiError} from "../errors/DetailedApiError.ts";
-import CustomSnackbar from "../components/common/CustomSnackbar.tsx";
+import {DetailedApiError} from "../../errors/DetailedApiError.ts";
+import CustomSnackbar from "../common/CustomSnackbar.tsx";
 
 const ProductPage: React.FC = () => {
-    const { id } = useParams();
+    const {id} = useParams();
     const navigate = useNavigate();
     const [product, setProduct] = useState<ProductDTO | null>(null);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -26,6 +27,7 @@ const ProductPage: React.FC = () => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -45,13 +47,15 @@ const ProductPage: React.FC = () => {
         fetchProduct();
     }, [id]);
 
-    const handleDeleteProduct = async(id: number)=> {
+    const handleDeleteProduct = async (id: number) => {
         try {
+            setIsSubmitting(true);
             const status = await deleteProduct(id);
             if (status === 204) {
                 setSnackbarMessage('Product deleted successfully!');
                 setSnackbarSeverity('success');
                 setSnackbarOpen(true);
+                navigate('/products');
             }
         } catch (error) {
             if (error instanceof DetailedApiError) {
@@ -61,6 +65,8 @@ const ProductPage: React.FC = () => {
             } else {
                 throw error;
             }
+        }finally {
+            setIsSubmitting(false);
         }
     }
     const handleSnackbarClose = () => {
@@ -69,24 +75,24 @@ const ProductPage: React.FC = () => {
 
     if (loading) {
         return (
-            <Container sx={{ py: 4, textAlign: 'center' }} maxWidth="sm">
-                <Skeleton variant="rectangular" height={400} />
-                <Skeleton variant="text" height={50} sx={{ mt: 2 }} />
-                <Skeleton variant="text" height={30} sx={{ mt: 1 }} />
+            <Container sx={{py: 4, textAlign: 'center'}} maxWidth="sm">
+                <Skeleton variant="rectangular" height={400}/>
+                <Skeleton variant="text" height={50} sx={{mt: 2}}/>
+                <Skeleton variant="text" height={30} sx={{mt: 1}}/>
             </Container>
         );
     }
 
     if (!product) {
         return (
-            <Container sx={{ py: 4, textAlign: 'center' }} maxWidth="sm">
+            <Container sx={{py: 4, textAlign: 'center'}} maxWidth="sm">
                 <Typography variant="h5">Product not found.</Typography>
             </Container>
         );
     }
 
     return (
-        <Container sx={{ py: 4 }} maxWidth="sm">
+        <Container sx={{py: 4}} maxWidth="sm">
             <Card
                 sx={{
                     maxWidth: 800,
@@ -102,13 +108,13 @@ const ProductPage: React.FC = () => {
                         height="400"
                         image={selectedImage}
                         alt={product.name}
-                        sx={{ objectFit: 'cover', transition: 'opacity 0.5s ease-in' }}
+                        sx={{objectFit: 'cover', transition: 'opacity 0.5s ease-in'}}
                     />
                 ) : (
-                    <Skeleton variant="rectangular" height={400} />
+                    <Skeleton variant="rectangular" height={400}/>
                 )}
 
-                <Box sx={{ display: 'flex', overflowX: 'auto', p: 2 }}>
+                <Box sx={{display: 'flex', overflowX: 'auto', p: 2}}>
                     {product.images.map((img, idx) => (
                         <Box
                             key={idx}
@@ -128,18 +134,18 @@ const ProductPage: React.FC = () => {
                             <img
                                 src={img.imageUrl}
                                 alt={img.altText || product.name}
-                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                style={{width: '100%', height: '100%', objectFit: 'cover'}}
                             />
                         </Box>
                     ))}
                 </Box>
 
-                <CardContent sx={{ p: 3 }}>
-                    <Box sx={{ mb: 3 }}>
-                        <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
+                <CardContent sx={{p: 3}}>
+                    <Box sx={{mb: 3}}>
+                        <Typography variant="h4" sx={{fontWeight: 'bold', mb: 1}}>
                             {product.name}
                         </Typography>
-                        <Typography variant="h6" color="primary" sx={{ fontSize: '22px', mb: 2 }}>
+                        <Typography variant="h6" color="primary" sx={{fontSize: '22px', mb: 2}}>
                             ${product.costPrice.toFixed(2)}
                         </Typography>
 
@@ -172,10 +178,10 @@ const ProductPage: React.FC = () => {
                         </Grid>
                     </Box>
 
-                    <Divider sx={{ my: 3 }} />
+                    <Divider sx={{my: 3}}/>
 
-                    <Box sx={{ mb: 3 }}>
-                        <Typography variant="h6" sx={{ mb: 1 }}>
+                    <Box sx={{mb: 3}}>
+                        <Typography variant="h6" sx={{mb: 1}}>
                             Description
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
@@ -185,7 +191,7 @@ const ProductPage: React.FC = () => {
 
                     {product.productAttributes.length > 0 && (
                         <Box>
-                            <Typography variant="h6" sx={{ mb: 2 }}>
+                            <Typography variant="h6" sx={{mb: 2}}>
                                 Product Attributes
                             </Typography>
                             <Grid container spacing={2}>
@@ -200,11 +206,11 @@ const ProductPage: React.FC = () => {
                         </Box>
                     )}
 
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 4 }}>
+                    <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 4}}>
                         <Button
                             variant="contained"
                             color="primary"
-                            sx={{ flex: 1, mr: 1, py: 1.5, fontSize: '16px' }}
+                            sx={{flex: 1, mr: 1, py: 1.5, fontSize: '16px'}}
                             onClick={() => navigate(`/products/update/${product.id}`)}
                         >
                             Update
@@ -213,10 +219,18 @@ const ProductPage: React.FC = () => {
                         <Button
                             variant="contained"
                             color="error"
-                            sx={{ flex: 1, ml: 1, py: 1.5, fontSize: '16px' }}
-                            onClick={() => {handleDeleteProduct(Number(id))}}
+                            disabled={isSubmitting}
+                            onClick={() => {
+                                handleDeleteProduct(Number(id))
+                            }}
+                            startIcon={isSubmitting ? <CircularProgress size={20} color="inherit"/> : null}
+                            sx={{
+                                flex: 1, ml: 1, py: 1.5, fontSize: '16px',
+                                transform: isSubmitting ? "scale(0.98)" : "scale(1)",
+                                opacity: isSubmitting ? 0.7 : 1
+                            }}
                         >
-                            Delete
+                            {isSubmitting ? "Delete..." : 'Delete'}
                         </Button>
                     </Box>
                     <Button
