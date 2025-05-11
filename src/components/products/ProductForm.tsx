@@ -42,7 +42,7 @@ const ProductForm = ({isEdit = false}: { isEdit?: boolean }) => {
         name: '',
         sku: '',
         description: '',
-        price: 0,
+        costPrice: 0,
         images: [],
         productAttributes: [],
         stock: {quantity: 0, warehouse: {name: '', address: ''}},

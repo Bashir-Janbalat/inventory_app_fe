@@ -11,7 +11,7 @@ interface ProductDetailsProps {
 const ProductDetails: React.FC<ProductDetailsProps> = ({product, onChange}) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        onChange(name as keyof ProductDTO, name === "price" ? Number(value) : value);
+        onChange(name as keyof ProductDTO, name === "costPrice" ? Number(value) : value);
     };
 
     return (
@@ -39,10 +39,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({product, onChange}) => {
                     customInput={TextField}
                     label="Price"
                     name="price"
-                    value={product.price}
+                    value={product.costPrice}
                     onValueChange={(values) => {
                         const { floatValue } = values;
-                        onChange('price', floatValue ?? 0);
+                        onChange('costPrice', floatValue ?? 0);
                     }}
                     thousandSeparator=","
                     decimalSeparator="."

@@ -17,7 +17,7 @@ import AddIcon from "@mui/icons-material/Add";
 import {useNavigate} from "react-router-dom";
 
 export interface ProductFiltersProps {
-    sortBy: 'name' | 'price';
+    sortBy: 'name' | 'costPrice';
     sortDirection: 'asc' | 'desc';
     searchBy: string;
     categoryName: string;
@@ -26,7 +26,7 @@ export interface ProductFiltersProps {
     brands: BrandDTO[];
     supplierName: string;
     suppliers: SupplierDTO[];
-    setSortBy: (value: 'name' | 'price') => void;
+    setSortBy: (value: 'name' | 'costPrice') => void;
     setSortDirection: (value: 'asc' | 'desc') => void;
     setSearchBy: (value: string) => void;
     setCategoryName: (value: string) => void;
@@ -81,7 +81,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                         onChange={resetPageAndSetSelect(setSortBy)}
                     >
                         <MenuItem value="name">Name</MenuItem>
-                        <MenuItem value="sellingPrice">Price</MenuItem>
+                        <MenuItem value="costPrice">Price</MenuItem>
                     </Select>
                 </FormControl>
 

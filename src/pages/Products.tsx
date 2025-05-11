@@ -11,7 +11,7 @@ import {useFetcher} from "../hooks/useFetcher.ts";
 import createFetcher from "../hooks/useProductFormData.ts";
 
 const Products: React.FC = () => {
-    const [sortBy, setSortBy] = useState<'name' | 'price'>('name');
+    const [sortBy, setSortBy] = useState<'name' | 'costPrice'>('name');
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
     const [searchBy, setSearchBy] = useState<string>('');
     const [categoryName, setCategoryName] = useState<string>('');
@@ -51,9 +51,8 @@ const Products: React.FC = () => {
         suppliers
     } = createFetcher(undefined, options);
     useEffect(() => {
-        fetchProducts().catch(console.error);
         fetchInitialData().catch(console.error);
-    }, [page, sortBy, sortDirection, categoryName, brandName, supplierName,fetchProducts,fetchInitialData]);
+    }, [page, sortBy, sortDirection, categoryName, brandName, supplierName,fetchInitialData]);
 
     const debouncedFetchProducts = useMemo(
         () =>

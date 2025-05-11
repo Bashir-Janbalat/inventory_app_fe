@@ -140,7 +140,7 @@ const ProductPage: React.FC = () => {
                             {product.name}
                         </Typography>
                         <Typography variant="h6" color="primary" sx={{ fontSize: '22px', mb: 2 }}>
-                            ${product.price.toFixed(2)}
+                            ${product.costPrice.toFixed(2)}
                         </Typography>
 
                         <Grid container spacing={2}>

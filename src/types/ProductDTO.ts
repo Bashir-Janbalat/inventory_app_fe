@@ -27,7 +27,7 @@ export interface ProductDTO {
     name: string;
     sku: string ;
     description?: string;
-    price: number;
+    costPrice: number;
     categoryID?: number;
     categoryName?: string;
     brandID?: number;
