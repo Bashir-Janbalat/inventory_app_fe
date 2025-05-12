@@ -40,9 +40,11 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
                     {/* geschützte Seiten */}
                     <Route path="profile" element={<ProtectedRoute><MyProfile/></ProtectedRoute>}/>
                     <Route path="products" element={<ProtectedRoute><Products/></ProtectedRoute>}/>
-                    <Route path="createProduct" element={<ProtectedRoute><ProductForm isEdit={false}/></ProtectedRoute>}/>
+                    <Route path="createProduct"
+                           element={<ProtectedRoute><ProductForm mode={'create'}/></ProtectedRoute>}/>
                     <Route path="products/:id" element={<ProtectedRoute><ProductPage/></ProtectedRoute>}/>
-                    <Route path="products/update/:id" element={<ProtectedRoute><ProductForm isEdit={true}/></ProtectedRoute>}/>
+                    <Route path="products/update/:id"
+                           element={<ProtectedRoute><ProductForm mode={'update'}/></ProtectedRoute>}/>
                     <Route path="categories" element={<ProtectedRoute><Categories/></ProtectedRoute>}/>
                     <Route path="categories/update/:id" element={<ProtectedRoute><UpdateCategory/></ProtectedRoute>}/>
                     <Route path="createCategory" element={<ProtectedRoute><CreateCategory/></ProtectedRoute>}/>
