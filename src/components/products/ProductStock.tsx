@@ -96,7 +96,7 @@ const ProductStock: React.FC<ProductStockProps> = ({product, warehouses, onChang
                                 name="quantity"
                                 type="number"
                                 value={stock.quantity}
-                                disabled={mode === 'update'}
+                                disabled={true}
                                 onChange={(e) =>
                                     updateStock(index, {quantity: Number(e.target.value)})
                                 }
@@ -111,6 +111,7 @@ const ProductStock: React.FC<ProductStockProps> = ({product, warehouses, onChang
                                     labelId={`warehouse-label-${index}`}
                                     value={stock.warehouse?.id ? String(stock.warehouse.id) : ''}
                                     label="Warehouse"
+                                    disabled={true}
                                     onChange={(e) => {
                                         const warehouseId = Number(e.target.value);
                                         const selectedWarehouse = warehouses.find((w) => w.id === warehouseId);
