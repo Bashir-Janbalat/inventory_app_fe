@@ -6,7 +6,7 @@ import {Box, Button, CircularProgress, Grid, Tab, Tabs} from "@mui/material";
 import Loading from "../base/Loading.tsx";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import ProductDetails from "./ProductDetails.tsx";
-import {ProductDTO, StockDTO} from "../../types/ProductDTO.ts";
+import {ProductDTO} from "../../types/ProductDTO.ts";
 import ProductStock from "./ProductStock.tsx";
 import ProductSupplier from "./ProductSupplier.tsx";
 import ProductCategory from "./ProductCategory.tsx";
@@ -46,7 +46,7 @@ const ProductForm = ({mode = 'create'}: { mode?: 'create' | 'update' }) => {
         costPrice: 0,
         images: [],
         productAttributes: [],
-        stock: {quantity: 0, warehouse: {name: '', address: ''}, movementType: ''},
+        stocks:[]
     });
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -62,7 +62,7 @@ const ProductForm = ({mode = 'create'}: { mode?: 'create' | 'update' }) => {
         }
     }, [product]);
 
-    const handleFormChange = (field: keyof ProductDTO, value: string | number | StockDTO | ProductDTO['images'] | ProductDTO['productAttributes']) => {
+    const handleFormChange = (field: keyof ProductDTO, value: string | number | ProductDTO['stocks'] | ProductDTO['images'] | ProductDTO['productAttributes']) => {
         setFormData((prev) => ({
             ...prev,
             [field]: value,
@@ -111,7 +111,7 @@ const ProductForm = ({mode = 'create'}: { mode?: 'create' | 'update' }) => {
         <form onSubmit={handleSubmit}>
             <Tabs value={tabIndex} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
                 <Tab label="Details"/>
-                <Tab label="Stock"/>
+                <Tab label="Stocks"/>
                 <Tab label="Supplier"/>
                 <Tab label="Category"/>
                 <Tab label="Brand"/>

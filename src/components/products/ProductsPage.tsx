@@ -28,6 +28,8 @@ const ProductPage: React.FC = () => {
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [totalQuantity, setTotalQuantity] = useState<number>(0);
+    const [uniqueWarehouses, setUniqueWarehouses] = useState<string[]>([]);
 
     const {fetchData, loading, error, product} = createFetcher(id, {
         loadProduct: true,
@@ -45,8 +47,17 @@ const ProductPage: React.FC = () => {
         if (product) {
             setProductDTO(product);
             setSelectedImage(product.images?.[0]?.imageUrl || null);
+
+            const totalQty = product.stocks?.reduce((sum, stock) => sum + (stock.quantity ?? 0), 0) ?? 0;
+            setTotalQuantity(totalQty);
+
+            const uniqueWarehouses = Array.from(
+                new Set(product.stocks?.map((stock) => stock.warehouse.address))
+            );
+            setUniqueWarehouses(uniqueWarehouses);
         }
     }, [product]);
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
@@ -144,11 +155,8 @@ const ProductPage: React.FC = () => {
                     <Typography variant="body2"><strong>Category:</strong> {productDTO.categoryName}</Typography>
                     <Typography variant="body2"><strong>Brand:</strong> {productDTO.brandName}</Typography>
                     <Typography variant="body2"><strong>Supplier:</strong> {productDTO.supplierName}</Typography>
-                    <Typography variant="body2"><strong>Stock:</strong> {productDTO.stock.quantity} units</Typography>
-                    <Typography variant="body2"
-                                gutterBottom><strong>Warehouse:</strong> {productDTO.stock.warehouse.address}
-                    </Typography>
-
+                    <Typography variant="body2"><strong>Stock:</strong> {totalQuantity} units</Typography>
+                    <Typography variant="body2" gutterBottom><strong>Warehouse:</strong> {uniqueWarehouses.join(', ')}</Typography>
                     {productDTO.description && (
                         <>
                             <Divider sx={{my: 1}}/>

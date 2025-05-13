@@ -1,160 +1,204 @@
-import {ProductDTO, WarehouseDTO} from "../../types/ProductDTO.ts";
-import {FormControl, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, TextField} from "@mui/material";
-import React, {useState} from "react";
+import {ProductDTO, StockDTO, WarehouseDTO} from "../../types/ProductDTO.ts";
+import {Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import React, {Fragment, useState} from "react";
 
 interface ProductStockProps {
     product: ProductDTO;
     warehouses: WarehouseDTO[];
-    onChange: (field: keyof ProductDTO, value: ProductDTO['stock']) => void;
+    onChange: (field: keyof ProductDTO, value: ProductDTO['stocks']) => void;
     mode: 'create' | 'update';
 }
 
 const ProductStock: React.FC<ProductStockProps> = ({product, warehouses, onChange, mode}) => {
-    const [movementType, setMovementType] = useState("ADJUST");
-    const [destinationWarehouseId, setDestinationWarehouseId] = useState<number | undefined>(product.stock?.destinationWarehouseId);
+    const [newStocks, setNewStocks] = useState<Partial<StockDTO>[]>([]);
 
-    const handleStockChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
-        onChange('stock', {
-            ...product.stock,
-            [name]: name === "quantity" ? Number(value) : value,
-        });
-    };
-    const handleStockMovementQuantity = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
-        onChange('stock', {
-            ...product.stock,
-            [name]: name === "movementQuantity" ? Number(value) : value,
-        });
+    const updateStock = (index: number, updatedFields: Partial<StockDTO>) => {
+        const updatedStocks = [...product.stocks];
+        updatedStocks[index] = {
+            ...updatedStocks[index],
+            ...updatedFields
+        };
+        onChange('stocks', updatedStocks);
     };
 
-    const handleWarehouseChange = (e: SelectChangeEvent<string>) => {
-        const selectedId = Number(e.target.value);
-        const selectedWarehouse = warehouses.find((w) => w.id === selectedId);
-        const updatedWarehouse = selectedWarehouse
-            ? {
-                id: selectedWarehouse.id,
-                name: selectedWarehouse.name,
-                address: selectedWarehouse.address,
-            }
-            : {
-                name: "",
-                address: "",
-            };
-
-        onChange('stock', {
-            ...product.stock,
-            warehouse: updatedWarehouse,
-        });
-    }
-    const handleMovementTypeChange = (e: SelectChangeEvent<string>) => {
-        const type = e.target.value;
-        setMovementType(type);
-        if (type !== 'TRANSFER') {
-            setDestinationWarehouseId(undefined);
-        }
-        onChange('stock', {
-            ...product.stock,
-            movementType: type,
-            destinationWarehouseId: type === 'TRANSFER' ? destinationWarehouseId : undefined,
-        });
+    const handleAddStock = () => {
+        const updated = [...newStocks, {quantity: 0, warehouse: undefined}];
+        setNewStocks(updated);
+        onChange('stocks', updated as StockDTO[]);
     };
 
-    const handleDestinationWarehouseChange = (e: SelectChangeEvent<string>) => {
-        const selectedId = e.target.value ? Number(e.target.value) : undefined;
-        setDestinationWarehouseId(selectedId);
-
-        onChange('stock', {
-            ...product.stock,
-            destinationWarehouseId: Number(selectedId),
-        });
+    const handleRemoveStock = (index: number) => {
+        const updated = [...newStocks];
+        updated.splice(index, 1);
+        setNewStocks(updated);
     };
     return (
         <>
-            {/* Stock quantity */}
-            <Grid size={{xs: 12, sm: 6}}>
-                <TextField
-                    label="Quantity"
-                    name="quantity"
-                    type="number"
-                    value={product.stock.quantity}
-                    onChange={handleStockChange}
-                    disabled={mode === 'update'}
-                    fullWidth
-                />
-            </Grid>
-            {/* Warehouse */}
-            <Grid size={{xs: 12, sm: 6}}>
-                <FormControl fullWidth>
-                    <InputLabel id="warehouses-label">Warehouses</InputLabel>
-                    <Select
-                        labelId="warehouses-label"
-                        value={product.stock.warehouse?.id ? String(product.stock.warehouse.id) : ''}
-                        label="Warehouses"
-                        onChange={handleWarehouseChange}
-                    >
-                        <MenuItem value="">All</MenuItem>
-                        {warehouses.map((warehouse) => (
-                            <MenuItem key={warehouse.id} value={warehouse.id}>
-                                {warehouse.name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-            </Grid>
-            {/* MovementType */}
-            {mode === 'update' && (
+            {mode === 'create' && (
                 <>
-                    <Grid size={{xs: 12, sm: 6}}>
-                        <FormControl fullWidth>
-                            <InputLabel id="movementType-label">Movement Type</InputLabel>
-                            <Select
-                                labelId="movementType-label"
-                                value={movementType}
-                                label="Movement Type"
-                                onChange={handleMovementTypeChange}
-                            >
-                                <MenuItem key="IN" value="IN">IN</MenuItem>
-                                <MenuItem key="OUT" value="OUT">OUT</MenuItem>
-                                <MenuItem key="RETURN" value="RETURN">RETURN</MenuItem>
-                                <MenuItem key="DAMAGED" value="DAMAGED">DAMAGED</MenuItem>
-                                <MenuItem key="TRANSFER" value="TRANSFER">TRANSFER</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid size={{xs: 12, sm: 6}}>
-                        <TextField
-                            label="Quantity Change"
-                            name="movementQuantity"
-                            type="number"
-                            value={product.stock?.movementQuantity ?? ''}
-                            onChange={handleStockMovementQuantity}
-                            fullWidth
-                        />
-                    </Grid>
-                    {movementType === 'TRANSFER' && (
-                        <Grid size={{xs: 12, sm: 6}}>
-                            <FormControl fullWidth>
-                                <InputLabel id="destinationWarehouse-label">Destination Warehouse</InputLabel>
-                                <Select
-                                    labelId="destinationWarehouse-label"
-                                    value={destinationWarehouseId ? String(destinationWarehouseId) : ''}
-                                    onChange={handleDestinationWarehouseChange}
-                                    label="Destination Warehouse"
-                                >
-                                    {warehouses
-                                        .filter(w => w.id !== product.stock.warehouse?.id)
-                                        .map((warehouse) => (
+                    {newStocks.map((stock, index) => (
+                        <Fragment key={index}>
+                            <Grid size={{xs: 12, sm: 6}}>
+                                <TextField
+                                    id={`quantity-${index}`}
+                                    label="Quantity"
+                                    type="number"
+                                    required
+                                    value={stock.quantity ?? ''}
+                                    onChange={(e) => {
+                                        const updated = [...newStocks];
+                                        updated[index].quantity = Number(e.target.value);
+                                        setNewStocks(updated);
+                                    }}
+                                    fullWidth
+                                />
+                            </Grid>
+                            <Grid size={{xs: 12, sm: 6}}>
+                                <FormControl fullWidth required>
+                                    <InputLabel id={`warehouse-label-${index}`}>Warehouse</InputLabel>
+                                    <Select
+                                        labelId={`warehouse-label-${index}`}
+                                        value={stock.warehouse?.id ? String(stock.warehouse.id) : ''}
+                                        onChange={(e) => {
+                                            const warehouseId = Number(e.target.value);
+                                            const selectedWarehouse = warehouses.find(w => w.id === warehouseId);
+                                            if (selectedWarehouse) {
+                                                const updated = [...newStocks];
+                                                updated[index].warehouse = selectedWarehouse;
+                                                setNewStocks(updated);
+                                            }
+                                        }}
+                                    >
+                                        <MenuItem value="">Select</MenuItem>
+                                        {warehouses.map((warehouse) => (
                                             <MenuItem key={warehouse.id} value={warehouse.id}>
                                                 {warehouse.name}
                                             </MenuItem>
                                         ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid size={{xs: 12}}>
+                                <Button color="error" variant='outlined' onClick={() => handleRemoveStock(index)}>Remove</Button>
+                            </Grid>
+                        </Fragment>
+                    ))}
+                    <Button variant="outlined" onClick={handleAddStock}>+ Add Stock</Button>
+                </>
+            )}
+
+            {mode === 'update' && (
+                product.stocks.map((stock, index) => (
+                    <React.Fragment key={index}>
+                        <Grid size={{xs: 12, sm: 6}}>
+                            <TextField
+                                label="Quantity"
+                                name="quantity"
+                                type="number"
+                                value={stock.quantity}
+                                disabled={mode === 'update'}
+                                onChange={(e) =>
+                                    updateStock(index, {quantity: Number(e.target.value)})
+                                }
+                                fullWidth
+                            />
+                        </Grid>
+
+                        <Grid size={{xs: 12, sm: 6}}>
+                            <FormControl fullWidth>
+                                <InputLabel id={`warehouse-label-${index}`}>Warehouse</InputLabel>
+                                <Select
+                                    labelId={`warehouse-label-${index}`}
+                                    value={stock.warehouse?.id ? String(stock.warehouse.id) : ''}
+                                    label="Warehouse"
+                                    onChange={(e) => {
+                                        const warehouseId = Number(e.target.value);
+                                        const selectedWarehouse = warehouses.find((w) => w.id === warehouseId);
+                                        if (selectedWarehouse) {
+                                            updateStock(index, {warehouse: selectedWarehouse});
+                                        }
+                                    }}
+                                >
+                                    <MenuItem value="">Select</MenuItem>
+                                    {warehouses.map((warehouse) => (
+                                        <MenuItem key={warehouse.id} value={warehouse.id}>
+                                            {warehouse.name}
+                                        </MenuItem>
+                                    ))}
                                 </Select>
                             </FormControl>
                         </Grid>
-                    )}
-                </>
+                        <Grid size={{xs: 12, sm: 6}}>
+                            <FormControl fullWidth>
+                                <InputLabel id={`movementType-label-${index}`}>Movement Type</InputLabel>
+                                <Select
+                                    labelId={`movementType-label-${index}`}
+                                    value={stock.movementType ?? 'IN'}
+                                    label="Movement Type"
+                                    onChange={(e) => {
+                                        const movementType = e.target.value;
+                                        updateStock(index, {
+                                            movementType,
+                                            destinationWarehouseId: movementType === 'TRANSFER'
+                                                ? stock.destinationWarehouseId
+                                                : undefined
+                                        });
+                                    }}
+                                >
+                                    <MenuItem value="IN">IN</MenuItem>
+                                    <MenuItem value="OUT">OUT</MenuItem>
+                                    <MenuItem value="RETURN">RETURN</MenuItem>
+                                    <MenuItem value="DAMAGED">DAMAGED</MenuItem>
+                                    <MenuItem value="TRANSFER">TRANSFER</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+
+                        <Grid size={{xs: 12, sm: 6}}>
+                            <TextField
+                                label="Quantity Change"
+                                name="movementQuantity"
+                                type="number"
+                                value={stock.movementQuantity ?? ''}
+                                onChange={(e) =>
+                                    updateStock(index, {
+                                        movementQuantity: Number(e.target.value)
+                                    })
+                                }
+                                fullWidth
+                            />
+                        </Grid>
+
+                        {stock.movementType === 'TRANSFER' && (
+                            <Grid size={{xs: 12, sm: 6}}>
+                                <FormControl fullWidth>
+                                    <InputLabel id={`destinationWarehouse-label-${index}`}>Destination
+                                        Warehouse</InputLabel>
+                                    <Select
+                                        labelId={`destinationWarehouse-label-${index}`}
+                                        value={stock.destinationWarehouseId ? String(stock.destinationWarehouseId) : ''}
+                                        label="Destination Warehouse"
+                                        onChange={(e) =>
+                                            updateStock(index, {
+                                                destinationWarehouseId: Number(e.target.value)
+                                            })
+                                        }
+                                    >
+                                        {warehouses
+                                            .filter(w => w.id !== stock.warehouse?.id)
+                                            .map((warehouse) => (
+                                                <MenuItem key={warehouse.id} value={warehouse.id}>
+                                                    {warehouse.name}
+                                                </MenuItem>
+                                            ))}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                        )}
+                    </React.Fragment>
+                ))
             )}
+
         </>
     );
 };

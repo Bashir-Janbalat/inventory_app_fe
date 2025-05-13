@@ -14,9 +14,9 @@ export interface ImageDTO {
 export interface StockDTO {
     quantity: number;
     warehouse: WarehouseDTO;
-    movementType: string;
+    movementType?: string;
     movementQuantity?: number;
-    destinationWarehouseId?: number; // used for Transfer
+    destinationWarehouseId?: number;
 }
 
  export interface WarehouseDTO {
@@ -39,6 +39,6 @@ export interface ProductDTO {
     supplierName?: string;
     images: ImageDTO [];
     productAttributes: ProductAttributeDTO[];
-    stock: StockDTO;
+    stocks: StockDTO[];
 }
 
