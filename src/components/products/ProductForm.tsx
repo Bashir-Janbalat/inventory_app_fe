@@ -25,6 +25,7 @@ const ProductForm = ({mode = 'create'}: { mode?: 'create' | 'update' }) => {
         loadBrands: true,
         loadSuppliers: true,
         loadWarehouses: true,
+        loadAttributes: true,
         loadProduct: mode !== 'create',
     };
     const {
@@ -35,6 +36,7 @@ const ProductForm = ({mode = 'create'}: { mode?: 'create' | 'update' }) => {
         brands,
         suppliers,
         warehouses,
+        attributes,
         product
     } = createFetcher(id, options);
 
@@ -140,7 +142,7 @@ const ProductForm = ({mode = 'create'}: { mode?: 'create' | 'update' }) => {
                         <ProductBrand product={formData} brands={brands} onChange={handleFormChange}/>
                     )}
                     {tabIndex === 5 && <ProductImages product={formData} onChange={handleFormChange}/>}
-                    {tabIndex === 6 && <ProductAttributes product={formData} onChange={handleFormChange}/>}
+                    {tabIndex === 6 && <ProductAttributes product={formData} attributes={attributes} onChange={handleFormChange}/>}
                 </Grid>
             </Box>
 

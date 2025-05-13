@@ -9,12 +9,15 @@ import {BrandDTO} from '../types/BrandDTO';
 import {SupplierDTO} from '../types/SupplierDTO';
 import {ProductDTO, WarehouseDTO} from '../types/ProductDTO';
 import {useFetcher} from './useFetcher';
+import {AttributeDTO} from '../types/Attribute';
+import {getAttributes} from "../api/AttributeApi.ts";
 
 type InitialDataOptions = {
     loadCategories?: boolean;
     loadBrands?: boolean;
     loadSuppliers?: boolean;
     loadWarehouses?: boolean;
+    loadAttributes?: boolean;
     loadProduct?: boolean;
 };
 
@@ -23,6 +26,7 @@ const useProductFormData = (id?: string, options?: InitialDataOptions) => {
     const [brands, setBrands] = useState<BrandDTO[]>([]);
     const [suppliers, setSuppliers] = useState<SupplierDTO[]>([]);
     const [warehouses, setWarehouses] = useState<WarehouseDTO[]>([]);
+    const [attributes, setAttributes] = useState<AttributeDTO[]>([]);
     const [product, setProduct] = useState<ProductDTO>();
 
     const {
@@ -30,6 +34,7 @@ const useProductFormData = (id?: string, options?: InitialDataOptions) => {
         loadBrands = false,
         loadSuppliers = false,
         loadWarehouses = false,
+        loadAttributes = false,
         loadProduct = false
     } = options || {};
 
@@ -64,6 +69,12 @@ const useProductFormData = (id?: string, options?: InitialDataOptions) => {
             tasks.push(getWarehouses().then((res) => setWarehouses(res)));
         }
 
+        if (loadAttributes) {
+            tasks.push(getAttributes().then((res) => {
+                setAttributes(res)
+            }));
+        }
+
         if (loadProduct && id) {
             tasks.push(
                 getProductById(Number(id)).then((productResponse) => {
@@ -79,7 +90,7 @@ const useProductFormData = (id?: string, options?: InitialDataOptions) => {
         }
 
         await Promise.all(tasks);
-    }, [id, loadCategories, loadBrands, loadSuppliers, loadWarehouses, loadProduct]);
+    }, [id, loadCategories, loadBrands, loadSuppliers, loadWarehouses, loadAttributes, loadProduct]);
 
     const {fetchData, loading, error} = useFetcher(fetcher);
 
@@ -91,6 +102,7 @@ const useProductFormData = (id?: string, options?: InitialDataOptions) => {
         brands,
         suppliers,
         warehouses,
+        attributes,
         product,
     };
 };

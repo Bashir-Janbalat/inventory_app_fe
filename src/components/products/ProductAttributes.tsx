@@ -1,15 +1,19 @@
 import {ProductDTO} from "../../types/ProductDTO";
-import {Button, Grid, IconButton, TextField} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import React from "react";
+import {Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import React, {useState} from "react";
+import {AttributeDTO} from "../../types/Attribute";
 
 
 interface productAttributesProps {
     product: ProductDTO;
-    onChange: (field: keyof ProductDTO, value:  ProductDTO['productAttributes']) => void;
+    attributes: AttributeDTO[];
+    onChange: (field: keyof ProductDTO, value: ProductDTO['productAttributes']) => void;
 }
 
-const productAttributes: React.FC<productAttributesProps> = ({product, onChange}) => {
+const ProductAttributes: React.FC<productAttributesProps> = ({product, attributes, onChange}) => {
+    const [selectedAttributeId, setSelectedAttributeId] = useState<number | ''>('');
+
+
     const handleAttributeChange = (index: number, e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const {name, value} = e.target;
         const updatedAttributes = [...product.productAttributes];
@@ -30,11 +34,56 @@ const productAttributes: React.FC<productAttributesProps> = ({product, onChange}
         const updatedAttributes = [...product.productAttributes, newAttribute];
         onChange('productAttributes', updatedAttributes);
     };
+    const handleAddSelectedAttribute = () => {
+        const attr = attributes.find(a => a.id === selectedAttributeId);
+        if (!attr) return;
 
+        const alreadyExists = product.productAttributes.some(pa => pa.attributeName === attr.name);
+        if (alreadyExists) return;
+
+        const newAttribute = {
+            attributeID: attr.id,
+            attributeName: attr.name,
+            attributeValue: '',
+            isInitial: false,
+        };
+
+        const updatedAttributes = [newAttribute, ...product.productAttributes];
+        onChange('productAttributes', updatedAttributes);
+        setSelectedAttributeId('');
+    };
 
     return (
         <>
             <Grid size={{xs: 12}}>
+                <Grid container spacing={2}>
+                    <Grid size={{xs: 12, sm: 6}} sx={{mb: 2}}>
+                        <FormControl fullWidth>
+                            <InputLabel id="attribute-select-label">Select Attribute</InputLabel>
+                            <Select
+                                labelId="attribute-select-label"
+                                value={selectedAttributeId}
+                                label="Select Attribute"
+                                onChange={(e) => setSelectedAttributeId(Number(e.target.value))}
+                            >
+                                {attributes.map(attr => (
+                                    <MenuItem key={attr.id} value={attr.id}>
+                                        {attr.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid size={{xs: 12, sm: 6}}>
+                        <Button
+                            variant="outlined"
+                            onClick={handleAddSelectedAttribute}
+                            disabled={selectedAttributeId === ''}
+                        >
+                            Add exists Attribute
+                        </Button>
+                    </Grid>
+                </Grid>
                 {product.productAttributes.map((attr, index) => (
                     <Grid container spacing={1} key={index}>
                         <Grid size={{xs: 12, sm: 6}}>
@@ -58,18 +107,16 @@ const productAttributes: React.FC<productAttributesProps> = ({product, onChange}
                                 required
                             />
                         </Grid>
-                        <Grid size={{xs: 12, sm: 6}}>
-                            <IconButton onClick={() => handleDeleteAttribute(index)} color="error" sx={{mt: 2}}>
-                                <DeleteIcon/>
-                            </IconButton>
+                        <Grid size={{xs: 12}} sx={{mb: 2}}>
+                            <Button color="error" variant='outlined' onClick={() => handleDeleteAttribute(index)}>Remove</Button>
                         </Grid>
                     </Grid>
                 ))}
                 <Button variant="outlined" onClick={addAttribute}>
-                    Add Attribute
+                    Add new Attribute
                 </Button>
             </Grid>
         </>
     );
 }
-export default productAttributes;
+export default ProductAttributes;

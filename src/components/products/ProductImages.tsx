@@ -1,6 +1,5 @@
 import {ProductDTO} from "../../types/ProductDTO";
-import { Grid, TextField, Button, IconButton } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
+import { Grid, TextField, Button } from "@mui/material";
 import React from "react";
 
 
@@ -57,10 +56,8 @@ const ProductImages: React.FC<ProductImagesProps> = ({product, onChange}) => {
                                 required
                             />
                         </Grid>
-                        <Grid size={{xs: 12, sm: 6}}>
-                            <IconButton onClick={() => handleDeleteImage(index)} color="error" sx={{mt: 2}}>
-                                <DeleteIcon/>
-                            </IconButton>
+                        <Grid size={{xs: 12}} sx={{mb: 2}}>
+                            <Button color="error" variant='outlined' onClick={() => handleDeleteImage(index)}>Remove</Button>
                         </Grid>
                     </Grid>
                 ))}
