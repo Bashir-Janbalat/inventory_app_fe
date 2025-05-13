@@ -1,5 +1,5 @@
 import {ProductDTO, StockDTO, WarehouseDTO} from "../../types/ProductDTO.ts";
-import {Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import React, {Fragment, useState} from "react";
 
 interface ProductStockProps {
@@ -89,7 +89,7 @@ const ProductStock: React.FC<ProductStockProps> = ({product, warehouses, onChang
 
             {mode === 'update' && (
                 product.stocks.map((stock, index) => (
-                    <React.Fragment key={index}>
+                    <React.Fragment key={index} >
                         <Grid size={{xs: 12, sm: 6}}>
                             <TextField
                                 label="Quantity"
@@ -133,7 +133,7 @@ const ProductStock: React.FC<ProductStockProps> = ({product, warehouses, onChang
                                 <InputLabel id={`movementType-label-${index}`}>Movement Type</InputLabel>
                                 <Select
                                     labelId={`movementType-label-${index}`}
-                                    value={stock.movementType ?? 'IN'}
+                                    value={stock.movementType ?? ''}
                                     label="Movement Type"
                                     onChange={(e) => {
                                         const movementType = e.target.value;
@@ -170,7 +170,7 @@ const ProductStock: React.FC<ProductStockProps> = ({product, warehouses, onChang
                         </Grid>
 
                         {stock.movementType === 'TRANSFER' && (
-                            <Grid size={{xs: 12, sm: 6}}>
+                            <Grid size={{xs: 12}}>
                                 <FormControl fullWidth>
                                     <InputLabel id={`destinationWarehouse-label-${index}`}>Destination
                                         Warehouse</InputLabel>
@@ -193,6 +193,11 @@ const ProductStock: React.FC<ProductStockProps> = ({product, warehouses, onChang
                                             ))}
                                     </Select>
                                 </FormControl>
+                            </Grid>
+                        )}
+                        {index < product.stocks.length - 1 && (
+                            <Grid size={{xs: 12}}>
+                                <Box sx={{ borderTop: '1px solid grey', marginTop: 2, marginBottom: 2 }} />
                             </Grid>
                         )}
                     </React.Fragment>
