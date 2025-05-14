@@ -4,5 +4,6 @@ export enum PageType {
     createBrand = "createBrand",
     createSupplier = "createSupplier",
     createCategory = "createCategory",
+    createWarehous = "createWarehous",
 
 }

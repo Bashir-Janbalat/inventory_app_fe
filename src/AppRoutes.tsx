@@ -17,6 +17,9 @@ import UpdateCategory from "./components/categories/UpdateCategory.tsx";
 import CreateCategory from "./components/categories/CreateCategory.tsx";
 import ProductForm from "./components/products/ProductForm.tsx";
 import MyProfile from "./components/base/MyProfile.tsx";
+import Warehouses from "./pages/Warehouses.tsx";
+import CreateWarehous from "./components/warehouses/CreateWarehous.tsx";
+import UpdateWarehous from "./components/warehouses/UpdateWarehous.tsx";
 
 interface AppRoutesProps {
     darkMode: boolean;
@@ -54,6 +57,9 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
                     <Route path="suppliers" element={<ProtectedRoute><Suppliers/></ProtectedRoute>}/>
                     <Route path="supplier/update/:id" element={<ProtectedRoute><UpdateSupplier/></ProtectedRoute>}/>
                     <Route path="createSupplier" element={<ProtectedRoute><CreateSupplier/></ProtectedRoute>}/>
+                    <Route path="warehouses" element={<ProtectedRoute><Warehouses/></ProtectedRoute>}/>
+                    <Route path="createWarehous" element={<ProtectedRoute><CreateWarehous/></ProtectedRoute>}/>
+                    <Route path="warehous/update/:id" element={<ProtectedRoute><UpdateWarehous/></ProtectedRoute>}/>
 
                     <Route path="*" element={<ProtectedRoute><NotFoundPage/></ProtectedRoute>}/>
                 </Route>

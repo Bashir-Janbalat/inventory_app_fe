@@ -15,10 +15,11 @@ const Sidebar: React.FC<SidebarProps> = ({open, toggleSidebar}) => {
         <Drawer
             open={open}
             onClose={toggleSidebar}
-            anchor='top'
+            anchor='left'
             variant={isMobile ? 'temporary' : 'persistent'}
         >
             <SidebarMenu toggleSidebar={toggleSidebar} />
+
         </Drawer>
     );
 };

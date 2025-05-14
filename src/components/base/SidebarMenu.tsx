@@ -3,6 +3,7 @@ import LocalMallIcon from '@mui/icons-material/LocalMall';
 import CategoryIcon from '@mui/icons-material/Category';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import WarehouseIcon from '@mui/icons-material/Warehouse';
 import {useNavigate} from 'react-router-dom';
 
 type SidebarMenuProps = {
@@ -17,6 +18,7 @@ const SidebarMenu = ({toggleSidebar}: SidebarMenuProps) => {
         {text: 'Categories', icon: <CategoryIcon fontSize="large"/>, path: '/categories'},
         {text: 'Brands', icon: <StorefrontIcon fontSize="large"/>, path: '/brands'},
         {text: 'Suppliers', icon: <PermIdentityIcon fontSize="large"/>, path: '/suppliers'},
+        {text: 'Warehouses', icon: <WarehouseIcon fontSize="large"/>, path: '/warehouses'},
     ];
 
     function handleClick(path: string): void {

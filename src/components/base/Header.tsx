@@ -95,6 +95,9 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
                             {/* Buttons for Dashboard, Products, Logout */}
                             <Box sx={{ display: "flex", gap: 1, [theme.breakpoints.down("xs")]: { display: "none" } }}>
                                 <Button variant="outlined" color="primary" onClick={() => toggleSidebar()} sx={{ fontWeight: "bold" }}>
+                                    Menu
+                                </Button>
+                                <Button variant="outlined" color="primary" onClick={() => toggleSidebar()} sx={{ fontWeight: "bold" }}>
                                     Dashboard
                                 </Button>
                                 <Button variant="outlined" color="primary" component={Link} to="/products" sx={{ fontWeight: "bold" }}>
