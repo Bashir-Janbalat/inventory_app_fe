@@ -9,7 +9,7 @@ import {
     MenuItem,
     Toolbar,
     Typography,
-    useTheme
+    useTheme,
 } from "@mui/material";
 import {Link, useNavigate} from "react-router-dom";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
@@ -25,6 +25,14 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
     const { authenticated: isAuthenticated, subject: username, logout } = useAuth();
     const theme = useTheme();
     const navigate = useNavigate();
+    const buttonStyle = {
+        fontWeight: "bold",
+        width: 160,         // feste Breite
+        height: 44,         // feste Höhe
+        whiteSpace: "nowrap",  // kein Umbruch im Text
+        overflow: "hidden",
+        textOverflow: "ellipsis", // falls Text zu lang ist
+    };
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -94,16 +102,19 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
                         <>
                             {/* Buttons for Dashboard, Products, Logout */}
                             <Box sx={{ display: "flex", gap: 1, [theme.breakpoints.down("xs")]: { display: "none" } }}>
-                                <Button variant="outlined" color="primary" onClick={() => toggleSidebar()} sx={{ fontWeight: "bold" }}>
+                                <Button variant="outlined" color="primary" onClick={() => toggleSidebar()} sx={{ buttonStyle }}>
                                     Menu
                                 </Button>
-                                <Button variant="outlined" color="primary" onClick={() => toggleSidebar()} sx={{ fontWeight: "bold" }}>
+                                <Button variant="outlined" color="primary" onClick={() => toggleSidebar()} sx={{ buttonStyle }}>
                                     Dashboard
                                 </Button>
-                                <Button variant="outlined" color="primary" component={Link} to="/products" sx={{ fontWeight: "bold" }}>
+                                <Button variant="outlined" color="primary" component={Link} to="/stockmovement" sx={{ buttonStyle }}>
+                                    Movements
+                                </Button>
+                                <Button variant="outlined" color="primary" component={Link} to="/products" sx={{ buttonStyle }}>
                                     Products
                                 </Button>
-                                <Button variant="contained" color="error" onClick={handleLogout} sx={{ fontWeight: "bold" }}>
+                                <Button variant="contained" color="error" onClick={handleLogout} sx={{ buttonStyle }}>
                                     Logout
                                 </Button>
                             </Box>

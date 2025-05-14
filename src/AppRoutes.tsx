@@ -20,6 +20,7 @@ import MyProfile from "./components/base/MyProfile.tsx";
 import Warehouses from "./pages/Warehouses.tsx";
 import CreateWarehous from "./components/warehouses/CreateWarehous.tsx";
 import UpdateWarehous from "./components/warehouses/UpdateWarehous.tsx";
+import StockMovements from "./components/stockMovements/StockMovements.tsx";
 
 interface AppRoutesProps {
     darkMode: boolean;
@@ -60,6 +61,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
                     <Route path="warehouses" element={<ProtectedRoute><Warehouses/></ProtectedRoute>}/>
                     <Route path="createWarehous" element={<ProtectedRoute><CreateWarehous/></ProtectedRoute>}/>
                     <Route path="warehous/update/:id" element={<ProtectedRoute><UpdateWarehous/></ProtectedRoute>}/>
+                    <Route path="stockmovement" element={<ProtectedRoute><StockMovements/></ProtectedRoute>}/>
 
                     <Route path="*" element={<ProtectedRoute><NotFoundPage/></ProtectedRoute>}/>
                 </Route>
