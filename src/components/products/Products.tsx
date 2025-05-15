@@ -1,14 +1,14 @@
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {Container, Typography} from "@mui/material";
 import debounce from 'lodash/debounce';
-import {ProductDTO} from "../types/ProductDTO.ts";
-import {getProducts} from "../api/ProductApi.ts";
-import ProductFilters from "../components/filters/ProductFilters.tsx";
-import ProductList from "../components/products/ProductList.tsx";
-import {ErrorMessage} from "../components/common/ErrorMessage.tsx";
-import Loading from "../components/base/Loading.tsx";
-import {useFetcher} from "../hooks/useFetcher.ts";
-import createFetcher from "../hooks/useProductFormData.ts";
+import {ProductDTO} from "../../types/ProductDTO.ts";
+import {getProducts} from "../../api/ProductApi.ts";
+import ProductFilters from "../filters/ProductFilters.tsx";
+import ProductList from "./ProductList.tsx";
+import {ErrorMessage} from "../common/ErrorMessage.tsx";
+import Loading from "../base/Loading.tsx";
+import {useFetcher} from "../../hooks/useFetcher.ts";
+import createFetcher from "../../hooks/useProductFormData.ts";
 
 const Products: React.FC = () => {
     const [sortBy, setSortBy] = useState<'name' | 'costPrice'>('name');

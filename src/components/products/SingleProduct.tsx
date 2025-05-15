@@ -19,7 +19,7 @@ import {ErrorMessage} from '../common/ErrorMessage.tsx';
 import createFetcher from '../../hooks/useProductFormData.ts';
 import {DetailedApiError} from '../../errors/DetailedApiError.ts';
 
-const ProductPage: React.FC = () => {
+const SingleProduct: React.FC = () => {
     const {id} = useParams();
     const navigate = useNavigate();
     const [productDTO, setProductDTO] = useState<ProductDTO>();
@@ -220,4 +220,4 @@ const ProductPage: React.FC = () => {
     );
 };
 
-export default ProductPage;
+export default SingleProduct;

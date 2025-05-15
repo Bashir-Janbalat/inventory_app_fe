@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {CategoryStatsDTO} from '../types/CategoryDTO';
-import {getCategoriesWithStats} from '../api/CategoryApi.ts';
-import Loading from "../components/base/Loading.tsx";
-import CategoryList from '../components/categories/CategoryList.tsx';
-import {useFetcher} from "../hooks/useFetcher.ts";
-import {ErrorMessage} from "../components/common/ErrorMessage.tsx";
+import {CategoryStatsDTO} from '../../types/CategoryDTO.ts';
+import {getCategoriesWithStats} from '../../api/CategoryApi.ts';
+import Loading from "../base/Loading.tsx";
+import CategoryList from './CategoryList.tsx';
+import {useFetcher} from "../../hooks/useFetcher.ts";
+import {ErrorMessage} from "../common/ErrorMessage.tsx";
 
 const Categories: React.FC = () => {
     const [categories, setCategories] = useState<CategoryStatsDTO[]>([]);

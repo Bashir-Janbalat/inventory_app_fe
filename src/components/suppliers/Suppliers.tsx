@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {SupplierDTO} from '../types/SupplierDTO';
-import {getSuppliers} from '../api/SupplierApi.ts';
-import Loading from "../components/base/Loading.tsx";
-import SupplierList from "../components/suppliers/SupplierList.tsx";
-import {useFetcher} from "../hooks/useFetcher.ts";
-import {ErrorMessage} from "../components/common/ErrorMessage.tsx";
+import {SupplierDTO} from '../../types/SupplierDTO.ts';
+import {getSuppliers} from '../../api/SupplierApi.ts';
+import Loading from "../base/Loading.tsx";
+import SupplierList from "./SupplierList.tsx";
+import {useFetcher} from "../../hooks/useFetcher.ts";
+import {ErrorMessage} from "../common/ErrorMessage.tsx";
 
 const Suppliers: React.FC = () => {
     const [suppliers, setSuppliers] = useState<SupplierDTO[]>([]);

@@ -2,9 +2,9 @@ import {useParams} from "react-router-dom";
 import {UpdateForm} from "../common/UpdateForm";
 import {useCallback} from "react";
 import {getWarehousById, updateWarehous} from "../../api/WarehousApi";
-import {WarehouseDTO} from "../../types/ProductDTO";
+import {WarehouseDTO} from "../../types/WarehouseDTO.ts";
 
-const UpdateWarehous = () => {
+const UpdateWarehouse = () => {
     const {id} = useParams<{ id: string }>();
 
     const parsedId = id ? parseInt(id, 10) : undefined;
@@ -36,4 +36,4 @@ const UpdateWarehous = () => {
     );
 };
 
-export default UpdateWarehous;
+export default UpdateWarehouse;

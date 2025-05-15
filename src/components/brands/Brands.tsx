@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {BrandDTO} from '../types/BrandDTO';
-import Loading from "../components/base/Loading.tsx";
-import BrandList from "../components/brands/BrandList.tsx";
-import {getBrandsWithStats} from "../api/BrandApi.ts";
-import {useFetcher} from "../hooks/useFetcher.ts";
-import {ErrorMessage} from "../components/common/ErrorMessage.tsx";
+import {BrandDTO} from '../../types/BrandDTO.ts';
+import Loading from "../base/Loading.tsx";
+import BrandList from "./BrandList.tsx";
+import {getBrandsWithStats} from "../../api/BrandApi.ts";
+import {useFetcher} from "../../hooks/useFetcher.ts";
+import {ErrorMessage} from "../common/ErrorMessage.tsx";
 
 const Brands: React.FC = () => {
     const [brands, setBrands] = useState<BrandDTO[]>([]);

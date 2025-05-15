@@ -19,7 +19,7 @@ const WarehousList: React.FC<CustomGridProps<WarehouseStatsDTO>> = ({items, tota
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');
 
     const goToCreateWarehous = () => {
-        navigate('/createWarehous');
+        navigate('/createWarehouse');
     }
 
     const handleDeleteWarehous = async (id: number) => {
@@ -107,7 +107,7 @@ const WarehousList: React.FC<CustomGridProps<WarehouseStatsDTO>> = ({items, tota
                             </Card>
                             <ActionButtons id={warehous.id!}
                                            onDelete={handleDeleteWarehous}
-                                           navigateTo={`/warehous/update/` + warehous.id}
+                                           navigateTo={`/warehouses/update/` + warehous.id}
                             />
                         </Grid>
                     ))}

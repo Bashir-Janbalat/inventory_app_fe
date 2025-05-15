@@ -1,10 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import Loading from "../components/base/Loading";
-import {useFetcher} from "../hooks/useFetcher";
-import {ErrorMessage} from "../components/common/ErrorMessage";
-import WarehousList from "../components/warehouses/WarehousList";
-import {getWarehousesWithStats} from "../api/WarehousApi.ts";
-import {WarehouseStatsDTO} from "../types/WarehouseDTO.ts";
+import Loading from "../base/Loading.tsx";
+import {useFetcher} from "../../hooks/useFetcher.ts";
+import {ErrorMessage} from "../common/ErrorMessage.tsx";
+import WarehousList from "./WarehousList.tsx";
+import {getWarehousesWithStats} from "../../api/WarehousApi.ts";
+import {WarehouseStatsDTO} from "../../types/WarehouseDTO.ts";
 
 const Warehouses: React.FC = () => {
     const [warehouses, setWarehouses] = useState<WarehouseStatsDTO[]>([]);

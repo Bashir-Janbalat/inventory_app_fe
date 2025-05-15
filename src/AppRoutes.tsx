@@ -1,14 +1,14 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import LoginPage from './pages/LoginPage.tsx';
 import ProtectedRoute from "./components/auth/ProtectedRoute.tsx";
-import ProductPage from "./components/products/ProductsPage.tsx";
+import SingleProduct from "./components/products/SingleProduct.tsx";
 import SignUpPage from "./pages/SignUpPage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
 import Layout from "./components/base/Layout.tsx";
-import Categories from "./pages/Categories.tsx";
-import Brands from "./pages/Brands.tsx"
-import Suppliers from "./pages/Suppliers.tsx"
-import Products from "./pages/Products.tsx";
+import Categories from "./components/categories/Categories.tsx";
+import Brands from "./components/brands/Brands.tsx"
+import Suppliers from "./components/suppliers/Suppliers.tsx"
+import Products from "./components/products/Products.tsx";
 import CreateBrand from "./components/brands/CreateBrand.tsx";
 import UpdateBrand from "./components/brands/UpdateBrand.tsx";
 import CreateSupplier from "./components/suppliers/CreateSupplier.tsx";
@@ -17,10 +17,10 @@ import UpdateCategory from "./components/categories/UpdateCategory.tsx";
 import CreateCategory from "./components/categories/CreateCategory.tsx";
 import ProductForm from "./components/products/ProductForm.tsx";
 import MyProfile from "./components/base/MyProfile.tsx";
-import Warehouses from "./pages/Warehouses.tsx";
+import Warehouses from "./components/warehouses/Warehouses.tsx";
 import CreateWarehouse from "./components/warehouses/CreateWarehouse.tsx";
-import UpdateWarehous from "./components/warehouses/UpdateWarehous.tsx";
 import StockMovements from "./components/stockMovements/StockMovements.tsx";
+import UpdateWarehouse from "./components/warehouses/UpdateWarehouse.tsx";
 
 interface AppRoutesProps {
     darkMode: boolean;
@@ -28,47 +28,67 @@ interface AppRoutesProps {
 }
 
 const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
+    const userRoutes = [
+        {path: "profile", element: <MyProfile/>},
+    ]
+
+    const authRoutes = [
+        {path: "/", element: <LoginPage/>},
+        {path: "login", element: <LoginPage/>},
+        {path: "signup", element: <SignUpPage/>},
+    ];
+
+    const productRoutes = [
+        {path: "products", element: <Products/>},
+        {path: "createProduct", element: <ProductForm mode={'create'}/>},
+        {path: "products/:id", element: <SingleProduct/>},
+        {path: "products/update/:id", element: <ProductForm mode={'update'}/>},
+
+    ];
+
+    const categoryRoutes = [
+        {path: "categories", element: <Categories/>},
+        {path: "categories/update/:id", element: <UpdateCategory/>},
+        {path: "createCategory", element: <CreateCategory/>},
+    ];
+
+    const brandRoutes = [
+        {path: "brands", element: <Brands/>},
+        {path: "brands/update/:id", element: <UpdateBrand/>},
+        {path: "createBrand", element: <CreateBrand/>},
+    ];
+
+    const supplierRoutes = [
+        {path: "suppliers", element: <Suppliers/>},
+        {path: "supplier/update/:id", element: <UpdateSupplier/>},
+        {path: "createSupplier", element: <CreateSupplier/>},
+    ];
+
+    const warehouseRoutes = [
+        {path: "warehouses", element: <Warehouses/>},
+        {path: "warehouses/update/:id", element: <UpdateWarehouse/>},
+        {path: "createWarehouse", element: <CreateWarehouse/>},
+        {path: "stockmovement", element: <StockMovements/>},
+    ];
 
     return (
         <Router>
             <Routes>
-                {/* Layout wird einmal geladen, darunter die Seiten */}
                 <Route path="/" element={<Layout darkMode={darkMode} setDarkMode={setDarkMode}/>}>
-                    {/* index = "/" */}
-                    <Route index element={<LoginPage/>}/>
+                    {authRoutes.map(({path, element}) => (
+                        <Route key={path} path={path} element={element}/>
+                    ))}
 
-                    {/* normale Seiten */}
-                    <Route path="login" element={<LoginPage/>}/>
-                    <Route path="signup" element={<SignUpPage/>}/>
-
-                    {/* geschützte Seiten */}
-                    <Route path="profile" element={<ProtectedRoute><MyProfile/></ProtectedRoute>}/>
-                    <Route path="products" element={<ProtectedRoute><Products/></ProtectedRoute>}/>
-                    <Route path="createProduct"
-                           element={<ProtectedRoute><ProductForm mode={'create'}/></ProtectedRoute>}/>
-                    <Route path="products/:id" element={<ProtectedRoute><ProductPage/></ProtectedRoute>}/>
-                    <Route path="products/update/:id"
-                           element={<ProtectedRoute><ProductForm mode={'update'}/></ProtectedRoute>}/>
-                    <Route path="categories" element={<ProtectedRoute><Categories/></ProtectedRoute>}/>
-                    <Route path="categories/update/:id" element={<ProtectedRoute><UpdateCategory/></ProtectedRoute>}/>
-                    <Route path="createCategory" element={<ProtectedRoute><CreateCategory/></ProtectedRoute>}/>
-                    <Route path="brands" element={<ProtectedRoute><Brands/></ProtectedRoute>}/>
-                    <Route path="brands/update/:id" element={<ProtectedRoute><UpdateBrand/></ProtectedRoute>}/>
-                    <Route path="createBrand" element={<ProtectedRoute><CreateBrand/></ProtectedRoute>}/>
-                    <Route path="suppliers" element={<ProtectedRoute><Suppliers/></ProtectedRoute>}/>
-                    <Route path="supplier/update/:id" element={<ProtectedRoute><UpdateSupplier/></ProtectedRoute>}/>
-                    <Route path="createSupplier" element={<ProtectedRoute><CreateSupplier/></ProtectedRoute>}/>
-                    <Route path="warehouses" element={<ProtectedRoute><Warehouses/></ProtectedRoute>}/>
-                    <Route path="createWarehous" element={<ProtectedRoute><CreateWarehouse/></ProtectedRoute>}/>
-                    <Route path="warehous/update/:id" element={<ProtectedRoute><UpdateWarehous/></ProtectedRoute>}/>
-                    <Route path="stockmovement" element={<ProtectedRoute><StockMovements/></ProtectedRoute>}/>
-
+                    {[...userRoutes, ...productRoutes, ...categoryRoutes, ...brandRoutes, ...supplierRoutes, ...warehouseRoutes].map(
+                        ({path, element}) => (
+                            <Route key={path} path={path} element={<ProtectedRoute>{element}</ProtectedRoute>}/>
+                        )
+                    )}
                     <Route path="*" element={<ProtectedRoute><NotFoundPage/></ProtectedRoute>}/>
                 </Route>
             </Routes>
         </Router>
     );
 };
-
 
 export default AppRoutes;
