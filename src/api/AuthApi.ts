@@ -1,6 +1,6 @@
 import {UserDTO} from "../types/UserDTO.ts";
 import axios from 'axios';
-import {getToken} from "../auth/AuthUtils.ts";
+import {getToken} from "../utils/AuthUtils.ts";
 import {getDetailedApiError} from "../utils/ErrorUtils.ts";
 
 interface LoginResponse {

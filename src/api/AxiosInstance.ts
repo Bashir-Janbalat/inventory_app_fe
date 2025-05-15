@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {getToken, isTokenExpired} from '../auth/AuthUtils.ts';
+import {getToken, isTokenExpired} from '../utils/AuthUtils.ts';
 import {TokenInvalidOrExpiredError} from "../errors/TokenInvalidOrExpiredError.ts";
 
 const axiosInstance = axios.create({

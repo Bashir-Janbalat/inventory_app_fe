@@ -1,11 +1,11 @@
 import {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useAuth} from "../hooks/useAuth.ts";
-import {getSubjectFromToken, saveToken} from "../auth/AuthUtils.ts";
+import {getSubjectFromToken, saveToken} from "../utils/AuthUtils.ts";
 import {FormField} from "../types/FormField.ts";
 import CreateComponent from "../components/common/CreateComponent.tsx";
 import {PageType} from "../types/PageType.ts";
-import {login} from "../api/AuthApi.tsx";
+import {login} from "../api/AuthApi.ts";
 import {Alert} from "@mui/material";
 
 const LoginPage = () => {

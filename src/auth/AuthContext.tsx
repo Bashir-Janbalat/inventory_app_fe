@@ -1,6 +1,6 @@
 import React, {createContext, ReactNode, useEffect, useState} from 'react';
-import {getRolesFromToken, getSubjectFromToken, getToken, isLoggedIn, removeToken} from './AuthUtils.ts';
-import {logoutServerSide} from "../api/AuthApi.tsx";
+import {getRolesFromToken, getSubjectFromToken, getToken, isLoggedIn, removeToken} from '../utils/AuthUtils.ts';
+import {logoutServerSide} from "../api/AuthApi.ts";
 
 interface AuthContextType {
     authenticated: boolean;
