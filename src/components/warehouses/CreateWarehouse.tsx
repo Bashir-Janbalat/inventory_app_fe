@@ -3,18 +3,18 @@ import CreateComponent from "../common/CreateComponent.tsx";
 import {PageType} from "../../types/PageType.ts";
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import {WarehouseDTO} from "../../types/ProductDTO.ts";
-import {createWarehous} from "../../api/WarehousApi.ts";
+import {createWarehouse} from "../../api/WarehousApi.ts";
+import {WarehouseDTO} from "../../types/WarehouseDTO.ts";
 
-const CreateWarehous: React.FC = () => {
+const CreateWarehouse: React.FC = () => {
     const navigate = useNavigate();
 
     const warehousFields: FormField[] = [
-        {name: 'name', label: 'Warehous Name', required: true},{name: 'address', label: 'Warehous address', required: true}];
+        {name: 'name', label: 'Warehouse Name', required: true},{name: 'address', label: 'Warehouse address', required: true}];
 
     const handleCreateWarehous = async (values: Record<string, string>) => {
         const warehouseDTO: WarehouseDTO = {name: values.name, address: values.address};
-        const status = await createWarehous(warehouseDTO);
+        const status = await createWarehouse(warehouseDTO);
         if (status === 201) {
             navigate("/warehouses");
         }
@@ -23,7 +23,7 @@ const CreateWarehous: React.FC = () => {
     return (
         <CreateComponent
             page={PageType.createWarehous}
-            title="Create a new warehous"
+            title="Create a new warehouse"
             fields={warehousFields}
             onSubmit={handleCreateWarehous}
             submitButtonText={'Create'}
@@ -32,4 +32,4 @@ const CreateWarehous: React.FC = () => {
     );
 };
 
-export default CreateWarehous;
+export default CreateWarehouse;

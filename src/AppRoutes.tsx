@@ -18,7 +18,7 @@ import CreateCategory from "./components/categories/CreateCategory.tsx";
 import ProductForm from "./components/products/ProductForm.tsx";
 import MyProfile from "./components/base/MyProfile.tsx";
 import Warehouses from "./pages/Warehouses.tsx";
-import CreateWarehous from "./components/warehouses/CreateWarehous.tsx";
+import CreateWarehouse from "./components/warehouses/CreateWarehouse.tsx";
 import UpdateWarehous from "./components/warehouses/UpdateWarehous.tsx";
 import StockMovements from "./components/stockMovements/StockMovements.tsx";
 
@@ -59,7 +59,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
                     <Route path="supplier/update/:id" element={<ProtectedRoute><UpdateSupplier/></ProtectedRoute>}/>
                     <Route path="createSupplier" element={<ProtectedRoute><CreateSupplier/></ProtectedRoute>}/>
                     <Route path="warehouses" element={<ProtectedRoute><Warehouses/></ProtectedRoute>}/>
-                    <Route path="createWarehous" element={<ProtectedRoute><CreateWarehous/></ProtectedRoute>}/>
+                    <Route path="createWarehous" element={<ProtectedRoute><CreateWarehouse/></ProtectedRoute>}/>
                     <Route path="warehous/update/:id" element={<ProtectedRoute><UpdateWarehous/></ProtectedRoute>}/>
                     <Route path="stockmovement" element={<ProtectedRoute><StockMovements/></ProtectedRoute>}/>
 

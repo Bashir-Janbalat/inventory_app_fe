@@ -35,7 +35,7 @@ export const deleteWarehous = async (id: number): Promise<number> => {
     }
 }
 
-export const createWarehous = async (warehous: WarehouseDTO): Promise<number> => {
+export const createWarehouse = async (warehous: WarehouseDTO): Promise<number> => {
     try {
         const response = await axiosInstance.post('/warehouses', warehous);
         return response.status;
