@@ -2,7 +2,7 @@ export interface BrandDTO {
     id?: number
     name: string;
 }
-export interface BrandWithProductCountDTO {
+export interface BrandStatsDTO {
     id?: number
     name: string;
     productCount?: number;

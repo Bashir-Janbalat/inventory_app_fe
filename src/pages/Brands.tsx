@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {BrandDTO} from '../types/BrandDTO';
 import Loading from "../components/base/Loading.tsx";
 import BrandList from "../components/brands/BrandList.tsx";
-import {getBrandsWithProductCount} from "../api/BrandApi.ts";
+import {getBrandsWithStats} from "../api/BrandApi.ts";
 import {useFetcher} from "../hooks/useFetcher.ts";
 import {ErrorMessage} from "../components/common/ErrorMessage.tsx";
 
@@ -13,7 +13,7 @@ const Brands: React.FC = () => {
     const size = 9;
 
     const fetchBrands = useCallback(async () => {
-        const pagedResponse = await getBrandsWithProductCount(page - 1, size);
+        const pagedResponse = await getBrandsWithStats(page - 1, size);
         setBrands(pagedResponse.content);
         setTotalPages(pagedResponse.totalPages);
         return pagedResponse.content;

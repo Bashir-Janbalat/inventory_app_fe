@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {CategoryDTO} from '../../types/CategoryDTO.ts';
+import {CategoryStatsDTO} from '../../types/CategoryDTO.ts';
 import {Button, Card, CardContent, Container, Grid, Pagination, Stack, Typography} from '@mui/material';
 import {CustomGridProps} from "../../types/CustomGridProps.ts";
 import AddIcon from "@mui/icons-material/Add";
@@ -11,9 +11,9 @@ import CustomSnackbar from "../common/CustomSnackbar.tsx";
 import {DetailedApiError} from "../../errors/DetailedApiError.ts";
 
 
-const CategoryList: React.FC<CustomGridProps<CategoryDTO>> = ({items, page, setPage, totalPages}) => {
+const CategoryList: React.FC<CustomGridProps<CategoryStatsDTO>> = ({items, page, setPage, totalPages}) => {
     const navigate = useNavigate();
-    const [categories, setCategories] = useState<CategoryDTO[]>(items);
+    const [categories, setCategories] = useState<CategoryStatsDTO[]>(items);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');
@@ -90,8 +90,17 @@ const CategoryList: React.FC<CustomGridProps<CategoryDTO>> = ({items, page, setP
                             }
                         })}>
                             <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                <Typography variant="h6" gutterBottom>
+                                <Typography variant="h5" fontWeight="bold" gutterBottom>
                                     {category.name}
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    <strong>Product count:</strong> {category.totalProducts}
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    <strong>Brands count:</strong> {category.totalBrands}
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    <strong>Total stock:</strong> {category.totalStockQuantity}
                                 </Typography>
                             </CardContent>
                         </Card>

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {BrandWithProductCountDTO} from "../../types/BrandDTO.ts";
+import {BrandStatsDTO} from "../../types/BrandDTO.ts";
 import {Button, Card, CardContent, Container, Grid, Pagination, Stack, Typography} from '@mui/material';
 import {CustomGridProps} from "../../types/CustomGridProps.ts";
 import AddIcon from "@mui/icons-material/Add";
@@ -11,9 +11,9 @@ import CustomSnackbar from "../common/CustomSnackbar.tsx";
 import {deleteBrand} from "../../api/BrandApi.ts";
 
 
-const BrandList: React.FC<CustomGridProps<BrandWithProductCountDTO>> = ({items, totalPages, setPage, page}) => {
+const BrandList: React.FC<CustomGridProps<BrandStatsDTO>> = ({items, totalPages, setPage, page}) => {
     const navigate = useNavigate();
-    const [brands, setBrands] = useState<BrandWithProductCountDTO[]>(items);
+    const [brands, setBrands] = useState<BrandStatsDTO[]>(items);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');

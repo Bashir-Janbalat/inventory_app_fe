@@ -1,6 +1,6 @@
 import axiosInstance from './AxiosInstance.ts';
 import {PagedResponseDTO} from "../types/PagedResponseDTO.ts";
-import {CategoryDTO} from "../types/CategoryDTO.ts";
+import {CategoryDTO, CategoryStatsDTO} from "../types/CategoryDTO.ts";
 import {getDetailedApiError} from "../utils/ErrorUtils.ts";
 
 
@@ -59,3 +59,18 @@ export const deleteCategory = async (id: number): Promise<number> => {
         throw getDetailedApiError(error);
     }
 }
+
+export const getCategoriesWithStats =
+    async (page?: number, size?: number): Promise<PagedResponseDTO<CategoryStatsDTO>> => {
+        try {
+            const response = await axiosInstance.get("/categories/stats", {
+                params: {
+                    page,
+                    size
+                }
+            });
+            return response.data as PagedResponseDTO<CategoryStatsDTO>;
+        } catch (error) {
+            throw getDetailedApiError(error);
+        }
+    };

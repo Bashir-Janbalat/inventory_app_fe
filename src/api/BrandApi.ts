@@ -1,6 +1,6 @@
 import axiosInstance from './AxiosInstance.ts';
 import {PagedResponseDTO} from "../types/PagedResponseDTO.ts";
-import {BrandDTO, BrandWithProductCountDTO} from "../types/BrandDTO.ts";
+import {BrandDTO, BrandStatsDTO} from "../types/BrandDTO.ts";
 import {getDetailedApiError} from "../utils/ErrorUtils.ts";
 
 export const getBrands =
@@ -60,16 +60,16 @@ export const deleteBrand = async (id: number): Promise<number> => {
     }
 }
 
-export const getBrandsWithProductCount =
-    async (page?: number, size?: number): Promise<PagedResponseDTO<BrandWithProductCountDTO>> => {
+export const getBrandsWithStats =
+    async (page?: number, size?: number): Promise<PagedResponseDTO<BrandStatsDTO>> => {
         try {
-            const response = await axiosInstance.get("/brands/product-counts", {
+            const response = await axiosInstance.get("/brands/stats", {
                 params: {
                     page,
                     size
                 }
             });
-            return response.data as PagedResponseDTO<BrandWithProductCountDTO>;
+            return response.data as PagedResponseDTO<BrandStatsDTO>;
         } catch (error) {
             throw getDetailedApiError(error);
         }
