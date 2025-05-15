@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {BrandDTO} from "../../types/BrandDTO.ts";
+import {BrandWithProductCountDTO} from "../../types/BrandDTO.ts";
 import {Button, Card, CardContent, Container, Grid, Pagination, Stack, Typography} from '@mui/material';
 import {CustomGridProps} from "../../types/CustomGridProps.ts";
 import AddIcon from "@mui/icons-material/Add";
@@ -11,9 +11,9 @@ import CustomSnackbar from "../common/CustomSnackbar.tsx";
 import {deleteBrand} from "../../api/BrandApi.ts";
 
 
-const BrandList: React.FC<CustomGridProps<BrandDTO>> = ({items, totalPages, setPage, page}) => {
+const BrandList: React.FC<CustomGridProps<BrandWithProductCountDTO>> = ({items, totalPages, setPage, page}) => {
     const navigate = useNavigate();
-    const [brands, setBrands] = useState<BrandDTO[]>(items);
+    const [brands, setBrands] = useState<BrandWithProductCountDTO[]>(items);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');
@@ -90,8 +90,14 @@ const BrandList: React.FC<CustomGridProps<BrandDTO>> = ({items, totalPages, setP
                             }
                         })}>
                             <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                <Typography variant="h6" gutterBottom>
+                                <Typography variant="h5" fontWeight="bold" gutterBottom>
                                     {brand.name}
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    <strong>Product count:</strong> {brand.productCount}
+                                </Typography>
+                                <Typography variant="body1" color="text.secondary">
+                                    <strong>Total stock:</strong> {brand.totalStock}
                                 </Typography>
                             </CardContent>
                         </Card>
