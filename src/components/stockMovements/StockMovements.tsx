@@ -6,6 +6,7 @@ import {
     FormControl,
     InputLabel,
     MenuItem,
+    OutlinedInput,
     Pagination,
     Paper,
     Select,
@@ -16,10 +17,9 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    OutlinedInput,
     Typography,
-    useTheme,
     useMediaQuery,
+    useTheme,
 } from "@mui/material";
 import {useFetcher} from "../../hooks/useFetcher.ts";
 import {getStockMovements} from "../../api/StockMovementsApi.ts";
@@ -34,7 +34,7 @@ const StockMovements: React.FC = () => {
     const [movementType, setMovementType] = useState("");
     const [searchDate, setSearchDate] = useState("");
     const size = 9;
-    const TABLE_HEADER_CELL_STYLE = { fontWeight: "bold", borderBottom: "2px solid #ccc" };
+    const TABLE_HEADER_CELL_STYLE = {fontWeight: "bold", borderBottom: "2px solid #ccc"};
 
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -42,11 +42,11 @@ const StockMovements: React.FC = () => {
 
     const fetchStockMovements = useCallback(async () => {
         const pagedResponse =
-            await getStockMovements(page - 1, size,"createdAt","asc",searchDate,movementType);
+            await getStockMovements(page - 1, size, "createdAt", "asc", searchDate, movementType);
         setStockMovements(pagedResponse.content);
         setTotalPages(pagedResponse.totalPages);
         return pagedResponse.content;
-    }, [page,searchDate,movementType]);
+    }, [page, searchDate, movementType]);
 
     const {fetchData, loading, error} = useFetcher<StockMovementsDTO[]>(fetchStockMovements);
 
@@ -71,7 +71,7 @@ const StockMovements: React.FC = () => {
 
             <Box display="flex" gap={2} mb={3} flexWrap="wrap" alignItems="flex-end">
                 {/* Movement Type Filter */}
-                <FormControl sx={{ minWidth: 150 }} size="small">
+                <FormControl sx={{minWidth: 150}} size="small">
                     <InputLabel>Type</InputLabel>
                     <Select
                         value={movementType}
@@ -91,7 +91,7 @@ const StockMovements: React.FC = () => {
                 </FormControl>
 
                 {!isSmallScreen && (
-                    <FormControl sx={{ minWidth: 180 }} size="small">
+                    <FormControl sx={{minWidth: 180}} size="small">
                         <InputLabel shrink htmlFor="date-input">Date</InputLabel>
                         <OutlinedInput
                             id="date-input"
@@ -117,8 +117,8 @@ const StockMovements: React.FC = () => {
             </Box>
 
             {/* Table */}
-            <TableContainer component={Paper} sx={{ overflowX: "auto" }}>
-                <Table sx={{ minWidth: 800 }}>
+            <TableContainer component={Paper} sx={{overflowX: "auto"}}>
+                <Table sx={{minWidth: 800}}>
                     <TableHead>
                         <TableRow>
                             <TableCell sx={TABLE_HEADER_CELL_STYLE}>Date</TableCell>
@@ -132,12 +132,16 @@ const StockMovements: React.FC = () => {
                     </TableHead>
                     <TableBody>
                         {stockMovements.map((row) => (
-                            <TableRow key={row.id}>
+                            <TableRow key={row.id} style={{
+                                textDecoration: row.productDeleted ? 'line-through' : 'none',
+                                color: row.productDeleted ? '#a00' : 'inherit',
+                                fontWeight: row.productDeleted ? 'bold' : 'normal',
+                            }}>
                                 <TableCell>{row.createdAt}</TableCell>
                                 <TableCell>{row.warehouseName}</TableCell>
                                 <TableCell>{row.movementType}</TableCell>
                                 <TableCell>{row.reason}</TableCell>
-                                <TableCell>{row.productName}</TableCell>
+                                <TableCell>{row.productDeleted ? row.productNameSnapshot : row.productName}</TableCell>
                                 <TableCell>{row.quantity}</TableCell>
                                 <TableCell>{row.username}</TableCell>
                             </TableRow>
