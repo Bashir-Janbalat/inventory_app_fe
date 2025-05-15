@@ -2,24 +2,24 @@ import React, {useCallback, useEffect, useState} from 'react';
 import Loading from "../components/base/Loading";
 import {useFetcher} from "../hooks/useFetcher";
 import {ErrorMessage} from "../components/common/ErrorMessage";
-import {WarehouseDTO} from "../types/ProductDTO";
 import WarehousList from "../components/warehouses/WarehousList";
-import {getPagedWarehouses} from "../api/WarehousApi.ts";
+import {getWarehousesWithStats} from "../api/WarehousApi.ts";
+import {WarehouseStatsDTO} from "../types/WarehouseDTO.ts";
 
 const Warehouses: React.FC = () => {
-    const [warehouses, setWarehouses] = useState<WarehouseDTO[]>([]);
+    const [warehouses, setWarehouses] = useState<WarehouseStatsDTO[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const size = 9;
 
-    const fetchBrands = useCallback(async () => {
-        const pagedResponse = await getPagedWarehouses(page - 1, size);
+    const fetchWarehouses = useCallback(async () => {
+        const pagedResponse = await getWarehousesWithStats(page - 1, size);
         setWarehouses(pagedResponse.content);
         setTotalPages(pagedResponse.totalPages);
         return pagedResponse.content;
     }, [page]);
 
-    const {fetchData, loading, error} = useFetcher<WarehouseDTO[]>(fetchBrands);
+    const {fetchData, loading, error} = useFetcher<WarehouseStatsDTO[]>(fetchWarehouses);
 
 
     useEffect(() => {

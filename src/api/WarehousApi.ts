@@ -1,7 +1,7 @@
 import axiosInstance from './AxiosInstance.ts';
-import {WarehouseDTO} from "../types/ProductDTO.ts";
 import {getDetailedApiError} from "../utils/ErrorUtils.ts";
 import {PagedResponseDTO} from "../types/PagedResponseDTO.ts";
+import {WarehouseDTO, WarehouseStatsDTO} from "../types/WarehouseDTO.ts";
 
 
 export const getWarehouses = async (): Promise<WarehouseDTO[]> => {
@@ -61,3 +61,17 @@ export const getWarehousById = async (id: number): Promise<WarehouseDTO> => {
         throw getDetailedApiError(error);
     }
 };
+export const getWarehousesWithStats =
+    async (page?: number, size?: number): Promise<PagedResponseDTO<WarehouseStatsDTO>> => {
+        try {
+            const response = await axiosInstance.get("/warehouses/stats", {
+                params: {
+                    page,
+                    size
+                }
+            });
+            return response.data as PagedResponseDTO<WarehouseStatsDTO>;
+        } catch (error) {
+            throw getDetailedApiError(error);
+        }
+    }

@@ -87,7 +87,7 @@ const ProductCard: React.FC<ProductCardProps> = ({product, onClick}) => {
                         mb: 2,
                     }}
                 >
-                    ${product.costPrice.toFixed(2)}
+                    {(product.costPrice ?? 0).toFixed(2)}
                 </Typography>
 
                 <Box sx={{mt: 'auto'}}>

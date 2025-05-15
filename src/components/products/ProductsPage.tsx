@@ -150,7 +150,7 @@ const ProductPage: React.FC = () => {
                 <CardContent sx={{px: 2, py: 1}}>
                     <Typography variant="h6" fontWeight="bold" gutterBottom>{productDTO.name}</Typography>
                     <Typography variant="subtitle2" color="primary"
-                                gutterBottom>${productDTO.costPrice.toFixed(2)}</Typography>
+                                gutterBottom>{(productDTO.costPrice ?? 0).toFixed(2)}</Typography>
 
                     <Typography variant="body2"><strong>Category:</strong> {productDTO.categoryName}</Typography>
                     <Typography variant="body2"><strong>Brand:</strong> {productDTO.brandName}</Typography>

@@ -7,13 +7,13 @@ import ActionButtons from "../common/ActionButtonsProps";
 import HomeIcon from '@mui/icons-material/Home';
 import {DetailedApiError} from "../../errors/DetailedApiError";
 import CustomSnackbar from "../common/CustomSnackbar";
-import {WarehouseDTO} from "../../types/ProductDTO";
 import {deleteWarehous} from "../../api/WarehousApi.ts";
+import {WarehouseStatsDTO} from "../../types/WarehouseDTO.ts";
 
 
-const WarehousList: React.FC<CustomGridProps<WarehouseDTO>> = ({items, totalPages, setPage, page}) => {
+const WarehousList: React.FC<CustomGridProps<WarehouseStatsDTO>> = ({items, totalPages, setPage, page}) => {
     const navigate = useNavigate();
-    const [warehouses, setWarehouses] = useState<WarehouseDTO[]>(items);
+    const [warehouses, setWarehouses] = useState<WarehouseStatsDTO[]>(items);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');
@@ -91,8 +91,17 @@ const WarehousList: React.FC<CustomGridProps<WarehouseDTO>> = ({items, totalPage
                                 }
                             })}>
                                 <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                    <Typography variant="h6" gutterBottom>
+                                    <Typography variant="h5" fontWeight="bold" gutterBottom>
                                         {warehous.name}
+                                    </Typography>
+                                    <Typography variant="body1" color="text.secondary">
+                                        <strong>Address:</strong> {warehous.address}
+                                    </Typography>
+                                    <Typography variant="body1" color="text.secondary">
+                                        <strong>Product count:</strong> {warehous.productCount}
+                                    </Typography>
+                                    <Typography variant="body1" color="text.secondary">
+                                        <strong>Total stock:</strong> {warehous.totalStockQuantity}
                                     </Typography>
                                 </CardContent>
                             </Card>

@@ -1,3 +1,5 @@
+import {WarehouseDTO} from "./WarehouseDTO.ts";
+
 export interface ProductAttributeDTO {
     attributeID?: number;
     attributeName: string;
@@ -17,12 +19,6 @@ export interface StockDTO {
     movementType?: string;
     movementQuantity?: number;
     destinationWarehouseId?: number;
-}
-
- export interface WarehouseDTO {
-    id?: number;
-    name: string;
-    address: string;
 }
 
 export interface ProductDTO {
