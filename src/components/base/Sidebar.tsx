@@ -15,8 +15,14 @@ const Sidebar: React.FC<SidebarProps> = ({open, toggleSidebar}) => {
         <Drawer
             open={open}
             onClose={toggleSidebar}
-            anchor='left'
+            anchor={isMobile ? 'top' :'left'}
             variant={isMobile ? 'temporary' : 'persistent'}
+            sx={{
+                '& .MuiDrawer-paper': {
+                    top: '64px',
+                    height: 'calc(100% - 64px)',
+                },
+            }}
         >
             <SidebarMenu toggleSidebar={toggleSidebar} />
 
