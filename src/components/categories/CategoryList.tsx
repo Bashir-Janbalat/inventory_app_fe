@@ -5,7 +5,6 @@ import {CustomGridProps} from "../../types/CustomGridProps.ts";
 import AddIcon from "@mui/icons-material/Add";
 import ActionButtons from "../common/ActionButtonsProps.tsx";
 import {useNavigate} from 'react-router-dom';
-import HomeIcon from '@mui/icons-material/Home';
 import {deleteCategory} from "../../api/CategoryApi.ts";
 import CustomSnackbar from "../common/CustomSnackbar.tsx";
 import {DetailedApiError} from "../../errors/DetailedApiError.ts";
@@ -50,15 +49,6 @@ const CategoryList: React.FC<CustomGridProps<CategoryStatsDTO>> = ({items, page,
                 <Typography variant="h4" sx={{mb: 4, fontWeight: 'bold'}}>
                     Categories
                 </Typography>
-                <Button
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<HomeIcon/>}
-                    onClick={() => navigate('/products')}
-                    sx={{height: 50}}
-                >
-                    Home
-                </Button>
             </Stack>
             <Grid container spacing={3}>
                 <Button fullWidth

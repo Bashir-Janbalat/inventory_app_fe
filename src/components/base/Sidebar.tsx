@@ -19,8 +19,9 @@ const Sidebar: React.FC<SidebarProps> = ({open, toggleSidebar}) => {
             variant={isMobile ? 'temporary' : 'persistent'}
             sx={{
                 '& .MuiDrawer-paper': {
-                    top: '64px',
+                    top: '65px',
                     height: 'calc(100% - 64px)',
+                    boxShadow: '1px 1px 1px 1px #000000',
                 },
             }}
         >

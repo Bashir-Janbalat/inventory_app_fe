@@ -11,9 +11,15 @@ import {
     Typography,
     useTheme,
 } from "@mui/material";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
 import { useAuth } from "../../hooks/useAuth.ts";
+import MenuIcon from '@mui/icons-material/Menu';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
+import Inventory2Icon from '@mui/icons-material/Inventory2';
+import LogoutIcon from '@mui/icons-material/Logout';
+import HomeIcon from '@mui/icons-material/Home';
 
 interface HeaderProps {
     darkMode: boolean;
@@ -26,35 +32,50 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
     const theme = useTheme();
     const navigate = useNavigate();
     const buttonStyle = {
-        fontWeight: "bold",
-        width: 160,         // feste Breite
-        height: 44,         // feste Höhe
-        whiteSpace: "nowrap",  // kein Umbruch im Text
-        overflow: "hidden",
-        textOverflow: "ellipsis", // falls Text zu lang ist
+        width: 140,
+        textTransform: "none",
+        display: "inline-flex",
+        justifyContent: "center",
+        px: 2,
+        fontWeight: 600,
+        fontSize: "0.95rem",
+        fontFamily: "Roboto, sans-serif",
     };
 
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
+    const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+    const [avatarAnchorEl, setAvatarAnchorEl] = useState<null | HTMLElement>(null);
+
+    const isMenuOpen = Boolean(menuAnchorEl);
+    const isAvatarMenuOpen = Boolean(avatarAnchorEl);
 
     const handleAvatarClick = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget);
+        setAvatarAnchorEl(event.currentTarget);
     };
 
     const handleMenuClose = () => {
-        setAnchorEl(null);
+        setMenuAnchorEl(null);
+        setAvatarAnchorEl(null);
     };
 
     const handleMyProfile = () => {
-        navigate("/profile")
+        navigate("/profile");
+        handleMenuClose();
     };
 
     const handleLogout = () => {
         logout(false, "You have been successfully logged out");
+        handleMenuClose();
     };
 
     return (
-        <AppBar position="fixed" sx={{ backgroundColor: darkMode ? "#333" : "#f5f7fa", boxShadow: 4, mb: 4 }}>
+        <AppBar
+            position="fixed"
+            sx={{
+                boxShadow: '1px 1px 1px 1px #000000',
+                backgroundColor: darkMode ? "#333" : "#f5f7fa",
+                mb: 4
+            }}
+        >
             <Toolbar
                 sx={{
                     display: "flex",
@@ -97,41 +118,66 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
                         {darkMode ? <Brightness7 /> : <Brightness4 />}
                     </IconButton>
 
-                    {/* Authenticated User - Buttons */}
                     {isAuthenticated && (
                         <>
-                            {/* Buttons for Dashboard, Products, Logout */}
-                            <Box sx={{ display: "flex", gap: 1, [theme.breakpoints.down("xs")]: { display: "none" } }}>
-                                <Button variant="outlined" color="primary" onClick={() => toggleSidebar()} sx={{ buttonStyle }}>
+                            {/* For medium and large screens: show buttons normally */}
+                            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
+                                <Button startIcon={<MenuIcon />} variant="outlined" color="primary" onClick={() => toggleSidebar()} sx={buttonStyle}>
                                     Menu
                                 </Button>
-                                <Button variant="outlined" color="primary" onClick={() => toggleSidebar()} sx={{ buttonStyle }}>
+                                <Button startIcon={<DashboardIcon />} variant="outlined" color="primary" component={Link} to="/dashboard" sx={buttonStyle}>
                                     Dashboard
                                 </Button>
-                                <Button variant="outlined" color="primary" component={Link} to="/stockmovement" sx={{ buttonStyle }}>
+                                <Button startIcon={<CompareArrowsIcon />} variant="outlined" color="primary" component={Link} to="/stockmovement" sx={buttonStyle}>
                                     Movements
                                 </Button>
-                                <Button variant="outlined" color="primary" component={Link} to="/products" sx={{ buttonStyle }}>
+                                <Button  startIcon={<Inventory2Icon />} variant="outlined" color="primary" component={Link} to="/products" sx={buttonStyle}>
                                     Products
                                 </Button>
-                                <Button variant="contained" color="error" onClick={handleLogout} sx={{ buttonStyle }}>
+                                <Button startIcon={<HomeIcon/>} variant="outlined" color="primary" component={Link} to="/" sx={buttonStyle}>
+                                    Hone
+                                </Button>
+                                <Button startIcon={<LogoutIcon />} variant="contained" color="error" onClick={handleLogout} sx={buttonStyle}>
                                     Logout
                                 </Button>
                             </Box>
 
+                            {/* For small screens: show as dropdown menu */}
+                            <Box sx={{ display: { xs: "block", md: "none" } }}>
+                                <IconButton onClick={(e) => setMenuAnchorEl(e.currentTarget)}>
+                                    <Typography sx={{ fontWeight: "bold" }}>☰</Typography>
+                                </IconButton>
+                                <Menu
+                                    anchorEl={menuAnchorEl}
+                                    open={isMenuOpen}
+                                    onClose={handleMenuClose}
+                                >
+                                    <MenuItem onClick={() => { toggleSidebar(); handleMenuClose(); }}>Menu</MenuItem>
+                                    <MenuItem onClick={() => { toggleSidebar(); handleMenuClose(); }}>Dashboard</MenuItem>
+                                    <MenuItem onClick={() => { navigate("/stockmovement"); handleMenuClose(); }}>Movements</MenuItem>
+                                    <MenuItem onClick={() => { navigate("/products"); handleMenuClose(); }}>Products</MenuItem>
+                                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                                </Menu>
+                            </Box>
+
                             {/* Divider */}
-                            <Box sx={{ display: { xs: "none", sm: "block" }, width: 1, height: 35, borderLeft: "1px solid rgba(255, 255, 255, 0.5)", mx: 2 }} />
+                            <Box
+                                sx={{
+                                    display: { xs: "none", sm: "block" },
+                                    width: 1,
+                                    height: 35,
+                                    borderLeft: "1px solid rgba(255, 255, 255, 0.5)",
+                                    mx: 2
+                                }}
+                            />
 
                             {/* Avatar + Username (Dropdown) */}
                             <Box sx={{ display: "flex", alignItems: "center" }}>
-                                {/* Avatar icon, always visible */}
                                 <IconButton onClick={handleAvatarClick} size="small" sx={{ p: 0 }}>
                                     <Avatar sx={{ width: 35, height: 35, bgcolor: theme.palette.primary.main }}>
                                         {username ? username.charAt(0).toUpperCase() : "U"}
                                     </Avatar>
                                 </IconButton>
-
-                                {/* Username only on larger screens */}
                                 <Typography
                                     variant="subtitle2"
                                     sx={{
@@ -146,10 +192,10 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
                                 </Typography>
                             </Box>
 
-                            {/* Dropdown Menu */}
+                            {/* Avatar Dropdown Menu */}
                             <Menu
-                                anchorEl={anchorEl}
-                                open={open}
+                                anchorEl={avatarAnchorEl}
+                                open={isAvatarMenuOpen}
                                 onClose={handleMenuClose}
                                 sx={{
                                     mt: 1.5,

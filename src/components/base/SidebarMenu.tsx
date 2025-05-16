@@ -1,24 +1,24 @@
-import {Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography} from '@mui/material';
+import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import CategoryIcon from '@mui/icons-material/Category';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 type SidebarMenuProps = {
     toggleSidebar: () => void;
 };
 
-const SidebarMenu = ({toggleSidebar}: SidebarMenuProps) => {
+const SidebarMenu = ({ toggleSidebar }: SidebarMenuProps) => {
     const navigate = useNavigate();
 
     const menuItems = [
-        {text: 'Products', icon: <LocalMallIcon fontSize="large"/>, path: '/products'},
-        {text: 'Categories', icon: <CategoryIcon fontSize="large"/>, path: '/categories'},
-        {text: 'Brands', icon: <StorefrontIcon fontSize="large"/>, path: '/brands'},
-        {text: 'Suppliers', icon: <PermIdentityIcon fontSize="large"/>, path: '/suppliers'},
-        {text: 'Warehouses', icon: <WarehouseIcon fontSize="large"/>, path: '/warehouses'},
+        { text: 'Products', icon: <LocalMallIcon fontSize="large" />, path: '/products' },
+        { text: 'Categories', icon: <CategoryIcon fontSize="large" />, path: '/categories' },
+        { text: 'Brands', icon: <StorefrontIcon fontSize="large" />, path: '/brands' },
+        { text: 'Suppliers', icon: <PermIdentityIcon fontSize="large" />, path: '/suppliers' },
+        { text: 'Warehouses', icon: <WarehouseIcon fontSize="large" />, path: '/warehouses' },
     ];
 
     function handleClick(path: string): void {
@@ -35,11 +35,12 @@ const SidebarMenu = ({toggleSidebar}: SidebarMenuProps) => {
                             onClick={() => handleClick(item.path)}
                             sx={{
                                 width: '100%',
-                                flexDirection: 'column', // Stack icon and text vertically
-                                py: 2, // vertical padding
+                                flexDirection: 'column',
+                                py: 2,
                             }}
                         >
                             <ListItemIcon
+                                color="primary"
                                 sx={{
                                     justifyContent: 'center',
                                     display: 'flex',
@@ -51,7 +52,14 @@ const SidebarMenu = ({toggleSidebar}: SidebarMenuProps) => {
                             </ListItemIcon>
                             <ListItemText
                                 primary={
-                                    <Typography align="center" variant="body1">{item.text}</Typography>
+                                    <Typography
+                                        color="primary"
+                                        align="center"
+                                        variant="body1"
+                                        sx={{ fontWeight: 600, fontFamily: 'Roboto, sans-serif' }}
+                                    >
+                                        {item.text}
+                                    </Typography>
                                 }
                             />
                         </ListItemButton>
