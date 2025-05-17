@@ -41,13 +41,12 @@ const Layout: React.FC<LayoutProps> = ({darkMode, setDarkMode}) => {
                     <Outlet/>
                 </Container>
                 <Box sx={{
-                    width: {xs: '0px', md: '250px'}, // إخفاؤه على الشاشات الصغيرة
+                    width: {xs: '0px', md: '250px'},
                     display: {xs: 'none', md: 'block'},
                     borderLeft: '1px solid #ccc',
                     p: 2,
                     backgroundColor: 'background.paper',
                 }}>
-                    {/* مكونك هنا */}
                     <Typography variant="h6">لوحة جانبية</Typography>
                     <Box>
                         <p>محتوى إضافي</p>
