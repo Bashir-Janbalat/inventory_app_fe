@@ -23,6 +23,7 @@ import StockMovements from "./components/stockMovements/StockMovements.tsx";
 import UpdateWarehouse from "./components/warehouses/UpdateWarehouse.tsx";
 import LoginLayout from "./components/base/LoginLayout.tsx"
 import CreatePurchase from "./components/purchase/CreatePurchase.tsx";
+import Purchases from "./components/purchase/Purchases.tsx";
 
 interface AppRoutesProps {
     darkMode: boolean;
@@ -37,6 +38,11 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
     const authRoutes = [
         {path: "login", element: <LoginPage/>},
         {path: "signup", element: <SignUpPage/>},
+    ];
+
+    const purchaseRoutes = [
+        {path: "purchases", element: <Purchases/>},
+        {path: "createPurchase", element: <CreatePurchase/>},
     ];
 
     const productRoutes = [
@@ -70,9 +76,6 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
         {path: "warehouses/update/:id", element: <UpdateWarehouse/>},
         {path: "createWarehouse", element: <CreateWarehouse/>},
         {path: "stockmovement", element: <StockMovements/>},
-    ];
-    const purchaseRoutes = [
-        {path: "createPurchase", element: <CreatePurchase/>},
     ];
 
     return (

@@ -5,8 +5,6 @@ import {Brightness4, Brightness7} from "@mui/icons-material";
 import {useAuth} from "../../hooks/useAuth.ts";
 import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
-import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
-import Inventory2Icon from '@mui/icons-material/Inventory2';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 
@@ -16,8 +14,8 @@ interface HeaderProps {
     toggleSidebar: (openOrClose?: boolean) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar }) => {
-    const { authenticated: isAuthenticated, subject: username, logout } = useAuth();
+const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) => {
+    const {authenticated: isAuthenticated, subject: username, logout} = useAuth();
     const theme = useTheme();
     const navigate = useNavigate();
     const buttonStyle = {
@@ -76,7 +74,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
                 }}
             >
                 {/* Left Side: Logo */}
-                <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+                <Box sx={{display: "flex", alignItems: "center", flexGrow: 1}}>
                     <Typography
                         variant="h6"
                         component={Link}
@@ -85,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
                             color: darkMode ? "white" : "primary.main",
                             textDecoration: "none",
                             fontWeight: "bold",
-                            fontSize: { xs: "1.0rem", sm: "1.2rem", md: "1.5rem" },
+                            fontSize: {xs: "1.0rem", sm: "1.2rem", md: "1.5rem"},
                             letterSpacing: 1.2,
                             textShadow: "1px 1px 3px rgba(0, 0, 0, 0.3)",
                             textAlign: "left",
@@ -93,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
-                            display: { xs: "none", sm: "none", md: "block" }
+                            display: {xs: "none", sm: "none", md: "block"}
                         }}
                     >
                         Inventory Management System
@@ -101,50 +99,60 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
                 </Box>
 
                 {/* Right Side: Dark Mode + Buttons + Avatar + Dropdown */}
-                <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+                <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
                     {/* Dark Mode Button */}
                     <IconButton color="primary" onClick={() => setDarkMode(!darkMode)}>
-                        {darkMode ? <Brightness7 /> : <Brightness4 />}
+                        {darkMode ? <Brightness7/> : <Brightness4/>}
                     </IconButton>
 
                     {isAuthenticated && (
                         <>
                             {/* For medium and large screens: show buttons normally */}
-                            <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1 }}>
-                                <Button startIcon={<MenuIcon />} variant="outlined" color="primary" onClick={() => toggleSidebar()} sx={buttonStyle}>
+                            <Box sx={{display: {xs: "none", md: "flex"}, gap: 1}}>
+                                <Button startIcon={<MenuIcon/>} variant="outlined" color="primary"
+                                        onClick={() => toggleSidebar()} sx={buttonStyle}>
                                     Menu
                                 </Button>
-                                <Button startIcon={<DashboardIcon />} variant="outlined" color="primary" component={Link} to="/dashboard" sx={buttonStyle}>
+                                <Button startIcon={<DashboardIcon/>} variant="outlined" color="primary" component={Link}
+                                        to="/dashboard" sx={buttonStyle}>
                                     Dashboard
                                 </Button>
-                                <Button startIcon={<CompareArrowsIcon />} variant="outlined" color="primary" component={Link} to="/stockmovement" sx={buttonStyle}>
-                                    Movements
-                                </Button>
-                                <Button  startIcon={<Inventory2Icon />} variant="outlined" color="primary" component={Link} to="/products" sx={buttonStyle}>
-                                    Products
-                                </Button>
-                                <Button startIcon={<HomeIcon/>} variant="outlined" color="primary" component={Link} to="/" sx={buttonStyle}>
+                                <Button startIcon={<HomeIcon/>} variant="outlined" color="primary" component={Link}
+                                        to="/" sx={buttonStyle}>
                                     Hone
                                 </Button>
-                                <Button startIcon={<LogoutIcon />} variant="contained" color="error" onClick={handleLogout} sx={buttonStyle}>
+                                <Button startIcon={<LogoutIcon/>} variant="contained" color="error"
+                                        onClick={handleLogout} sx={buttonStyle}>
                                     Logout
                                 </Button>
                             </Box>
 
                             {/* For small screens: show as dropdown menu */}
-                            <Box sx={{ display: { xs: "block", md: "none" } }}>
+                            <Box sx={{display: {xs: "block", md: "none"}}}>
                                 <IconButton onClick={(e) => setMenuAnchorEl(e.currentTarget)}>
-                                    <Typography sx={{ fontWeight: "bold" }}>☰</Typography>
+                                    <Typography sx={{fontWeight: "bold"}}>☰</Typography>
                                 </IconButton>
                                 <Menu
                                     anchorEl={menuAnchorEl}
                                     open={isMenuOpen}
                                     onClose={handleMenuClose}
                                 >
-                                    <MenuItem onClick={() => { toggleSidebar(); handleMenuClose(); }}>Menu</MenuItem>
-                                    <MenuItem onClick={() => { toggleSidebar(); handleMenuClose(); }}>Dashboard</MenuItem>
-                                    <MenuItem onClick={() => { navigate("/stockmovement"); handleMenuClose(); }}>Movements</MenuItem>
-                                    <MenuItem onClick={() => { navigate("/products"); handleMenuClose(); }}>Products</MenuItem>
+                                    <MenuItem onClick={() => {
+                                        toggleSidebar();
+                                        handleMenuClose();
+                                    }}>Menu</MenuItem>
+                                    <MenuItem onClick={() => {
+                                        toggleSidebar();
+                                        handleMenuClose();
+                                    }}>Dashboard</MenuItem>
+                                    <MenuItem onClick={() => {
+                                        navigate("/stockmovement");
+                                        handleMenuClose();
+                                    }}>Movements</MenuItem>
+                                    <MenuItem onClick={() => {
+                                        navigate("/products");
+                                        handleMenuClose();
+                                    }}>Products</MenuItem>
                                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                                 </Menu>
                             </Box>
@@ -152,7 +160,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
                             {/* Divider */}
                             <Box
                                 sx={{
-                                    display: { xs: "none", sm: "block" },
+                                    display: {xs: "none", sm: "block"},
                                     width: 1,
                                     height: 35,
                                     borderLeft: "1px solid rgba(255, 255, 255, 0.5)",
@@ -161,9 +169,9 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
                             />
 
                             {/* Avatar + Username (Dropdown) */}
-                            <Box sx={{ display: "flex", alignItems: "center" }}>
-                                <IconButton onClick={handleAvatarClick} size="small" sx={{ p: 0 }}>
-                                    <Avatar sx={{ width: 35, height: 35, bgcolor: theme.palette.primary.main }}>
+                            <Box sx={{display: "flex", alignItems: "center"}}>
+                                <IconButton onClick={handleAvatarClick} size="small" sx={{p: 0}}>
+                                    <Avatar sx={{width: 35, height: 35, bgcolor: theme.palette.primary.main}}>
                                         {username ? username.charAt(0).toUpperCase() : "U"}
                                     </Avatar>
                                 </IconButton>
@@ -174,7 +182,7 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
                                         color: theme.palette.text.primary,
                                         fontSize: "1rem",
                                         ml: 1,
-                                        display: { xs: "none", sm: "none", md: "block" },
+                                        display: {xs: "none", sm: "none", md: "block"},
                                     }}
                                 >
                                     {username}
@@ -203,8 +211,8 @@ const Header: React.FC<HeaderProps> = ({ darkMode, setDarkMode, toggleSidebar })
                                         zIndex: 0,
                                     },
                                 }}
-                                transformOrigin={{ horizontal: "right", vertical: "top" }}
-                                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                                transformOrigin={{horizontal: "right", vertical: "top"}}
+                                anchorOrigin={{horizontal: "right", vertical: "bottom"}}
                             >
                                 <MenuItem onClick={handleMyProfile}>My Profile</MenuItem>
                             </Menu>

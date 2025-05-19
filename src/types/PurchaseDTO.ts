@@ -9,9 +9,9 @@ export interface PurchaseDTO {
 }
 
 export enum PurchaseStatus {
-    PENDING,
-    COMPLETED,
-    CANCELLED
+    PENDING = "PENDING",
+    COMPLETED = "COMPLETED",
+    CANCELLED = "CANCELLED"
 }
 
 export interface PurchaseItemDTO {
