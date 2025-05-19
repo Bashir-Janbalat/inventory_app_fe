@@ -30,7 +30,7 @@ const ProductAttributes: React.FC<productAttributesProps> = ({product, attribute
     };
 
     const addAttribute = () => {
-        const newAttribute = {attributeName: '', attributeValue: '', isInitial: false};
+        const newAttribute = {attributeName: '', attributeValue: ''};
         const updatedAttributes = [...product.productAttributes, newAttribute];
         onChange('productAttributes', updatedAttributes);
     };
@@ -44,8 +44,7 @@ const ProductAttributes: React.FC<productAttributesProps> = ({product, attribute
         const newAttribute = {
             attributeID: attr.id,
             attributeName: attr.name,
-            attributeValue: '',
-            isInitial: false,
+            attributeValue: ''
         };
 
         const updatedAttributes = [newAttribute, ...product.productAttributes];
@@ -96,7 +95,7 @@ const ProductAttributes: React.FC<productAttributesProps> = ({product, attribute
                                 required
                                 slotProps={{
                                     input: {
-                                        readOnly: attr.isInitial,
+                                        readOnly: !!attr.attributeID,
                                     },
                                 }}
                             />

@@ -4,7 +4,6 @@ export interface ProductAttributeDTO {
     attributeID?: number;
     attributeName: string;
     attributeValue: string;
-    isInitial: boolean;
 }
 
 export interface ImageDTO {

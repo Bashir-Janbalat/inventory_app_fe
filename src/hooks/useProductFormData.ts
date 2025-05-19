@@ -83,7 +83,6 @@ const useProductFormData = (id?: string, options?: InitialDataOptions) => {
                         ...productResponse,
                         productAttributes: productResponse.productAttributes.map((attr) => ({
                             ...attr,
-                            isInitial: true,
                         })),
                     });
                 })
