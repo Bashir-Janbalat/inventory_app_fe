@@ -1,6 +1,8 @@
 export interface BrandDTO {
     id?: number
     name: string;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 export interface BrandStatsDTO {
     id?: number

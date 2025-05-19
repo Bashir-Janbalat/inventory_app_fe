@@ -5,7 +5,6 @@ import {CustomGridProps} from "../../types/CustomGridProps.ts";
 import AddIcon from "@mui/icons-material/Add";
 import ActionButtons from "../common/ActionButtonsProps.tsx";
 import {useNavigate} from "react-router-dom";
-import HomeIcon from '@mui/icons-material/Home';
 import {DetailedApiError} from "../../errors/DetailedApiError.ts";
 import CustomSnackbar from "../common/CustomSnackbar.tsx";
 import {deleteSupplier} from "../../api/SupplierApi.ts";
@@ -50,15 +49,6 @@ const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setP
                 <Typography variant="h4" sx={{mb: 4, fontWeight: 'bold'}}>
                     Suppliers
                 </Typography>
-                <Button
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<HomeIcon/>}
-                    onClick={() => navigate('/products')}
-                    sx={{height: 50}}
-                >
-                    Home
-                </Button>
             </Stack>
             <Grid container spacing={3}>
                 <Button fullWidth
@@ -105,7 +95,7 @@ const SupplierList: React.FC<CustomGridProps<SupplierDTO>> = ({items, page, setP
                         </Card>
                         <ActionButtons id={supplier.id!}
                                        onDelete={handleDeleteSupplier}
-                                       navigateTo={`/supplier/update/` + !supplier.id}
+                                       navigateTo={`/supplier/update/` + supplier.id}
                         />
                     </Grid>
                 ))}

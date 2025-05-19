@@ -14,7 +14,12 @@ const CreateSupplier: React.FC = () => {
         {name: 'contactEmail', label: 'Contact Email', required: true}];
 
     const handleCreateSupplier = async (values: Record<string, string>) => {
-        const supplier: SupplierDTO = {name: values.name, contactEmail: values.contactEmail};
+        const supplier: SupplierDTO = {
+            name: values.name,
+            contactEmail: values.contactEmail,
+            phone: values.pohne,
+            address: values.pohne
+        };
         const status = await createSupplier(supplier);
         if (status === 201) {
             navigate("/suppliers");

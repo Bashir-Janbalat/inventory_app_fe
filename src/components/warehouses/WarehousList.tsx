@@ -4,7 +4,6 @@ import {CustomGridProps} from "../../types/CustomGridProps";
 import AddIcon from "@mui/icons-material/Add";
 import {useNavigate} from "react-router-dom";
 import ActionButtons from "../common/ActionButtonsProps";
-import HomeIcon from '@mui/icons-material/Home';
 import {DetailedApiError} from "../../errors/DetailedApiError";
 import CustomSnackbar from "../common/CustomSnackbar";
 import {deleteWarehous} from "../../api/WarehousApi.ts";
@@ -51,15 +50,6 @@ const WarehousList: React.FC<CustomGridProps<WarehouseStatsDTO>> = ({items, tota
                 <Typography variant="h4" sx={{fontWeight: 'bold'}}>
                     Warehouses
                 </Typography>
-                <Button
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<HomeIcon/>}
-                    onClick={() => navigate('/warehouses')}
-                    sx={{height: 50}}
-                >
-                    Home
-                </Button>
             </Stack>
             <Grid container spacing={3}>
                 <Button fullWidth

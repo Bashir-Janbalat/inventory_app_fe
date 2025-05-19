@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Link as MuiLink, Typography, useTheme } from "@mui/material";
+import {Box, Link as MuiLink, Typography, useTheme} from "@mui/material";
 
 const Footer: React.FC = () => {
     const theme = useTheme(); // نحصل على الثيم الحالي (فاتح أو داكن)

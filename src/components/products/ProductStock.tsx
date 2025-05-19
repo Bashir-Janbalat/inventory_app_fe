@@ -1,6 +1,7 @@
-import {ProductDTO, StockDTO, WarehouseDTO} from "../../types/ProductDTO.ts";
+import {ProductDTO, StockDTO} from "../../types/ProductDTO.ts";
 import {Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import React, {Fragment, useState} from "react";
+import {WarehouseDTO} from "../../types/WarehouseDTO.ts";
 
 interface ProductStockProps {
     product: ProductDTO;
@@ -96,7 +97,11 @@ const ProductStock: React.FC<ProductStockProps> = ({product, warehouses, onChang
                                 name="quantity"
                                 type="number"
                                 value={stock.quantity}
-                                disabled={true}
+                                slotProps={{
+                                    input: {
+                                        readOnly: true,
+                                    },
+                                }}
                                 onChange={(e) =>
                                     updateStock(index, {quantity: Number(e.target.value)})
                                 }
@@ -109,9 +114,14 @@ const ProductStock: React.FC<ProductStockProps> = ({product, warehouses, onChang
                                 <InputLabel id={`warehouse-label-${index}`}>Warehouse</InputLabel>
                                 <Select
                                     labelId={`warehouse-label-${index}`}
+                                    IconComponent={() => null}
                                     value={stock.warehouse?.id ? String(stock.warehouse.id) : ''}
                                     label="Warehouse"
-                                    disabled={true}
+                                    slotProps={{
+                                        input: {
+                                            readOnly: true,
+                                        },
+                                    }}
                                     onChange={(e) => {
                                         const warehouseId = Number(e.target.value);
                                         const selectedWarehouse = warehouses.find((w) => w.id === warehouseId);

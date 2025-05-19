@@ -7,10 +7,11 @@ import {getProductById} from '../api/ProductApi';
 import {CategoryDTO} from '../types/CategoryDTO';
 import {BrandDTO} from '../types/BrandDTO';
 import {SupplierDTO} from '../types/SupplierDTO';
-import {ProductDTO, WarehouseDTO} from '../types/ProductDTO';
+import {ProductDTO} from '../types/ProductDTO';
 import {useFetcher} from './useFetcher';
-import {AttributeDTO} from '../types/Attribute';
+import {AttributeDTO} from '../types/AttributeDTO.ts';
 import {getAttributes} from "../api/AttributeApi.ts";
+import {WarehouseDTO} from "../types/WarehouseDTO.ts";
 
 type InitialDataOptions = {
     loadCategories?: boolean;

@@ -31,13 +31,7 @@ const SingleProduct: React.FC = () => {
     const [totalQuantity, setTotalQuantity] = useState<number>(0);
     const [uniqueWarehouses, setUniqueWarehouses] = useState<string[]>([]);
 
-    const {fetchData, loading, error, product} = createFetcher(id, {
-        loadProduct: true,
-        loadCategories: false,
-        loadBrands: false,
-        loadSuppliers: false,
-        loadWarehouses: false,
-    });
+    const {fetchData, loading, error, product} = createFetcher(id, {loadProduct: true});
 
     useEffect(() => {
         fetchData().catch(console.error);
@@ -156,7 +150,8 @@ const SingleProduct: React.FC = () => {
                     <Typography variant="body2"><strong>Brand:</strong> {productDTO.brandName}</Typography>
                     <Typography variant="body2"><strong>Supplier:</strong> {productDTO.supplierName}</Typography>
                     <Typography variant="body2"><strong>Stock:</strong> {totalQuantity} units</Typography>
-                    <Typography variant="body2" gutterBottom><strong>Warehouse:</strong> {uniqueWarehouses.join(', ')}</Typography>
+                    <Typography variant="body2" gutterBottom><strong>Warehouse:</strong> {uniqueWarehouses.join(', ')}
+                    </Typography>
                     {productDTO.description && (
                         <>
                             <Divider sx={{my: 1}}/>

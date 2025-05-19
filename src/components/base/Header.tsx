@@ -1,19 +1,8 @@
-import React, { useState } from "react";
-import {
-    AppBar,
-    Avatar,
-    Box,
-    Button,
-    IconButton,
-    Menu,
-    MenuItem,
-    Toolbar,
-    Typography,
-    useTheme,
-} from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
-import { Brightness4, Brightness7 } from "@mui/icons-material";
-import { useAuth } from "../../hooks/useAuth.ts";
+import React, {useState} from "react";
+import {AppBar, Avatar, Box, Button, IconButton, Menu, MenuItem, Toolbar, Typography, useTheme,} from "@mui/material";
+import {Link, useNavigate} from "react-router-dom";
+import {Brightness4, Brightness7} from "@mui/icons-material";
+import {useAuth} from "../../hooks/useAuth.ts";
 import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CompareArrowsIcon from '@mui/icons-material/CompareArrows';

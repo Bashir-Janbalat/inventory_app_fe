@@ -1,6 +1,8 @@
 export interface CategoryDTO {
     id?: number
     name: string;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 export interface CategoryStatsDTO {

@@ -19,6 +19,8 @@ export function UpdateForm<T extends object>({
     const navigate = useNavigate();
     const [updateError, setUpdateError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const readOnlyFields = ["createdAt", "updatedAt"];
+    const hiddenFields = ["id"];
 
     useEffect(() => {
         fetchData();
@@ -95,7 +97,12 @@ export function UpdateForm<T extends object>({
                                     handleChange(key as keyof T, e.target.value)
                                 }
                                 fullWidth
-                                sx={{mb: 1, display: (key === "id" ? 'none' : 'block')}}
+                                sx={{mb: 1, display: (hiddenFields.includes(key) ? 'none' : 'block')}}
+                                slotProps={{
+                                    input: {
+                                        readOnly: readOnlyFields.includes(key),
+                                    },
+                                }}
                             />
                         </Box>
                     ))}

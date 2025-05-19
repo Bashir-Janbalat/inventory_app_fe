@@ -3,29 +3,29 @@ import {ProductDTO} from '../types/ProductDTO';
 import {PagedResponseDTO} from "../types/PagedResponseDTO.ts";
 import {getDetailedApiError} from "../utils/ErrorUtils.ts";
 
+type ProductQueryParams = {
+    page?: number;
+    size?: number;
+    sortBy?: string;
+    sortDirection?: string;
+    searchBy?: string;
+    categoryName?: string;
+    brandName?: string;
+    supplierName?: string;
+};
 
-export const getProducts =
-    async (page: number, size: number, sortBy: string, sortDirection: string,
-           searchBy: string, categoryName: string, brandName: string, supplierName: string):
-        Promise<PagedResponseDTO<ProductDTO>> => {
-        try {
-            const response = await axiosInstance.get("/products", {
-                params: {
-                    page,
-                    size,
-                    sortDirection,
-                    sortBy,
-                    searchBy,
-                    categoryName,
-                    brandName,
-                    supplierName
-                }
-            });
-            return response.data as PagedResponseDTO<ProductDTO>;
-        } catch (error) {
-            throw getDetailedApiError(error);
-        }
-    };
+export const getProducts = async (
+    params: ProductQueryParams
+): Promise<PagedResponseDTO<ProductDTO>> => {
+    try {
+        const response = await axiosInstance.get("/products", {
+            params
+        });
+        return response.data as PagedResponseDTO<ProductDTO>;
+    } catch (error) {
+        throw getDetailedApiError(error);
+    }
+};
 
 export const getProductById = async (id: number): Promise<ProductDTO> => {
     try {

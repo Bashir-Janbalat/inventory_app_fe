@@ -1,7 +1,7 @@
 import {ProductDTO} from "../../types/ProductDTO";
 import {Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import React, {useState} from "react";
-import {AttributeDTO} from "../../types/Attribute";
+import {AttributeDTO} from "../../types/AttributeDTO.ts";
 
 
 interface productAttributesProps {
@@ -88,13 +88,17 @@ const ProductAttributes: React.FC<productAttributesProps> = ({product, attribute
                     <Grid container spacing={1} key={index}>
                         <Grid size={{xs: 12, sm: 6}}>
                             <TextField
-                                disabled={attr.isInitial}
                                 label="Attribute Name"
                                 name="attributeName"
                                 value={attr.attributeName}
                                 onChange={(e) => handleAttributeChange(index, e)}
                                 fullWidth
                                 required
+                                slotProps={{
+                                    input: {
+                                        readOnly: attr.isInitial,
+                                    },
+                                }}
                             />
                         </Grid>
                         <Grid size={{xs: 12, sm: 6}}>

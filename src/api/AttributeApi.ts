@@ -1,5 +1,5 @@
 import axiosInstance from './AxiosInstance.ts';
-import {AttributeDTO} from "../types/Attribute";
+import {AttributeDTO} from "../types/AttributeDTO.ts";
 import {getDetailedApiError} from "../utils/ErrorUtils.ts";
 
 

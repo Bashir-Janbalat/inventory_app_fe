@@ -5,7 +5,6 @@ import {CustomGridProps} from "../../types/CustomGridProps.ts";
 import AddIcon from "@mui/icons-material/Add";
 import {useNavigate} from "react-router-dom";
 import ActionButtons from "../common/ActionButtonsProps.tsx";
-import HomeIcon from '@mui/icons-material/Home';
 import {DetailedApiError} from "../../errors/DetailedApiError.ts";
 import CustomSnackbar from "../common/CustomSnackbar.tsx";
 import {deleteBrand} from "../../api/BrandApi.ts";
@@ -22,7 +21,7 @@ const BrandList: React.FC<CustomGridProps<BrandStatsDTO>> = ({items, totalPages,
         navigate('/createBrand');
     }
 
-    const handleDeleteBrand = async(id: number)=> {
+    const handleDeleteBrand = async (id: number) => {
         try {
             const status = await deleteBrand(id);
             if (status === 204) {
@@ -50,15 +49,6 @@ const BrandList: React.FC<CustomGridProps<BrandStatsDTO>> = ({items, totalPages,
                 <Typography variant="h4" sx={{fontWeight: 'bold'}}>
                     Brands
                 </Typography>
-                <Button
-                    variant="outlined"
-                    color="primary"
-                    startIcon={<HomeIcon />}
-                    onClick={()=> navigate('/products') }
-                    sx={{height: 50}}
-                >
-                    Home
-                </Button>
             </Stack>
             <Grid container spacing={3}>
                 <Button fullWidth
@@ -71,42 +61,42 @@ const BrandList: React.FC<CustomGridProps<BrandStatsDTO>> = ({items, totalPages,
                     Create
                 </Button>
                 <>
-                {brands.map((brand) => (
-                    <Grid size={{xs: 12, sm: 6, md: 4}} key={brand.id}>
-                        <Card sx={(theme) => ({
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            border: `1px solid ${theme.palette.divider}`,
-                            boxShadow: theme.shadows[3],
-                            borderRadius: 2,
-                            padding: 2,
-                            width: '100%',
-                            backgroundColor: theme.palette.background.paper,
-                            transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                            '&:hover': {
-                                transform: 'translateY(-5px)',
-                                boxShadow: theme.shadows[6],
-                            }
-                        })}>
-                            <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                <Typography variant="h5" fontWeight="bold" gutterBottom>
-                                    {brand.name}
-                                </Typography>
-                                <Typography variant="body1" color="text.secondary">
-                                    <strong>Product count:</strong> {brand.productCount}
-                                </Typography>
-                                <Typography variant="body1" color="text.secondary">
-                                    <strong>Total stock:</strong> {brand.totalStock}
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                        <ActionButtons id={brand.id!}
-                                       onDelete={handleDeleteBrand}
-                                       navigateTo={`/brands/update/`+ brand.id}
-                        />
-                    </Grid>
-                ))}
+                    {brands.map((brand) => (
+                        <Grid size={{xs: 12, sm: 6, md: 4}} key={brand.id}>
+                            <Card sx={(theme) => ({
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                border: `1px solid ${theme.palette.divider}`,
+                                boxShadow: theme.shadows[3],
+                                borderRadius: 2,
+                                padding: 2,
+                                width: '100%',
+                                backgroundColor: theme.palette.background.paper,
+                                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                                '&:hover': {
+                                    transform: 'translateY(-5px)',
+                                    boxShadow: theme.shadows[6],
+                                }
+                            })}>
+                                <CardContent sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                                    <Typography variant="h5" fontWeight="bold" gutterBottom>
+                                        {brand.name}
+                                    </Typography>
+                                    <Typography variant="body1" color="text.secondary">
+                                        <strong>Product count:</strong> {brand.productCount}
+                                    </Typography>
+                                    <Typography variant="body1" color="text.secondary">
+                                        <strong>Total stock:</strong> {brand.totalStock}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                            <ActionButtons id={brand.id!}
+                                           onDelete={handleDeleteBrand}
+                                           navigateTo={`/brands/update/` + brand.id}
+                            />
+                        </Grid>
+                    ))}
                 </>
             </Grid>
             <Stack direction="row" justifyContent="center" alignItems="center" marginTop={4}>

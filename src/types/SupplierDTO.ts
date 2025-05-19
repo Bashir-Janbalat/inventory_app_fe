@@ -4,4 +4,6 @@ export interface SupplierDTO {
     contactEmail: string;
     phone:string;
     address: string;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
