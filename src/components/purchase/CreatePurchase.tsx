@@ -28,6 +28,7 @@ import CustomSnackbar from "../common/CustomSnackbar.tsx";
 
 const CreatePurchase: React.FC = () => {
     const [supplierId, setSupplierId] = useState<number>();
+    const [warehouseId, setWarehouseId] = useState<number>();
     const [items, setItems] = useState<PurchaseItemDTO[]>([]);
     const [products, setProducts] = useState<PurchaseProductDTO[]>([]);
     const navigate = useNavigate();
@@ -37,20 +38,25 @@ const CreatePurchase: React.FC = () => {
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');
 
     const {
-        fetchData: loadSuppliers,
-        loading: isLoadingSuppliers,
-        error: suppliersLoadError,
-        suppliers
-    } = createFetcher(undefined, {loadSuppliers: true});
+        fetchData,
+        loading: isLoadingInitData,
+        error: initDataLoadError,
+        suppliers,
+        warehouses
+    } = createFetcher(undefined, {loadSuppliers: true, loadWarehouses: true});
 
     useEffect(() => {
-        loadSuppliers().catch(console.error);
-    }, [loadSuppliers]);
+        fetchData().catch(console.error);
+    }, [fetchData]);
+
     useEffect(() => {
         if (suppliers.length > 0 && !supplierId) {
             setSupplierId(Number(suppliers[0].id));
         }
-    }, [suppliers, supplierId]);
+        if (warehouses.length > 0 && !warehouseId) {
+            setWarehouseId(Number(warehouses[0].id));
+        }
+    }, [suppliers, warehouses, supplierId, warehouseId]);
 
     const fetchAllProducts = useCallback(async () => {
         const response = await getProductsForSupplier(Number(supplierId));
@@ -79,7 +85,8 @@ const CreatePurchase: React.FC = () => {
             productName: defaultProduct.productName,
             productId: defaultProduct.productId || '',
             quantity: 0,
-            unitPrice: defaultProduct.unitPrice
+            unitPrice: defaultProduct.unitPrice,
+            warehouseId: '',
         }]);
     };
 
@@ -126,12 +133,12 @@ const CreatePurchase: React.FC = () => {
             setIsSaving(false);
         }
     };
-    if (isLoadingSuppliers || isLoadingProducts) {
+    if (isLoadingInitData || isLoadingProducts) {
         return <Loading fullScreen message="Loading..."/>;
     }
-    if (suppliersLoadError) {
-        return <ErrorMessage message={suppliersLoadError} onRetry={() => {
-            void loadSuppliers();
+    if (initDataLoadError) {
+        return <ErrorMessage message={initDataLoadError} onRetry={() => {
+            void fetchData();
         }}/>;
     }
     if (productsLoadError) {
@@ -157,7 +164,7 @@ const CreatePurchase: React.FC = () => {
                                 color="primary"
                                 startIcon={<ShoppingCartIcon/>}
                                 onClick={() => navigate("/purchases")}
-                                sx={{ mr: 2 }}
+                                sx={{mr: 2}}
                             >
                                 Purchases
                             </Button>
@@ -226,6 +233,22 @@ const CreatePurchase: React.FC = () => {
                                             onChange={(e) =>
                                                 handleItemChange(index, 'unitPrice', parseFloat(e.target.value))}
                                         />
+                                    </Grid>
+                                    {/* Warehouses */}
+                                    <Grid size={{xs: 12, sm: 3}}>
+                                        <TextField
+                                            label="Warehouses"
+                                            select
+                                            fullWidth
+                                            value={item.warehouseId}
+                                            onChange={(e) =>
+                                                handleItemChange(index, 'warehouseId', Number(e.target.value))}>
+                                            {warehouses.map((warehous) => (
+                                                <MenuItem key={warehous.id} value={warehous.id}>
+                                                    {warehous.name}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
                                     </Grid>
                                     {/* Total */}
                                     <Grid size={{xs: 12, sm: 2}}>

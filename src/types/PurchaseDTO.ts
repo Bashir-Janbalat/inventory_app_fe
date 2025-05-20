@@ -21,6 +21,8 @@ export interface PurchaseItemDTO {
     sku?: string;
     quantity: number;
     unitPrice: number;
+    warehouseId: number | string;
+    warehouseName?: string;
 }
 
 export interface PurchaseProductDTO {

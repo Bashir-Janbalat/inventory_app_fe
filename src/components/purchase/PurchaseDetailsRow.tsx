@@ -23,11 +23,12 @@ export const PurchaseDetailsRow: React.FC<Props> = ({open, items}) => {
                         <MuiTable size="small">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Product</TableCell>
-                                    <TableCell>Sku</TableCell>
-                                    <TableCell>Quantity</TableCell>
-                                    <TableCell>Unit Price</TableCell>
-                                    <TableCell>Total</TableCell>
+                                    <TableCell><strong>Product</strong></TableCell>
+                                    <TableCell><strong>Sku</strong></TableCell>
+                                    <TableCell><strong>Warehouse</strong></TableCell>
+                                    <TableCell><strong>Quantity</strong></TableCell>
+                                    <TableCell><strong>Unit Price</strong></TableCell>
+                                    <TableCell><strong>Total</strong></TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -35,6 +36,7 @@ export const PurchaseDetailsRow: React.FC<Props> = ({open, items}) => {
                                     <TableRow key={index}>
                                         <TableCell>{item.productName}</TableCell>
                                         <TableCell>{item.sku}</TableCell>
+                                        <TableCell>{item.warehouseName}</TableCell>
                                         <TableCell>{item.quantity}</TableCell>
                                         <TableCell>${item.unitPrice.toFixed(2)}</TableCell>
                                         <TableCell>
