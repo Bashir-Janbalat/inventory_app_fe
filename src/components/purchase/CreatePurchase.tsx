@@ -15,6 +15,7 @@ import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import SaveIcon from '@mui/icons-material/Save';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {PurchaseItemDTO, PurchaseProductDTO} from "../../types/PurchaseDTO.ts";
 import createFetcher from "../../hooks/useProductFormData.ts";
 import Loading from "../base/Loading.tsx";
@@ -150,6 +151,17 @@ const CreatePurchase: React.FC = () => {
                             }
                         }}
                         sx={{pb: 2}}
+                        action={
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                startIcon={<ShoppingCartIcon/>}
+                                onClick={() => navigate("/purchases")}
+                                sx={{ mr: 2 }}
+                            >
+                                Purchases
+                            </Button>
+                        }
                     />
                     <CardContent>
 

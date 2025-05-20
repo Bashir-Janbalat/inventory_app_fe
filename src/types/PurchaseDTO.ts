@@ -18,6 +18,7 @@ export interface PurchaseItemDTO {
     id?: number;
     productId: number | string;
     productName?: string;
+    sku?: string;
     quantity: number;
     unitPrice: number;
 }

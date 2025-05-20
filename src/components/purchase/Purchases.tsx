@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import {
     Button,
     Chip,
+    IconButton,
     MenuItem,
     Pagination,
     Paper,
@@ -13,14 +14,18 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Typography,
+    Typography
 } from "@mui/material";
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import {useNavigate} from "react-router-dom";
 import {PurchaseDTO, PurchaseItemDTO, PurchaseStatus} from "../../types/PurchaseDTO.ts";
 import {useFetcher} from "../../hooks/useFetcher.ts";
 import Loading from "../base/Loading.tsx";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import {getPurchases, updatePurchaseStatus} from "../../api/PurchaseApi.ts";
+import {PurchaseDetailsRow} from "./PurchaseDetailsRow";
 
 
 const Purchases: React.FC = () => {
@@ -29,6 +34,7 @@ const Purchases: React.FC = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const size = 9;
+    const [openRows, setOpenRows] = useState<Record<number, boolean>>({});
 
     const fetchPurchases = useCallback(async () => {
         const pagedResponse = await getPurchases({page: page - 1, size});
@@ -72,7 +78,12 @@ const Purchases: React.FC = () => {
             void fetchData();
         }}/>;
     }
-
+    const toggleRow = (id: number) => {
+        setOpenRows((prev) => ({
+            ...prev,
+            [id]: !prev[id],
+        }));
+    };
 
     const handleStatusChange = async (id: number | undefined, newStatus: PurchaseStatus) => {
         if (!id) return;
@@ -90,12 +101,13 @@ const Purchases: React.FC = () => {
     };
 
     return (
-        <Paper elevation={3} sx={{padding: 3, maxWidth: 1100, margin: "auto", marginTop: 4}}>
+        <Paper elevation={3} sx={{ p: 3, maxWidth: { xs: "100%", md: 1100 }, mx: "auto", mt: 4 }}>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 2}}>
-                <Typography variant="h5">Purchases</Typography>
+                <Typography variant="h5" fontWeight="bold">Purchases</Typography>
                 <Button
                     variant="contained"
                     color="primary"
+                    startIcon={<AddCircleIcon />}
                     onClick={() => navigate("/createPurchase")}
                 >
                     Create Purchase
@@ -105,6 +117,7 @@ const Purchases: React.FC = () => {
                 <Table>
                     <TableHead>
                         <TableRow>
+                            <TableCell/>
                             <TableCell><strong>Purchase Date</strong></TableCell>
                             <TableCell><strong>Supplier</strong></TableCell>
                             <TableCell><strong>Status</strong></TableCell>
@@ -115,52 +128,60 @@ const Purchases: React.FC = () => {
                     </TableHead>
                     <TableBody>
                         {purchases.map((purchase) => (
-                            <TableRow key={purchase.id}>
-                                <TableCell>
-                                    {purchase.createdAt
-                                        ? new Date(purchase.createdAt).toLocaleString("de-DE", {
-                                            day: "2-digit",
-                                            month: "2-digit",
-                                            year: "numeric",
-                                            hour: "2-digit",
-                                            minute: "2-digit",
-                                        })
-                                        : "-"}
-                                </TableCell>
-                                <TableCell>{purchase.supplierName}</TableCell>
-                                <TableCell>
-                                    <Chip
-                                        label={purchase.status}
-                                        color={getStatusColor(purchase.status as PurchaseStatus)}
-                                        size="medium"
-                                    />
-                                </TableCell>
-                                <TableCell>{calculateTotalProducts(purchase.items)}</TableCell>
-                                <TableCell>
-                                    ${calculateTotalAmount(purchase.items).toLocaleString("en-US", {
-                                    minimumFractionDigits: 2,
-                                })}
-                                </TableCell>
-                                <TableCell>
-                                    {purchase.status === PurchaseStatus.PENDING ? (
-                                        <Select
-                                            size="small"
-                                            value={purchase.status === PurchaseStatus.PENDING ? "" : purchase.status}
-                                            displayEmpty
-                                            onChange={(e) =>
-                                                handleStatusChange(purchase.id, e.target.value as unknown as PurchaseStatus)
-                                            }
-                                            sx={{minWidth: 150}}
-                                        >
-                                            <MenuItem value="" disabled> Set Status...</MenuItem>
-                                            <MenuItem value={PurchaseStatus.COMPLETED}>Completed</MenuItem>
-                                            <MenuItem value={PurchaseStatus.CANCELLED}>Cancelled</MenuItem>
-                                        </Select>
-                                    ) : (
-                                        "-"
-                                    )}
-                                </TableCell>
-                            </TableRow>
+                            <React.Fragment key={purchase.id}>
+                                <TableRow >
+                                    <TableCell>
+                                        <IconButton size="small" onClick={() => toggleRow(purchase.id!)}>
+                                            {openRows[purchase.id!] ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
+                                        </IconButton>
+                                    </TableCell>
+                                    <TableCell>
+                                        {purchase.createdAt
+                                            ? new Date(purchase.createdAt).toLocaleString("de-DE", {
+                                                day: "2-digit",
+                                                month: "2-digit",
+                                                year: "numeric",
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                            })
+                                            : "-"}
+                                    </TableCell>
+                                    <TableCell>{purchase.supplierName}</TableCell>
+                                    <TableCell>
+                                        <Chip
+                                            label={purchase.status}
+                                            color={getStatusColor(purchase.status as PurchaseStatus)}
+                                            size="medium"
+                                        />
+                                    </TableCell>
+                                    <TableCell>{calculateTotalProducts(purchase.items)}</TableCell>
+                                    <TableCell>
+                                        ${calculateTotalAmount(purchase.items).toLocaleString("en-US", {
+                                        minimumFractionDigits: 2,
+                                    })}
+                                    </TableCell>
+                                    <TableCell>
+                                        {purchase.status === PurchaseStatus.PENDING ? (
+                                            <Select
+                                                size="small"
+                                                value={purchase.status === PurchaseStatus.PENDING ? "" : purchase.status}
+                                                displayEmpty
+                                                onChange={(e) =>
+                                                    handleStatusChange(purchase.id, e.target.value as unknown as PurchaseStatus)
+                                                }
+                                                sx={{minWidth: 150}}
+                                            >
+                                                <MenuItem value="" disabled> Set Status...</MenuItem>
+                                                <MenuItem value={PurchaseStatus.COMPLETED}>Completed</MenuItem>
+                                                <MenuItem value={PurchaseStatus.CANCELLED}>Cancelled</MenuItem>
+                                            </Select>
+                                        ) : (
+                                            "-"
+                                        )}
+                                    </TableCell>
+                                </TableRow>
+                                <PurchaseDetailsRow open={openRows[purchase.id!]} items={purchase.items}/>
+                            </React.Fragment>
                         ))}
                     </TableBody>
                 </Table>
