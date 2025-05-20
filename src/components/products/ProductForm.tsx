@@ -48,7 +48,7 @@ const ProductForm = ({mode = 'create'}: { mode?: 'create' | 'update' }) => {
         costPrice: 0,
         images: [],
         productAttributes: [],
-        stocks:[]
+        stocks: []
     });
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -113,8 +113,8 @@ const ProductForm = ({mode = 'create'}: { mode?: 'create' | 'update' }) => {
         <form onSubmit={handleSubmit}>
             <Tabs value={tabIndex} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
                 <Tab label="Details"/>
-                <Tab label="Stocks"/>
-                <Tab label="Supplier"/>
+                {mode === 'update' && <Tab label="Stocks" />}
+                {mode === 'update' && <Tab label="Supplier" />}
                 <Tab label="Category"/>
                 <Tab label="Brand"/>
                 <Tab label="Images"/>
@@ -129,7 +129,6 @@ const ProductForm = ({mode = 'create'}: { mode?: 'create' | 'update' }) => {
                             product={formData}
                             warehouses={warehouses}
                             onChange={handleFormChange}
-                            mode={mode}
                         />
                     )}
                     {tabIndex === 2 && (
@@ -142,7 +141,8 @@ const ProductForm = ({mode = 'create'}: { mode?: 'create' | 'update' }) => {
                         <ProductBrand product={formData} brands={brands} onChange={handleFormChange}/>
                     )}
                     {tabIndex === 5 && <ProductImages product={formData} onChange={handleFormChange}/>}
-                    {tabIndex === 6 && <ProductAttributes product={formData} attributes={attributes} onChange={handleFormChange}/>}
+                    {tabIndex === 6 &&
+                        <ProductAttributes product={formData} attributes={attributes} onChange={handleFormChange}/>}
                 </Grid>
             </Box>
 
