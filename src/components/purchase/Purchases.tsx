@@ -1,9 +1,13 @@
 import React, {useCallback, useEffect, useState} from "react";
 import {
+    Box,
     Button,
     Chip,
+    FormControl,
     IconButton,
+    InputLabel,
     MenuItem,
+    OutlinedInput,
     Pagination,
     Paper,
     Select,
@@ -14,7 +18,9 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Typography
+    Typography,
+    useMediaQuery,
+    useTheme
 } from "@mui/material";
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -35,13 +41,16 @@ const Purchases: React.FC = () => {
     const [totalPages, setTotalPages] = useState(1);
     const size = 9;
     const [openRows, setOpenRows] = useState<Record<number, boolean>>({});
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+    const [searchDate, setSearchDate] = useState("");
 
     const fetchPurchases = useCallback(async () => {
-        const pagedResponse = await getPurchases({page: page - 1, size});
+        const pagedResponse = await getPurchases({page: page - 1, size, date: searchDate});
         setPurchases(pagedResponse.content);
         setTotalPages(pagedResponse.totalPages);
         return pagedResponse.content;
-    }, [page]);
+    }, [page, size, searchDate]);
 
     const {fetchData, loading, error} = useFetcher<PurchaseDTO[]>(fetchPurchases);
 
@@ -101,18 +110,44 @@ const Purchases: React.FC = () => {
     };
 
     return (
-        <Paper elevation={3} sx={{ p: 3, maxWidth: { xs: "100%", md: 1100 }, mx: "auto", mt: 4 }}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 2}}>
+        <Paper elevation={3} sx={{p: 3, maxWidth: {xs: "100%", md: 1100}, mx: "auto", mt: 4}}>
+            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 4}}>
                 <Typography variant="h5" fontWeight="bold">Purchases</Typography>
                 <Button
                     variant="contained"
                     color="primary"
-                    startIcon={<AddCircleIcon />}
+                    startIcon={<AddCircleIcon/>}
                     onClick={() => navigate("/createPurchase")}
                 >
                     Create Purchase
                 </Button>
             </Stack>
+            <Box display="flex" gap={2} mb={3} flexWrap="wrap" alignItems="flex-start">
+                {/*Date Filter */}
+                {!isSmallScreen && (
+                    <FormControl sx={{minWidth: 180}} size="small">
+                        <InputLabel shrink htmlFor="date-input">Date</InputLabel>
+                        <OutlinedInput
+                            id="date-input"
+                            type="date"
+                            value={searchDate}
+                            onChange={(e) => {
+                                setSearchDate(e.target.value);
+                                setPage(1);
+                            }}
+                            notched
+                        />
+                    </FormControl>
+                )}
+
+                <Button variant="outlined" onClick={() => {
+                    setSearchDate("");
+                    setPage(1);
+
+                }}>
+                    Clear Filters
+                </Button>
+            </Box>
             <TableContainer>
                 <Table>
                     <TableHead>
@@ -129,7 +164,7 @@ const Purchases: React.FC = () => {
                     <TableBody>
                         {purchases.map((purchase) => (
                             <React.Fragment key={purchase.id}>
-                                <TableRow >
+                                <TableRow>
                                     <TableCell>
                                         <IconButton size="small" onClick={() => toggleRow(purchase.id!)}>
                                             {openRows[purchase.id!] ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}

@@ -6,6 +6,7 @@ import {PagedResponseDTO} from "../types/PagedResponseDTO.ts";
 type QueryParams = {
     page: number,
     size: number,
+    date?: string,
 }
 
 export const getProductsForSupplier = async (supplierId: number): Promise<PurchaseProductDTO[]> => {
