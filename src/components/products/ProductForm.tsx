@@ -109,40 +109,50 @@ const ProductForm = ({mode = 'create'}: { mode?: 'create' | 'update' }) => {
     const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
         setTabIndex(newValue);
     };
+    const tabs = [
+        {
+            label: "Details",
+            component: <ProductDetails product={formData} onChange={handleFormChange}/>
+        },
+        ...(mode === 'update' ? [
+            {
+                label: "Stocks",
+                component: <ProductStock product={formData} warehouses={warehouses} onChange={handleFormChange}/>
+            }] : []),
+        ...(mode === 'update' ? [
+            {
+                label: "Supplier",
+                component: <ProductSupplier product={formData} suppliers={suppliers} onChange={handleFormChange}/>
+            }] : []),
+        {
+            label: "Category",
+            component: <ProductCategory product={formData} categories={categories} onChange={handleFormChange}/>
+        },
+        {
+            label: "Brand",
+            component: <ProductBrand product={formData} brands={brands} onChange={handleFormChange}/>
+        },
+        {
+            label: "Images",
+            component: <ProductImages product={formData} onChange={handleFormChange}/>
+        },
+        {
+            label: "Attributes",
+            component: <ProductAttributes product={formData} attributes={attributes} onChange={handleFormChange}/>
+        }
+
+    ]
     return (
         <form onSubmit={handleSubmit}>
             <Tabs value={tabIndex} onChange={handleTabChange} variant="scrollable" scrollButtons="auto">
-                <Tab label="Details"/>
-                {mode === 'update' && <Tab label="Stocks" />}
-                {mode === 'update' && <Tab label="Supplier" />}
-                <Tab label="Category"/>
-                <Tab label="Brand"/>
-                <Tab label="Images"/>
-                <Tab label="Attributes"/>
+                {tabs.map((tab, index) => (
+                    <Tab key={index} label={tab.label}/>
+                ))}
             </Tabs>
 
             <Box mt={2}>
                 <Grid container spacing={2}>
-                    {tabIndex === 0 && <ProductDetails product={formData} onChange={handleFormChange}/>}
-                    {tabIndex === 1 && (
-                        <ProductStock
-                            product={formData}
-                            warehouses={warehouses}
-                            onChange={handleFormChange}
-                        />
-                    )}
-                    {tabIndex === 2 && (
-                        <ProductSupplier product={formData} suppliers={suppliers} onChange={handleFormChange}/>
-                    )}
-                    {tabIndex === 3 && (
-                        <ProductCategory product={formData} categories={categories} onChange={handleFormChange}/>
-                    )}
-                    {tabIndex === 4 && (
-                        <ProductBrand product={formData} brands={brands} onChange={handleFormChange}/>
-                    )}
-                    {tabIndex === 5 && <ProductImages product={formData} onChange={handleFormChange}/>}
-                    {tabIndex === 6 &&
-                        <ProductAttributes product={formData} attributes={attributes} onChange={handleFormChange}/>}
+                    {tabs[tabIndex]?.component}
                 </Grid>
             </Box>
 
