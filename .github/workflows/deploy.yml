@@ -1,9 +1,7 @@
-name: inventory_app_fe
-
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 jobs:
   build-and-push:
@@ -13,8 +11,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Extract tag name
+        run: |
+          echo "TAG_NAME=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          echo "Tag = ${GITHUB_REF#refs/tags/}"
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -22,9 +22,12 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and Push Docker image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/inventory_app_fe:latest
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/inventory_app_fe:${TAG_NAME} .
+          docker tag ${{ secrets.DOCKER_USERNAME }}/inventory_app_fe:${TAG_NAME} ${{ secrets.DOCKER_USERNAME }}/inventory_app_fe:latest
+
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker push ${{ secrets.DOCKER_USERNAME }}/inventory_app_fe:${TAG_NAME}
+          docker push ${{ secrets.DOCKER_USERNAME }}/inventory_app_fe:latest
