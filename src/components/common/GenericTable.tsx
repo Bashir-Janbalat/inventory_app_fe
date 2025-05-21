@@ -26,7 +26,7 @@ type GenericTableGridProps<T> = CustomGridProps<T> & {
     updatePath: (id: number) => string;
     deleteItem: (id: number) => Promise<number>;
     columnTitles: string[];
-    renderColumns: (item: T) => React.ReactNode;
+    renderColumns: (item: T) => React.ReactNode[];
 };
 
 function GenericTable<T extends { id: number }>({
@@ -78,16 +78,17 @@ function GenericTable<T extends { id: number }>({
                 </Button>
             </Stack>
 
-            <TableContainer component={Paper} sx={{overflowX: 'auto', border: '1px solid #ccc', borderRadius: 2}}>
+            <TableContainer component={Paper} sx={{overflowX: 'auto', border: '1px solid #ccc', borderRadius: 1}}>
                 <Table>
                     <TableHead>
                         <TableRow>
                             {columnTitles.map((title, index) => (
-                                <TableCell key={index} sx={{fontWeight: 'bold', textAlign: 'center'}}>
+                                <TableCell key={index} sx={{fontWeight: 'bold', textAlign: 'center', fontSize: '1rem'}}>
                                     {title}
                                 </TableCell>
                             ))}
-                            <TableCell sx={{fontWeight: 'bold', textAlign: 'center'}}>Actions</TableCell>
+                            <TableCell
+                                sx={{fontWeight: 'bold', textAlign: 'center', fontSize: '1rem'}}>Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

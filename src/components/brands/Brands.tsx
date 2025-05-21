@@ -5,13 +5,13 @@ import {deleteBrand, getBrandsWithStats} from "../../api/BrandApi.ts";
 import {useFetcher} from "../../hooks/useFetcher.ts";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import GenericTable from "../common/GenericTable.tsx";
-import TableCell from '@mui/material/TableCell';
+import {renderCenteredCells} from "../../utils/StyleUtils.tsx";
 
 const Brands: React.FC = () => {
     const [brands, setBrands] = useState<BrandStatsDTO[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const size = 9;
+    const size = 6;
 
     const fetchBrands = useCallback(async () => {
         const pagedResponse = await getBrandsWithStats(page - 1, size);
@@ -47,13 +47,12 @@ const Brands: React.FC = () => {
             updatePath={(id) => `/brands/update/${id}`}
             deleteItem={deleteBrand}
             columnTitles={["id", "Name", "Product Count", "Total Stock"]}
-            renderColumns={(brand) => (
-                <>
-                    <TableCell sx={{textAlign: 'center'}}>{brand.id}</TableCell>
-                    <TableCell sx={{textAlign: 'center'}}>{brand.name}</TableCell>
-                    <TableCell sx={{textAlign: 'center'}}>{brand.productCount}</TableCell>
-                    <TableCell sx={{textAlign: 'center'}}>{brand.totalStock}</TableCell>
-                </>
+            renderColumns={(brand) => (renderCenteredCells([
+                    brand.id,
+                    brand.name,
+                    brand.productCount,
+                    brand.totalStock
+                ])
             )}
         />
 

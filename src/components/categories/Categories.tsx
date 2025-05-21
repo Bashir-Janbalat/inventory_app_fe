@@ -5,13 +5,13 @@ import Loading from "../base/Loading.tsx";
 import {useFetcher} from "../../hooks/useFetcher.ts";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import GenericTable from "../common/GenericTable.tsx";
-import TableCell from '@mui/material/TableCell';
+import {renderCenteredCells} from "../../utils/StyleUtils.tsx";
 
 const Categories: React.FC = () => {
     const [categories, setCategories] = useState<CategoryStatsDTO[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const size = 9;
+    const size = 6;
 
     const fetchCategories = useCallback(async () => {
         const pagedResponse = await getCategoriesWithStats(page - 1, size);
@@ -37,26 +37,26 @@ const Categories: React.FC = () => {
     }
 
     return (
-            <GenericTable<CategoryStatsDTO>
-                title="Categories"
-                items={categories}
-                totalPages={totalPages}
-                page={page}
-                setPage={setPage}
-                createPath="/createCategory"
-                updatePath={(id) => `/categories/update/${id}`}
-                deleteItem={deleteCategory}
-                columnTitles={["id", "Name", "Product Count", "Brands count", "Total Stock"]}
-                renderColumns={(category) => (
-                    <>
-                        <TableCell sx={{textAlign: 'center'}}>{category.id}</TableCell>
-                        <TableCell sx={{textAlign: 'center'}}>{category.name}</TableCell>
-                        <TableCell sx={{textAlign: 'center'}}>{category.totalProducts}</TableCell>
-                        <TableCell sx={{textAlign: 'center'}}>{category.totalBrands}</TableCell>
-                        <TableCell sx={{textAlign: 'center'}}>{category.totalStockQuantity}</TableCell>
-                    </>
-                )}
-            />
+        <GenericTable<CategoryStatsDTO>
+            title="Categories"
+            items={categories}
+            totalPages={totalPages}
+            page={page}
+            setPage={setPage}
+            createPath="/createCategory"
+            updatePath={(id) => `/categories/update/${id}`}
+            deleteItem={deleteCategory}
+            columnTitles={["id", "Name", "Product Count", "Brands count", "Total Stock"]}
+            renderColumns={(category) =>
+                renderCenteredCells([
+                    category.id,
+                    category.name,
+                    category.totalProducts,
+                    category.totalBrands,
+                    category.totalStockQuantity
+                ])
+            }
+        />
     );
 };
 

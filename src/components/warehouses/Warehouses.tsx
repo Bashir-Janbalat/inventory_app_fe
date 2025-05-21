@@ -5,13 +5,13 @@ import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import {deleteWarehous, getWarehousesWithStats} from "../../api/WarehousApi.ts";
 import {WarehouseStatsDTO} from "../../types/WarehouseDTO.ts";
 import GenericTable from "../common/GenericTable.tsx";
-import TableCell from '@mui/material/TableCell';
+import {renderCenteredCells} from "../../utils/StyleUtils.tsx";
 
 const Warehouses: React.FC = () => {
     const [warehouses, setWarehouses] = useState<WarehouseStatsDTO[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const size = 9;
+    const size = 6;
 
     const fetchWarehouses = useCallback(async () => {
         const pagedResponse = await getWarehousesWithStats(page - 1, size);
@@ -47,14 +47,13 @@ const Warehouses: React.FC = () => {
             updatePath={(id) => `/warehouses/update/${id}`}
             deleteItem={deleteWarehous}
             columnTitles={["id", "Name", "address", "product Count", "Total Stock"]}
-            renderColumns={(category) => (
-                <>
-                    <TableCell sx={{textAlign: 'center'}}>{category.id}</TableCell>
-                    <TableCell sx={{textAlign: 'center'}}>{category.name}</TableCell>
-                    <TableCell sx={{textAlign: 'center'}}>{category.address}</TableCell>
-                    <TableCell sx={{textAlign: 'center'}}>{category.productCount}</TableCell>
-                    <TableCell sx={{textAlign: 'center'}}>{category.totalStockQuantity}</TableCell>
-                </>
+            renderColumns={(warehouse) => (renderCenteredCells([
+                    warehouse.id,
+                    warehouse.name,
+                    warehouse.address,
+                    warehouse.productCount,
+                    warehouse.totalStockQuantity
+                ])
             )}
         />
     );
