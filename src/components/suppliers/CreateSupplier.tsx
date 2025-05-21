@@ -3,7 +3,7 @@ import CreateComponent from "../common/CreateComponent.tsx";
 import {PageType} from "../../types/PageType.ts";
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import {SupplierDTO} from "../../types/SupplierDTO.ts";
+import {CreateUpdateSupplierDTO} from "../../types/SupplierDTO.ts";
 import {createSupplier} from "../../api/SupplierApi.ts";
 
 const CreateSupplier: React.FC = () => {
@@ -14,7 +14,7 @@ const CreateSupplier: React.FC = () => {
         {name: 'contactEmail', label: 'Contact Email', required: true}];
 
     const handleCreateSupplier = async (values: Record<string, string>) => {
-        const supplier: SupplierDTO = {
+        const supplier: CreateUpdateSupplierDTO = {
             name: values.name,
             contactEmail: values.contactEmail,
             phone: values.pohne,

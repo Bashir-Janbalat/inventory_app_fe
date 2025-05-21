@@ -6,7 +6,7 @@ export interface CategoryDTO {
 }
 
 export interface CategoryStatsDTO {
-    id?: number
+    id: number
     name: string;
     totalBrands: number;
     totalProducts: number;

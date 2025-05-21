@@ -5,8 +5,8 @@ import StorefrontIcon from '@mui/icons-material/Storefront';
 import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import WarehouseIcon from '@mui/icons-material/Warehouse';
 import {useNavigate} from 'react-router-dom';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import TimelineIcon from '@mui/icons-material/Timeline';
 
 type SidebarMenuProps = {
     toggleSidebar: () => void;
@@ -22,7 +22,7 @@ const SidebarMenu = ({ toggleSidebar }: SidebarMenuProps) => {
         { text: 'Brands', icon: <StorefrontIcon fontSize="large" />, path: '/brands' },
         { text: 'Suppliers', icon: <PermIdentityIcon fontSize="large" />, path: '/suppliers' },
         { text: 'Warehouses', icon: <WarehouseIcon fontSize="large" />, path: '/warehouses' },
-        { text: 'Stock Movements', icon: <TrendingUpIcon fontSize="large" />, path: '/stockmovement' },
+        { text: 'Movements', icon: <TimelineIcon fontSize="large" />, path: '/stockmovement' },
     ];
 
     function handleClick(path: string): void {

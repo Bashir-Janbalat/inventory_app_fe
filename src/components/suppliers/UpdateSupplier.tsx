@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {UpdateForm} from "../common/UpdateForm";
 import {useCallback} from "react";
-import {SupplierDTO} from "../../types/SupplierDTO.ts";
+import {CreateUpdateSupplierDTO} from "../../types/SupplierDTO.ts";
 import {getSupplierById, updateSupplier} from "../../api/SupplierApi.ts";
 
 const UpdateSupplier = () => {
@@ -16,11 +16,11 @@ const UpdateSupplier = () => {
         return await getSupplierById(parsedId);
     }, [parsedId]);
 
-    const updater = useCallback(async (updatedBrand: SupplierDTO) => {
+    const updater = useCallback(async (updatedSupplier: CreateUpdateSupplierDTO) => {
         if (parsedId === undefined) {
             throw new Error("No ID provided!");
         }
-        await updateSupplier(parsedId, updatedBrand);
+        await updateSupplier(parsedId, updatedSupplier);
     }, [parsedId]);
 
     if (!parsedId) {

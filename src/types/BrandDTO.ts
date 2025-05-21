@@ -5,7 +5,7 @@ export interface BrandDTO {
     updatedAt?: Date;
 }
 export interface BrandStatsDTO {
-    id?: number
+    id: number
     name: string;
     productCount?: number;
     totalStock?: number;

@@ -1,13 +1,14 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {BrandDTO} from '../../types/BrandDTO.ts';
+import {BrandStatsDTO} from '../../types/BrandDTO.ts';
 import Loading from "../base/Loading.tsx";
-import BrandList from "./BrandList.tsx";
-import {getBrandsWithStats} from "../../api/BrandApi.ts";
+import {deleteBrand, getBrandsWithStats} from "../../api/BrandApi.ts";
 import {useFetcher} from "../../hooks/useFetcher.ts";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
+import GenericTable from "../common/GenericTable.tsx";
+import TableCell from '@mui/material/TableCell';
 
 const Brands: React.FC = () => {
-    const [brands, setBrands] = useState<BrandDTO[]>([]);
+    const [brands, setBrands] = useState<BrandStatsDTO[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const size = 9;
@@ -19,7 +20,7 @@ const Brands: React.FC = () => {
         return pagedResponse.content;
     }, [page]);
 
-    const {fetchData, loading, error} = useFetcher<BrandDTO[]>(fetchBrands);
+    const {fetchData, loading, error} = useFetcher<BrandStatsDTO[]>(fetchBrands);
 
 
     useEffect(() => {
@@ -36,10 +37,24 @@ const Brands: React.FC = () => {
     }
 
     return (
-        <BrandList items={brands}
-                   totalPages={totalPages}
-                   page={page}
-                   setPage={setPage}
+        <GenericTable<BrandStatsDTO>
+            title="Brands"
+            items={brands}
+            totalPages={totalPages}
+            page={page}
+            setPage={setPage}
+            createPath="/createBrand"
+            updatePath={(id) => `/brands/update/${id}`}
+            deleteItem={deleteBrand}
+            columnTitles={["id", "Name", "Product Count", "Total Stock"]}
+            renderColumns={(brand) => (
+                <>
+                    <TableCell sx={{textAlign: 'center'}}>{brand.id}</TableCell>
+                    <TableCell sx={{textAlign: 'center'}}>{brand.name}</TableCell>
+                    <TableCell sx={{textAlign: 'center'}}>{brand.productCount}</TableCell>
+                    <TableCell sx={{textAlign: 'center'}}>{brand.totalStock}</TableCell>
+                </>
+            )}
         />
 
     );

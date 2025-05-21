@@ -2,9 +2,10 @@ import React, {useCallback, useEffect, useState} from 'react';
 import Loading from "../base/Loading.tsx";
 import {useFetcher} from "../../hooks/useFetcher.ts";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
-import WarehousList from "./WarehousList.tsx";
-import {getWarehousesWithStats} from "../../api/WarehousApi.ts";
+import {deleteWarehous, getWarehousesWithStats} from "../../api/WarehousApi.ts";
 import {WarehouseStatsDTO} from "../../types/WarehouseDTO.ts";
+import GenericTable from "../common/GenericTable.tsx";
+import TableCell from '@mui/material/TableCell';
 
 const Warehouses: React.FC = () => {
     const [warehouses, setWarehouses] = useState<WarehouseStatsDTO[]>([]);
@@ -36,12 +37,26 @@ const Warehouses: React.FC = () => {
     }
 
     return (
-        <WarehousList items={warehouses}
-                   totalPages={totalPages}
-                   page={page}
-                   setPage={setPage}
+        <GenericTable<WarehouseStatsDTO>
+            title="Warehouses"
+            items={warehouses}
+            totalPages={totalPages}
+            page={page}
+            setPage={setPage}
+            createPath="/createWarehouse"
+            updatePath={(id) => `/warehouses/update/${id}`}
+            deleteItem={deleteWarehous}
+            columnTitles={["id", "Name", "address", "product Count", "Total Stock"]}
+            renderColumns={(category) => (
+                <>
+                    <TableCell sx={{textAlign: 'center'}}>{category.id}</TableCell>
+                    <TableCell sx={{textAlign: 'center'}}>{category.name}</TableCell>
+                    <TableCell sx={{textAlign: 'center'}}>{category.address}</TableCell>
+                    <TableCell sx={{textAlign: 'center'}}>{category.productCount}</TableCell>
+                    <TableCell sx={{textAlign: 'center'}}>{category.totalStockQuantity}</TableCell>
+                </>
+            )}
         />
-
     );
 };
 

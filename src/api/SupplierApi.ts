@@ -1,6 +1,6 @@
 import axiosInstance from './AxiosInstance.ts';
 import {PagedResponseDTO} from "../types/PagedResponseDTO.ts";
-import {SupplierDTO} from "../types/SupplierDTO.ts";
+import {CreateUpdateSupplierDTO, SupplierDTO} from "../types/SupplierDTO.ts";
 import {getDetailedApiError} from "../utils/ErrorUtils.ts";
 
 
@@ -18,7 +18,7 @@ export const getSuppliers =
             throw getDetailedApiError(error);
         }
     };
-export const createSupplier = async (supplier: SupplierDTO): Promise<number> => {
+export const createSupplier = async (supplier: CreateUpdateSupplierDTO): Promise<number> => {
     try {
         const response = await axiosInstance.post('/suppliers', supplier);
         return response.status;
@@ -34,7 +34,7 @@ export const getSupplierById = async (id: number): Promise<SupplierDTO> => {
         throw getDetailedApiError(error);
     }
 };
-export const updateSupplier = async (id: number, supplier: SupplierDTO): Promise<SupplierDTO> => {
+export const updateSupplier = async (id: number, supplier: CreateUpdateSupplierDTO): Promise<SupplierDTO> => {
     try {
         const response = await axiosInstance.put(`/suppliers/${id}`, supplier);
         return response.data;

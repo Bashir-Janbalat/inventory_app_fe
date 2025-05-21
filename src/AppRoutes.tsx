@@ -67,7 +67,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
 
     const supplierRoutes = [
         {path: "suppliers", element: <Suppliers/>},
-        {path: "supplier/update/:id", element: <UpdateSupplier/>},
+        {path: "suppliers/update/:id", element: <UpdateSupplier/>},
         {path: "createSupplier", element: <CreateSupplier/>},
     ];
 

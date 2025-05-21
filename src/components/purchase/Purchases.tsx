@@ -39,7 +39,7 @@ const Purchases: React.FC = () => {
     const navigate = useNavigate();
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
-    const size = 9;
+    const size = 6;
     const [openRows, setOpenRows] = useState<Record<number, boolean>>({});
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));

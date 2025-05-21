@@ -1,10 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {CategoryStatsDTO} from '../../types/CategoryDTO.ts';
-import {getCategoriesWithStats} from '../../api/CategoryApi.ts';
+import {deleteCategory, getCategoriesWithStats} from '../../api/CategoryApi.ts';
 import Loading from "../base/Loading.tsx";
-import CategoryList from './CategoryList.tsx';
 import {useFetcher} from "../../hooks/useFetcher.ts";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
+import GenericTable from "../common/GenericTable.tsx";
+import TableCell from '@mui/material/TableCell';
 
 const Categories: React.FC = () => {
     const [categories, setCategories] = useState<CategoryStatsDTO[]>([]);
@@ -35,10 +36,27 @@ const Categories: React.FC = () => {
         }}/>;
     }
 
-    return (<CategoryList items={categories}
-                          totalPages={totalPages}
-                          page={page}
-                          setPage={setPage}/>
+    return (
+            <GenericTable<CategoryStatsDTO>
+                title="Categories"
+                items={categories}
+                totalPages={totalPages}
+                page={page}
+                setPage={setPage}
+                createPath="/createCategory"
+                updatePath={(id) => `/categories/update/${id}`}
+                deleteItem={deleteCategory}
+                columnTitles={["id", "Name", "Product Count", "Brands count", "Total Stock"]}
+                renderColumns={(category) => (
+                    <>
+                        <TableCell sx={{textAlign: 'center'}}>{category.id}</TableCell>
+                        <TableCell sx={{textAlign: 'center'}}>{category.name}</TableCell>
+                        <TableCell sx={{textAlign: 'center'}}>{category.totalProducts}</TableCell>
+                        <TableCell sx={{textAlign: 'center'}}>{category.totalBrands}</TableCell>
+                        <TableCell sx={{textAlign: 'center'}}>{category.totalStockQuantity}</TableCell>
+                    </>
+                )}
+            />
     );
 };
 

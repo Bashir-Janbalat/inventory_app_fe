@@ -1,9 +1,10 @@
-import { Stack, Button, useMediaQuery, useTheme } from '@mui/material';
+import {IconButton, Stack, Tooltip, useMediaQuery, useTheme} from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {useNavigate} from "react-router-dom";
 import {useContext} from "react";
 import AuthContext from "../../auth/AuthContext.tsx";
+
 
 interface ActionButtonsProps {
     id: number;
@@ -11,7 +12,7 @@ interface ActionButtonsProps {
     navigateTo: string;
 }
 
-const ActionButtons: React.FC<ActionButtonsProps> = ({ id, onDelete, navigateTo }) => {
+const ActionButtons: React.FC<ActionButtonsProps> = ({id, onDelete, navigateTo}) => {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const navigate = useNavigate();
@@ -31,33 +32,53 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ id, onDelete, navigateTo 
             direction={isMobile ? 'column' : 'row'}
             spacing={1}
             alignItems="center"
-            sx={{ mt: 2 }}
+            justifyContent="center"
+            sx={{mt: 2}}
         >
-            <Button
-                id="update-button"
-                name="update-button"
-                variant="contained"
-                color="primary"
-                startIcon={<EditIcon />}
-                onClick={handleUpdate}
-                fullWidth={isMobile}
-                sx={{ minWidth: 120 }}
-            >
-                Update
-            </Button>
-            <Button
-                id="delete-button"
-                name="delete-button"
-                variant="outlined"
-                color="error"
-                startIcon={<DeleteIcon />}
-                onClick={handleDelete}
-                fullWidth={isMobile}
-                sx={{ minWidth: 120 }}
-                disabled={!isAdmin}
-            >
-                Delete
-            </Button>
+            <Tooltip title="Update">
+                <IconButton
+                    id="update-button"
+                    name="update-button"
+                    color="primary"
+                    onClick={handleUpdate}
+                    size="medium"
+                    aria-label="Update item"
+                    sx={{
+                        border: '1px solid',
+                        borderColor: 'primary.main',
+                        borderRadius: 1,
+                        '&:hover': {
+                            backgroundColor: 'primary.light',
+                            borderColor: 'primary.dark',
+                        },
+                    }}
+                >
+                    <EditIcon/>
+                </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Delete">
+                <IconButton
+                    id="delete-button"
+                    name="delete-button"
+                    color="error"
+                    onClick={handleDelete}
+                    size="medium"
+                    disabled={!isAdmin}
+                    aria-label="Delete item"
+                    sx={{
+                        border: '1px solid',
+                        borderColor: 'error.main',
+                        borderRadius: 1,
+                        '&:hover': {
+                            backgroundColor: 'error.light',
+                            borderColor: 'error.dark',
+                        },
+                    }}
+                >
+                    <DeleteIcon/>
+                </IconButton>
+            </Tooltip>
         </Stack>
     );
 };

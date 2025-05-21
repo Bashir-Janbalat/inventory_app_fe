@@ -1,10 +1,11 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {SupplierDTO} from '../../types/SupplierDTO.ts';
-import {getSuppliers} from '../../api/SupplierApi.ts';
+import {deleteSupplier, getSuppliers} from '../../api/SupplierApi.ts';
 import Loading from "../base/Loading.tsx";
-import SupplierList from "./SupplierList.tsx";
 import {useFetcher} from "../../hooks/useFetcher.ts";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
+import GenericTable from "../common/GenericTable.tsx";
+import TableCell from '@mui/material/TableCell';
 
 const Suppliers: React.FC = () => {
     const [suppliers, setSuppliers] = useState<SupplierDTO[]>([]);
@@ -36,10 +37,26 @@ const Suppliers: React.FC = () => {
     }
 
     return (
-        <SupplierList items={suppliers}
-                      totalPages={totalPages}
-                      page={page}
-                      setPage={setPage}/>
+        <GenericTable<SupplierDTO>
+            title="Suppliers"
+            items={suppliers}
+            totalPages={totalPages}
+            page={page}
+            setPage={setPage}
+            createPath="/createSupplier"
+            updatePath={(id) => `/suppliers/update/${id}`}
+            deleteItem={deleteSupplier}
+            columnTitles={["id", "Name", "Contact email", "Phone", "Address"]}
+            renderColumns={(category) => (
+                <>
+                    <TableCell sx={{textAlign: 'center'}}>{category.id}</TableCell>
+                    <TableCell sx={{textAlign: 'center'}}>{category.name}</TableCell>
+                    <TableCell sx={{textAlign: 'center'}}>{category.contactEmail}</TableCell>
+                    <TableCell sx={{textAlign: 'center'}}>{category.phone}</TableCell>
+                    <TableCell sx={{textAlign: 'center'}}>{category.address}</TableCell>
+                </>
+            )}
+        />
     );
 };
 
