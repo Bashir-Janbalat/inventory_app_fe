@@ -21,7 +21,7 @@ import createFetcher from "../../hooks/useProductFormData.ts";
 import Loading from "../base/Loading.tsx";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import {useFetcher} from "../../hooks/useFetcher.ts";
-import {createPurchase, getProductsForSupplier} from "../../api/PurchaseApi.ts";
+import {createPurchase, getProductsProductStatus} from "../../api/PurchaseApi.ts";
 import {useNavigate} from 'react-router-dom';
 import CustomSnackbar from "../common/CustomSnackbar.tsx";
 
@@ -36,6 +36,7 @@ const CreatePurchase: React.FC = () => {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');
+    const [productStatus, setProductStatus] = useState<string>("INACTIVE");
 
     const {
         fetchData,
@@ -59,10 +60,13 @@ const CreatePurchase: React.FC = () => {
     }, [suppliers, warehouses, supplierId, warehouseId]);
 
     const fetchAllProducts = useCallback(async () => {
-        const response = await getProductsForSupplier(Number(supplierId));
+        const response = await getProductsProductStatus(productStatus);
         setProducts(response);
+        if (response.length == 0) {
+            setItems([]);
+        }
         return response;
-    }, [supplierId]);
+    }, [productStatus]);
 
     const {
         fetchData: loadProducts,
@@ -70,12 +74,10 @@ const CreatePurchase: React.FC = () => {
         error: productsLoadError
     } = useFetcher<PurchaseProductDTO[]>(fetchAllProducts);
 
+
     useEffect(() => {
-        setItems([]);
-        if (supplierId) {
-            loadProducts().catch(console.error);
-        }
-    }, [supplierId, loadProducts]);
+        loadProducts().catch(console.error);
+    }, [loadProducts, productStatus]);
 
     const handleAddItem = () => {
         if (products.length === 0) return;
@@ -191,6 +193,20 @@ const CreatePurchase: React.FC = () => {
                         </Grid>
 
                         <Typography variant="h6" gutterBottom>Purchase Items</Typography>
+                        <Grid size={{xs: 12, sm: 3}} sx={{mt: 3, mb: 2}}>
+                            <TextField
+                                label="Product Status"
+                                select
+                                fullWidth
+                                value={productStatus}
+                                onChange={(e) => setProductStatus(e.target.value)}
+                            >
+                                <MenuItem key="ACTIVE" value="ACTIVE">ACTIVE</MenuItem>
+                                <MenuItem key="INACTIVE" value="INACTIVE">INACTIVE</MenuItem>
+                                <MenuItem key="DELETED" value="DELETED">DELETED</MenuItem>
+                                <MenuItem key="DISCONNECTED" value="DISCONNECTED">DISCONNECTED</MenuItem>
+                            </TextField>
+                        </Grid>
 
                         {items.map((item, index) => {
                             const total = item.quantity * item.unitPrice;
@@ -310,7 +326,8 @@ const CreatePurchase: React.FC = () => {
                 onClose={() => setSnackbarOpen(false)}
             />
         </>
-    );
+    )
+        ;
 }
 
 export default CreatePurchase;

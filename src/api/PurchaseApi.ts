@@ -9,14 +9,16 @@ type QueryParams = {
     date?: string,
 }
 
-export const getProductsForSupplier = async (supplierId: number): Promise<PurchaseProductDTO[]> => {
-    try {
-        const response = await axiosInstance.get("/purchases/products?supplierId=" + supplierId);
-        return response.data;
-    } catch (error) {
-        throw getDetailedApiError(error);
-    }
-};
+export const getProductsProductStatus =
+    async (productStatus: string): Promise<PurchaseProductDTO[]> => {
+        try {
+            const response =
+                await axiosInstance.get(`/purchases/statusProducts?productStatus=${productStatus}`);
+            return response.data;
+        } catch (error) {
+            throw getDetailedApiError(error);
+        }
+    };
 
 export const createPurchase = async (purchaseDTO: PurchaseDTO): Promise<number> => {
     try {
@@ -38,7 +40,7 @@ export const getPurchases = async (params: QueryParams): Promise<PagedResponseDT
 
 export const updatePurchaseStatus = async (purchaseId: number, status: PurchaseStatus): Promise<number> => {
     try {
-        const response = await axiosInstance.put(`/purchases/${purchaseId}/status?status=${status}` );
+        const response = await axiosInstance.put(`/purchases/${purchaseId}/status?status=${status}`);
         return response.status;
     } catch (error) {
         throw getDetailedApiError(error);
