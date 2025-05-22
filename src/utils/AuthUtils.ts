@@ -11,15 +11,15 @@ interface JwtPayload {
 }
 
 export const saveToken = (token: string) => {
-    localStorage.setItem(TOKEN_KEY, token);
+    sessionStorage.setItem(TOKEN_KEY, token);
 };
 
 export const getToken = (): string | null => {
-    return localStorage.getItem(TOKEN_KEY);
+    return sessionStorage.getItem(TOKEN_KEY);
 };
 
 export const removeToken = () => {
-    localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem(TOKEN_KEY);
 };
 
 export const isTokenExpired = (token: string): boolean => {

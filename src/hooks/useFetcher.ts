@@ -17,8 +17,10 @@ export function useFetcher<T>(fetcher: () => Promise<T>) {
         } catch (err) {
             if (err instanceof DetailedApiError) {
                 handleError(err as DetailedApiError);
+            } else {
+                setError("Unexpected error occurred.");
+                console.error(err);
             }
-            throw err;
         } finally {
             setLoading(false);
         }

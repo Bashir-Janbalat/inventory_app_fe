@@ -75,7 +75,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
             }
             setSuccessfullyLogout(isServerLogouted);
         } catch (error: unknown) {
-            console.error(error);
             const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
             setMessage(errorMessage);
         }
