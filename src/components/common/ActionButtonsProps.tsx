@@ -58,6 +58,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({id, onDelete, navigateTo})
             </Tooltip>
 
             <Tooltip title="Delete">
+                <span>
                 <IconButton
                     id="delete-button"
                     name="delete-button"
@@ -78,6 +79,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({id, onDelete, navigateTo})
                 >
                     <DeleteIcon/>
                 </IconButton>
+                </span>
             </Tooltip>
         </Stack>
     );

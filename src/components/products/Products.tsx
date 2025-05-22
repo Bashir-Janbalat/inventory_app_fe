@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from "react";
-import {Container, Typography} from "@mui/material";
+import {Container} from "@mui/material";
 import debounce from 'lodash/debounce';
 import {ProductDTO} from "../../types/ProductDTO.ts";
 import {getProducts} from "../../api/ProductApi.ts";
@@ -17,6 +17,7 @@ const Products: React.FC = () => {
     const [categoryName, setCategoryName] = useState<string>('');
     const [brandName, setBrandName] = useState<string>('');
     const [supplierName, setSupplierName] = useState<string>('');
+    const [productStatus, setProductStatus] = useState<string>('ACTIVE');
     const [products, setProducts] = useState<ProductDTO[]>([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
@@ -32,12 +33,13 @@ const Products: React.FC = () => {
                 searchBy,
                 categoryName,
                 brandName,
-                supplierName
+                supplierName,
+                productStatus
             });
         setProducts(productResponse.content);
         setTotalPages(productResponse.totalPages);
         return productResponse.content;
-    }, [page, size, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName]);
+    }, [page, size, sortBy, sortDirection, searchBy, categoryName, brandName, supplierName,productStatus]);
 
     const {
         fetchData: loadProducts,
@@ -80,8 +82,6 @@ const Products: React.FC = () => {
     }, [page, sortBy, sortDirection, categoryName, brandName, supplierName, fetchInitialData]);
 
 
-
-
     if (isLoadingProducts || IsInitialDataLoading) {
         return <Loading fullScreen message="Loading products..."/>;
     }
@@ -98,7 +98,6 @@ const Products: React.FC = () => {
 
     return (
         <Container>
-            <Typography variant="h4" sx={{mb: 4, fontWeight: 'bold'}}>Products</Typography>
             <ProductFilters
                 sortBy={sortBy}
                 sortDirection={sortDirection}
@@ -109,12 +108,14 @@ const Products: React.FC = () => {
                 brands={brands}
                 supplierName={supplierName}
                 suppliers={suppliers}
+                productStatus={productStatus}
                 setSortBy={setSortBy}
                 setSortDirection={setSortDirection}
                 setSearchBy={setSearchBy}
                 setCategoryName={setCategoryName}
                 setBrandName={setBrandName}
                 setSupplierName={setSupplierName}
+                setProductStatus={setProductStatus}
                 setPage={setPage}
             />
             <ProductList

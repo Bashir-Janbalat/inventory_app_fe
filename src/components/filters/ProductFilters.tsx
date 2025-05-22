@@ -8,7 +8,8 @@ import {
     Select,
     SelectChangeEvent,
     Stack,
-    TextField
+    TextField,
+    Typography
 } from '@mui/material';
 import {CategoryDTO} from "../../types/CategoryDTO.ts";
 import {BrandDTO} from "../../types/BrandDTO.ts";
@@ -26,20 +27,36 @@ export interface ProductFiltersProps {
     brands: BrandDTO[];
     supplierName: string;
     suppliers: SupplierDTO[];
+    productStatus: string;
     setSortBy: (value: 'name' | 'costPrice') => void;
     setSortDirection: (value: 'asc' | 'desc') => void;
     setSearchBy: (value: string) => void;
     setCategoryName: (value: string) => void;
     setBrandName: (value: string) => void;
     setSupplierName: (value: string) => void;
+    setProductStatus: (value: 'ACTIVE' | 'INACTIVE' | 'DELETED' | 'DISCONNECTED') => void;
     setPage: (page: number) => void;
 }
 
 const ProductFilters: React.FC<ProductFiltersProps> = ({
-                                                           sortBy, sortDirection, searchBy, categoryName, brandName,
-                                                           categories, brands, supplierName, suppliers,
-                                                           setSortBy, setSortDirection, setSearchBy,
-                                                           setCategoryName, setBrandName, setSupplierName, setPage,
+                                                           sortBy,
+                                                           sortDirection,
+                                                           searchBy,
+                                                           categoryName,
+                                                           brandName,
+                                                           categories,
+                                                           brands,
+                                                           supplierName,
+                                                           suppliers,
+                                                           productStatus,
+                                                           setSortBy,
+                                                           setSortDirection,
+                                                           setSearchBy,
+                                                           setCategoryName,
+                                                           setBrandName,
+                                                           setSupplierName,
+                                                           setProductStatus,
+                                                           setPage,
                                                        }) => {
     const navigate = useNavigate();
 
@@ -59,17 +76,17 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
 
     return (
         <Container>
-            <Button
-                fullWidth
-                variant="contained"
-                color="primary"
-                style={{minHeight: 50}}
-                startIcon={<AddIcon/>}
-                onClick={goToCreateProduct}
-                sx={{mb:2}}
-            >
-                Create
-            </Button>
+            <Stack direction="row" justifyContent="space-between" alignItems="flex-end" sx={{mb: 4}}>
+                <Typography variant="h4" fontWeight="bold">Products</Typography>
+                <Button
+                    size="medium"
+                    variant="contained"
+                    startIcon={<AddIcon/>}
+                    onClick={goToCreateProduct}
+                >
+                    Create
+                </Button>
+            </Stack>
             <Stack direction={{xs: 'column', sm: 'column', md: 'row'}} spacing={2} marginBottom={2}>
                 <FormControl fullWidth>
                     <InputLabel id="sort-by-label">Sort By</InputLabel>
@@ -88,8 +105,6 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                 <FormControl fullWidth>
                     <InputLabel id="sort-direction-label">Direction</InputLabel>
                     <Select
-                        id="sort-direction"
-                        name="sort-direction"
                         labelId="sort-direction-label"
                         value={sortDirection}
                         label="Direction"
@@ -99,7 +114,21 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({
                         <MenuItem value="desc">Desc ↓</MenuItem>
                     </Select>
                 </FormControl>
-
+                <FormControl fullWidth>
+                    <InputLabel id="status-select-label">Status</InputLabel>
+                    <Select
+                        labelId="status-select-label"
+                        id="status-select"
+                        value={productStatus}
+                        label="Status"
+                        onChange={resetPageAndSetSelect(setProductStatus)}
+                    >
+                        <MenuItem value='ACTIVE'>ACTIVE</MenuItem>
+                        <MenuItem value='INACTIVE'>INACTIVE</MenuItem>
+                        <MenuItem value='DELETED'>DELETED</MenuItem>
+                        <MenuItem value='DISCONNECTED'>DISCONNECTED</MenuItem>
+                    </Select>
+                </FormControl>
                 <TextField
                     id="search-by-name"
                     name="search-by-name"

@@ -6,7 +6,6 @@ import {useAuth} from "../../hooks/useAuth.ts";
 import MenuIcon from '@mui/icons-material/Menu';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutIcon from '@mui/icons-material/Logout';
-import HomeIcon from '@mui/icons-material/Home';
 
 interface HeaderProps {
     darkMode: boolean;
@@ -116,10 +115,6 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
                                 <Button startIcon={<DashboardIcon/>} variant="outlined" color="primary" component={Link}
                                         to="/dashboard" sx={buttonStyle}>
                                     Dashboard
-                                </Button>
-                                <Button startIcon={<HomeIcon/>} variant="outlined" color="primary" component={Link}
-                                        to="/" sx={buttonStyle}>
-                                    Hone
                                 </Button>
                                 <Button startIcon={<LogoutIcon/>} variant="contained" color="error"
                                         onClick={handleLogout} sx={buttonStyle}>

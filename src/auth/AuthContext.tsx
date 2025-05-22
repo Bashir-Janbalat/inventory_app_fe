@@ -8,6 +8,7 @@ interface AuthContextType {
     roles: string[] | null,
     setAuthenticated: (authenticated: boolean) => void;
     setSubject: (subject: string | null) => void;
+    setRoles: (roles: string[] | null) => void;
     sessionExpired: boolean;
     message: string
     logout: (expired?: boolean, message?: string) => void;
@@ -25,6 +26,8 @@ const defaultAuthContext: AuthContextType = {
     setAuthenticated: () => {
     },
     setSubject: () => {
+    },
+    setRoles:() =>{
     },
     sessionExpired: false,
     message: "",
@@ -89,6 +92,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
                 roles,
                 setAuthenticated,
                 setSubject,
+                setRoles,
                 sessionExpired,
                 message,
                 logout,

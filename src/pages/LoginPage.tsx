@@ -1,7 +1,7 @@
 import {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {useAuth} from "../hooks/useAuth.ts";
-import {getSubjectFromToken, saveToken} from "../utils/AuthUtils.ts";
+import {getRolesFromToken, getSubjectFromToken, saveToken} from "../utils/AuthUtils.ts";
 import {FormField} from "../types/FormField.ts";
 import CreateComponent from "../components/common/CreateComponent.tsx";
 import {PageType} from "../types/PageType.ts";
@@ -10,7 +10,7 @@ import {Alert} from "@mui/material";
 
 const LoginPage = () => {
     const navigate = useNavigate();
-    const {authenticated, setAuthenticated, setSubject} = useAuth();
+    const {authenticated, setAuthenticated, setSubject,setRoles} = useAuth();
     const location = useLocation();
     const [stateSuccessMessage, setStateSuccessMessage] = useState(null);
     const [stateErrorMessage, setStateErrorMessage] = useState(null);
@@ -36,6 +36,7 @@ const LoginPage = () => {
         saveToken(response.accessToken);
         setAuthenticated(true);
         setSubject(getSubjectFromToken(response.accessToken));
+        setRoles(getRolesFromToken(response.accessToken));
         navigate('/products');
     };
 

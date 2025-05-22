@@ -12,6 +12,7 @@ type ProductQueryParams = {
     categoryName?: string;
     brandName?: string;
     supplierName?: string;
+    productStatus?: string;
 };
 
 export const getProducts = async (

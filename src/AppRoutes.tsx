@@ -24,6 +24,7 @@ import UpdateWarehouse from "./components/warehouses/UpdateWarehouse.tsx";
 import LoginLayout from "./components/base/LoginLayout.tsx"
 import CreatePurchase from "./components/purchase/CreatePurchase.tsx";
 import Purchases from "./components/purchase/Purchases.tsx";
+import Dashboard from "./components/dashboard/Dashboard.tsx";
 
 interface AppRoutesProps {
     darkMode: boolean;
@@ -77,6 +78,9 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
         {path: "createWarehouse", element: <CreateWarehouse/>},
         {path: "stockmovement", element: <StockMovements/>},
     ];
+    const commonRoutes = [
+        {path: "dashboard", element: <Dashboard/>},
+    ];
 
     return (
         <Router>
@@ -90,7 +94,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
                 <Route element={<Layout darkMode={darkMode} setDarkMode={setDarkMode}/>}>
                     {[...userRoutes, ...productRoutes, ...categoryRoutes,
                         ...brandRoutes, ...supplierRoutes, ...warehouseRoutes,
-                        ...purchaseRoutes].map(
+                        ...purchaseRoutes, ...commonRoutes].map(
                         ({path, element}) => (
                             <Route key={path} path={path} element={<ProtectedRoute>{element}</ProtectedRoute>}/>
                         )
