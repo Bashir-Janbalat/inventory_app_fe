@@ -25,6 +25,8 @@ import LoginLayout from "./components/base/LoginLayout.tsx"
 import CreatePurchase from "./components/purchase/CreatePurchase.tsx";
 import Purchases from "./components/purchase/Purchases.tsx";
 import Dashboard from "./components/dashboard/Dashboard.tsx";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage.tsx";
+import ResetPasswordPage from "./pages/ResetPasswordPage.tsx";
 
 interface AppRoutesProps {
     darkMode: boolean;
@@ -39,6 +41,8 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
     const authRoutes = [
         {path: "login", element: <LoginPage/>},
         {path: "signup", element: <SignUpPage/>},
+        {path: "forgot-password", element: <ForgotPasswordPage/>},
+        {path: "reset-password", element: <ResetPasswordPage/>},
     ];
 
     const purchaseRoutes = [

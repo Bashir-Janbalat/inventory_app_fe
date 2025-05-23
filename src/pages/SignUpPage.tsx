@@ -13,7 +13,8 @@ const SignUpPage: React.FC = () => {
         {name: 'name', label: 'Name', required: true},
         {name: 'username', label: 'Username', required: true},
         {name: 'email', label: 'Email', type: 'email', required: true},
-        {name: 'password', label: 'password', type: 'password', required: true}];
+        {name: 'password', label: 'password', type: 'password', required: true},
+        {name: 'confirmPassword', label: 'confirm Password', type: 'password', required: true}];
 
     const handleSubmit = async (values: Record<string, string>) => {
         const userDTO: UserDTO = {

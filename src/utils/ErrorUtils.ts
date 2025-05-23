@@ -12,7 +12,7 @@ export function getDetailedApiError(error: unknown): DetailedApiError {
         if (error.response) {
             const {status, statusText, data} = error.response;
             const serverResponse = data as ServerErrorResponse;
-            const message = serverResponse.message || statusText || 'Unknown server error';
+            const message = serverResponse.message || statusText || data || 'Unknown server error';
             const path = serverResponse.path || '';
             const timestamp = serverResponse.timestamp || new Date().toISOString();
             return new DetailedApiError(message, status, path, timestamp);
