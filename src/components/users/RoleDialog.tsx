@@ -6,9 +6,10 @@ interface RoleDialogProps {
     open: boolean;
     onClose: () => void;
     refresh: () => void;
+    disableRestoreFocus: boolean
 }
 
-const RoleDialog: React.FC<RoleDialogProps> = ({open, onClose, refresh}) => {
+const RoleDialog: React.FC<RoleDialogProps> = ({open, onClose, refresh,disableRestoreFocus}) => {
     const [roleName, setRoleName] = useState("");
     const [error, setError] = useState<string | null>(null);
 
@@ -33,7 +34,7 @@ const RoleDialog: React.FC<RoleDialogProps> = ({open, onClose, refresh}) => {
     };
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={open} onClose={onClose} disableRestoreFocus={disableRestoreFocus}>
             <DialogTitle>Add New Role</DialogTitle>
             <DialogContent>
                 {error && <Alert severity="error" sx={{mb: 2}}>{error}</Alert>}

@@ -19,9 +19,10 @@ interface DeleteRoleDialogProps {
     open: boolean;
     onClose: () => void;
     refresh: () => void;
+    disableRestoreFocus?:boolean
 }
 
-const DeleteRoleDialog: React.FC<DeleteRoleDialogProps> = ({open, onClose, refresh}) => {
+const DeleteRoleDialog: React.FC<DeleteRoleDialogProps> = ({open, onClose, refresh,disableRestoreFocus}) => {
     const [roles, setRoles] = useState<RoleDTO[]>([]);
     const [selectedRoleId, setSelectedRoleId] = useState<number | "">("");
     const [error, setError] = useState<string | null>(null);
@@ -54,7 +55,7 @@ const DeleteRoleDialog: React.FC<DeleteRoleDialogProps> = ({open, onClose, refre
     };
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={open} onClose={onClose} disableRestoreFocus={disableRestoreFocus}>
             <DialogTitle>Delete Role</DialogTitle>
             <DialogContent>
                 {error && <Alert severity="error" sx={{mb: 2}}>{error}</Alert>}

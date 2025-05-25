@@ -12,9 +12,10 @@ interface AssignRoleDialogProps {
     onClose: () => void;
     user: UserDTO | null;
     refresh: () => void;
+    disableRestoreFocus?: boolean;
 }
 
-export default function AssignRoleDialog({open, onClose, user, refresh}: AssignRoleDialogProps) {
+export default function AssignRoleDialog({open, onClose, user, refresh,disableRestoreFocus}: AssignRoleDialogProps) {
     const [roles, setRoles] = useState<RoleDTO[]>([]);
     const [selectedRole, setSelectedRole] = useState<RoleDTO | undefined>(undefined);
     const [error, setError] = useState<string | null>(null);
@@ -62,7 +63,7 @@ export default function AssignRoleDialog({open, onClose, user, refresh}: AssignR
     }
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={open} onClose={onClose} disableRestoreFocus={disableRestoreFocus}>
             <DialogTitle>Assign Role to {user?.username}</DialogTitle>
             <DialogContent>
                 {error && <Alert severity="error" sx={{mb: 2}}>{error}</Alert>}

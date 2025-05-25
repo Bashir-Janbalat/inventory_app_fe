@@ -142,17 +142,20 @@ const UserManagement: React.FC = () => {
                     onClose={handleCloseAssignDialog}
                     user={selectedUser}
                     refresh={fetchUsers}
+                    disableRestoreFocus={true}
                 />
 
                 <RoleDialog
                     open={openRoleDialog}
                     onClose={() => setOpenRoleDialog(false)}
                     refresh={fetchUsers}
+                    disableRestoreFocus={true}
                 />
                 <DeleteRoleDialog
                     open={openDeleteDialog}
                     onClose={() => setOpenDeleteDialog(false)}
                     refresh={fetchUsers}
+                    disableRestoreFocus={true}
                 />
             </Card>
             <Stack direction="row" justifyContent="center" alignItems="center" mt={4}>
