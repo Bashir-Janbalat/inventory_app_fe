@@ -27,7 +27,7 @@ const defaultAuthContext: AuthContextType = {
     },
     setSubject: () => {
     },
-    setRoles:() =>{
+    setRoles: () => {
     },
     sessionExpired: false,
     message: "",

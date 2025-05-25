@@ -1,6 +1,9 @@
+import {RoleDTO} from "./RoleDTO.ts";
+
 export interface UserDTO {
-  name: string;
-  username: string;
-  email: string;
-  password: string;
+    id:number;
+    name: string;
+    username: string;
+    email: string;
+    rolesDTO: RoleDTO[];
 }

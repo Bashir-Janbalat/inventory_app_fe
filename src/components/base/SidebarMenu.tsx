@@ -7,22 +7,31 @@ import WarehouseIcon from '@mui/icons-material/Warehouse';
 import {useNavigate} from 'react-router-dom';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import TimelineIcon from '@mui/icons-material/Timeline';
+import PeopleIcon from '@mui/icons-material/People';
+import {useAuth} from "../../hooks/useAuth.ts";
 
 type SidebarMenuProps = {
     toggleSidebar: () => void;
 };
 
-const SidebarMenu = ({ toggleSidebar }: SidebarMenuProps) => {
+const SidebarMenu = ({toggleSidebar}: SidebarMenuProps) => {
     const navigate = useNavigate();
+    const {roles} = useAuth();
+    const isUserView = roles?.includes("ROLE_USER_VIEW");
 
     const menuItems = [
-        { text: 'Purchases', icon: <ShoppingCartIcon fontSize="large" />, path: '/purchases' },
-        { text: 'Products', icon: <LocalMallIcon fontSize="large" />, path: '/products' },
-        { text: 'Categories', icon: <CategoryIcon fontSize="large" />, path: '/categories' },
-        { text: 'Brands', icon: <StorefrontIcon fontSize="large" />, path: '/brands' },
-        { text: 'Suppliers', icon: <PermIdentityIcon fontSize="large" />, path: '/suppliers' },
-        { text: 'Warehouses', icon: <WarehouseIcon fontSize="large" />, path: '/warehouses' },
-        { text: 'Movements', icon: <TimelineIcon fontSize="large" />, path: '/stockmovement' },
+        {text: 'Purchases', icon: <ShoppingCartIcon fontSize="medium"/>, path: '/purchases'},
+        {text: 'Products', icon: <LocalMallIcon fontSize="medium"/>, path: '/products'},
+        {text: 'Categories', icon: <CategoryIcon fontSize="medium"/>, path: '/categories'},
+        {text: 'Brands', icon: <StorefrontIcon fontSize="medium"/>, path: '/brands'},
+        {text: 'Suppliers', icon: <PermIdentityIcon fontSize="medium"/>, path: '/suppliers'},
+        {text: 'Warehouses', icon: <WarehouseIcon fontSize="medium"/>, path: '/warehouses'},
+        {text: 'Movements', icon: <TimelineIcon fontSize="medium"/>, path: '/stockmovement'},
+        ...(
+            isUserView
+                ? [{text: 'Users', icon: <PeopleIcon fontSize="medium"/>, path: '/userManagement'}]
+                : []
+        )
     ];
 
     function handleClick(path: string): void {
@@ -60,7 +69,7 @@ const SidebarMenu = ({ toggleSidebar }: SidebarMenuProps) => {
                                         color="primary"
                                         align="center"
                                         variant="body1"
-                                        sx={{ fontWeight: 600, fontFamily: 'Roboto, sans-serif' }}
+                                        sx={{fontWeight: 600, fontFamily: 'Roboto, sans-serif'}}
                                     >
                                         {item.text}
                                     </Typography>

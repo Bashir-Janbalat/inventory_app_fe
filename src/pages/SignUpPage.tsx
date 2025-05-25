@@ -3,7 +3,7 @@ import CreateComponent from "../components/common/CreateComponent.tsx";
 import {FormField} from "../types/FormField.ts";
 import {signup} from "../api/AuthApi.ts";
 import {useNavigate} from "react-router-dom";
-import {UserDTO} from "../types/UserDTO.ts";
+import {signupUserDTO} from "../types/SignupUserDTO.ts";
 import {PageType} from "../types/PageType.ts";
 
 const SignUpPage: React.FC = () => {
@@ -17,7 +17,7 @@ const SignUpPage: React.FC = () => {
         {name: 'confirmPassword', label: 'confirm Password', type: 'password', required: true}];
 
     const handleSubmit = async (values: Record<string, string>) => {
-        const userDTO: UserDTO = {
+        const userDTO: signupUserDTO = {
             name: values.name,
             username: values.username,
             email: values.email,

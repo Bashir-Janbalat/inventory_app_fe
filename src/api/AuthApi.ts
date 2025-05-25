@@ -1,4 +1,4 @@
-import {UserDTO} from "../types/UserDTO.ts";
+import {signupUserDTO} from "../types/SignupUserDTO.ts";
 import axiosInstance from './AxiosInstance.ts';
 import {getToken} from "../utils/AuthUtils.ts";
 import {getDetailedApiError} from "../utils/ErrorUtils.ts";
@@ -17,7 +17,7 @@ export const login = async (username: string, password: string): Promise<LoginRe
     }
 };
 
-export const signup = async (user: UserDTO): Promise<number> => {
+export const signup = async (user: signupUserDTO): Promise<number> => {
     try {
         const response = await axiosInstance.post('/auth/signup', user);
         return response.status;

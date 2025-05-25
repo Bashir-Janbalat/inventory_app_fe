@@ -187,11 +187,17 @@ const GenericForm: React.FC<GenericFormProps> = ({page, title, fields, submitBut
                                     severity={snackbarSeverity}
                                     onClose={() => setSnackbarOpen(false)}
                                 />
-                                {pageType === PageType.signup && (
-                                    <Grid container justifyContent="center" sx={{marginTop: 2}}>
-                                        <Link component={RouterLink} to="/login" variant="body2">
-                                            Already have an account? Log in here
-                                        </Link>
+                                {[PageType.signup, PageType.forgotPassword, PageType.resetPassword].includes(pageType) && (
+                                    <Grid container justifyContent="center" sx={{ marginTop: 2 }}>
+                                        {pageType === PageType.signup ? (
+                                            <Link component={RouterLink} to="/login" variant="body2">
+                                                Already have an account? Log in here
+                                            </Link>
+                                        ) : (
+                                            <Link component={RouterLink} to="/login" variant="body2">
+                                                Back to login
+                                            </Link>
+                                        )}
                                     </Grid>
                                 )}
                                 {pageType === PageType.login && (

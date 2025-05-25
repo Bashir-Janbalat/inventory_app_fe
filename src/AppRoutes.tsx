@@ -27,6 +27,7 @@ import Purchases from "./components/purchase/Purchases.tsx";
 import Dashboard from "./components/dashboard/Dashboard.tsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.tsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage.tsx";
+import UserManagement from "./components/users/UserManagement.tsx";
 
 interface AppRoutesProps {
     darkMode: boolean;
@@ -36,6 +37,7 @@ interface AppRoutesProps {
 const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
     const userRoutes = [
         {path: "profile", element: <MyProfile/>},
+        {path: "userManagement", element: <UserManagement/>},
     ]
 
     const authRoutes = [
