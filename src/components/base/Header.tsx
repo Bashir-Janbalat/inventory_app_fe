@@ -14,7 +14,8 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) => {
-    const {authenticated: isAuthenticated, subject: username, logout} = useAuth();
+    const {authenticated: isAuthenticated, roles, subject: username, logout} = useAuth();
+    const isDeveloper = roles?.includes('ROLE_DEVELOPER');
     const theme = useTheme();
     const navigate = useNavigate();
     const buttonStyle = {
@@ -45,6 +46,10 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
 
     const handleMyProfile = () => {
         navigate("/profile");
+        handleMenuClose();
+    };
+    const handleServerErrorLogs = () => {
+        navigate("/errorLogs");
         handleMenuClose();
     };
 
@@ -140,14 +145,6 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
                                         toggleSidebar();
                                         handleMenuClose();
                                     }}>Dashboard</MenuItem>
-                                    <MenuItem onClick={() => {
-                                        navigate("/stockmovement");
-                                        handleMenuClose();
-                                    }}>Movements</MenuItem>
-                                    <MenuItem onClick={() => {
-                                        navigate("/products");
-                                        handleMenuClose();
-                                    }}>Products</MenuItem>
                                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                                 </Menu>
                             </Box>
@@ -210,6 +207,10 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
                                 anchorOrigin={{horizontal: "right", vertical: "bottom"}}
                             >
                                 <MenuItem onClick={handleMyProfile}>My Profile</MenuItem>
+                                {isDeveloper && (
+                                    <MenuItem onClick={handleServerErrorLogs}>Server Error Logs</MenuItem>
+                                )}
+
                             </Menu>
                         </>
                     )}

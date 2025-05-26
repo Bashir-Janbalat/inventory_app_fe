@@ -28,6 +28,7 @@ import Dashboard from "./components/dashboard/Dashboard.tsx";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage.tsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage.tsx";
 import UserManagement from "./components/users/UserManagement.tsx";
+import ErrorLogPage from "./errors/ErrorLogPage.tsx";
 
 interface AppRoutesProps {
     darkMode: boolean;
@@ -88,6 +89,10 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
         {path: "dashboard", element: <Dashboard/>},
     ];
 
+    const logRoutes = [
+        { path: "errorLogs", element: <ErrorLogPage/> },
+    ];
+
     return (
         <Router>
             <Routes>
@@ -100,7 +105,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
                 <Route element={<Layout darkMode={darkMode} setDarkMode={setDarkMode}/>}>
                     {[...userRoutes, ...productRoutes, ...categoryRoutes,
                         ...brandRoutes, ...supplierRoutes, ...warehouseRoutes,
-                        ...purchaseRoutes, ...commonRoutes].map(
+                        ...purchaseRoutes, ...commonRoutes, ...logRoutes].map(
                         ({path, element}) => (
                             <Route key={path} path={path} element={<ProtectedRoute>{element}</ProtectedRoute>}/>
                         )

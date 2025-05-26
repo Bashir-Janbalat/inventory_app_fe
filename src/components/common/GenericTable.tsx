@@ -22,11 +22,13 @@ import {CustomGridProps} from '../../types/CustomGridProps';
 
 type GenericTableGridProps<T> = CustomGridProps<T> & {
     title: string;
+    showCreateButton?: boolean;
     createPath: string;
     updatePath: (id: number) => string;
     deleteItem: (id: number) => Promise<number>;
     columnTitles: string[];
     renderColumns: (item: T) => React.ReactNode[];
+    renderActions?: (item: T) => React.ReactNode;
 };
 
 function GenericTable<T extends { id: number }>({
@@ -35,11 +37,13 @@ function GenericTable<T extends { id: number }>({
                                                     totalPages,
                                                     page,
                                                     setPage,
+                                                    showCreateButton,
                                                     createPath,
                                                     updatePath,
                                                     deleteItem,
                                                     columnTitles,
                                                     renderColumns,
+                                                    renderActions
                                                 }: GenericTableGridProps<T>) {
     const navigate = useNavigate();
     const [data, setData] = useState<T[]>(items);
@@ -73,9 +77,11 @@ function GenericTable<T extends { id: number }>({
         <Container>
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 4}}>
                 <Typography variant="h4" fontWeight="bold">{title}</Typography>
-                <Button variant="contained" startIcon={<AddIcon/>} onClick={handleCreate}>
-                    Create
-                </Button>
+                {showCreateButton && (
+                    <Button variant="contained" startIcon={<AddIcon/>} onClick={handleCreate}>
+                        Create
+                    </Button>
+                )}
             </Stack>
 
             <TableContainer component={Paper} sx={{overflowX: 'auto', border: '1px solid #ccc', borderRadius: 1}}>
@@ -96,11 +102,13 @@ function GenericTable<T extends { id: number }>({
                             <TableRow key={item.id} sx={{textAlign: 'center'}}>
                                 {renderColumns(item)}
                                 <TableCell sx={{textAlign: 'center'}}>
-                                    <ActionButtons
-                                        id={item.id}
-                                        onDelete={handleDelete}
-                                        navigateTo={updatePath(item.id)}
-                                    />
+                                    {renderActions ? renderActions(item) : (
+                                        <ActionButtons
+                                            id={item.id}
+                                            onDelete={handleDelete}
+                                            navigateTo={updatePath(item.id)}
+                                        />
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ))}

@@ -43,6 +43,7 @@ const Brands: React.FC = () => {
             totalPages={totalPages}
             page={page}
             setPage={setPage}
+            showCreateButton={true}
             createPath="/createBrand"
             updatePath={(id) => `/brands/update/${id}`}
             deleteItem={deleteBrand}

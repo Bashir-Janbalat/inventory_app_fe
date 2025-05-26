@@ -43,6 +43,7 @@ const Warehouses: React.FC = () => {
             totalPages={totalPages}
             page={page}
             setPage={setPage}
+            showCreateButton={true}
             createPath="/createWarehouse"
             updatePath={(id) => `/warehouses/update/${id}`}
             deleteItem={deleteWarehous}

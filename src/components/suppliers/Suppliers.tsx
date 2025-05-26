@@ -43,6 +43,7 @@ const Suppliers: React.FC = () => {
             totalPages={totalPages}
             page={page}
             setPage={setPage}
+            showCreateButton={true}
             createPath="/createSupplier"
             updatePath={(id) => `/suppliers/update/${id}`}
             deleteItem={deleteSupplier}

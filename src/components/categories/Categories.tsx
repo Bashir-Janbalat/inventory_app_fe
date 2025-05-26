@@ -43,6 +43,7 @@ const Categories: React.FC = () => {
             totalPages={totalPages}
             page={page}
             setPage={setPage}
+            showCreateButton={true}
             createPath="/createCategory"
             updatePath={(id) => `/categories/update/${id}`}
             deleteItem={deleteCategory}
