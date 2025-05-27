@@ -5,6 +5,7 @@ import {getProductStatusSummary} from "../../api/dashboardApi.ts";
 import {useFetcher} from "../../hooks/useFetcher.ts";
 import Loading from "../base/Loading.tsx";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
+import { Box } from '@mui/material';
 
 type productStatusType = "ACTIVE" | "INACTIVE" | "DELETED" | "DISCONNECTED";
 
@@ -33,7 +34,7 @@ const ProductStatusChart = () => {
     }, [fetchData]);
 
     if (loading) {
-        return <Loading fullScreen message="Loading ..."/>;
+        return <Loading fullScreen message="Loading Product Status..."/>;
     }
     if (error) {
         return <ErrorMessage message={error} onRetry={() => {
@@ -43,7 +44,7 @@ const ProductStatusChart = () => {
 
 
     return (
-        <>
+        <Box display="flex" flexDirection="column" alignItems="center">
             <h3>Product Status Distribution</h3>
             <PieChart width={400} height={300}>
                 <Pie
@@ -63,7 +64,7 @@ const ProductStatusChart = () => {
                 <Tooltip/>
                 <Legend/>
             </PieChart>
-        </>
+        </Box>
     );
 };
 

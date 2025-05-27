@@ -33,7 +33,7 @@ const DashboardSummary = () => {
     }, [fetchData]);
 
     if (loading) {
-        return <Loading fullScreen message="Loading ..."/>;
+        return <Loading fullScreen message="Loading Summary..."/>;
     }
     if (error) {
         return <ErrorMessage message={error} onRetry={() => {
