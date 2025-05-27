@@ -47,7 +47,7 @@ const Categories: React.FC = () => {
             createPath="/createCategory"
             updatePath={(id) => `/categories/update/${id}`}
             deleteItem={deleteCategory}
-            columnTitles={["id", "Name", "Product Count", "Brands count", "Total Stock"]}
+            columnTitles={["id", "Name", "Number of Products", "Number of Brands", "Total Stock"]}
             renderColumns={(category) =>
                 renderCenteredCells([
                     category.id,

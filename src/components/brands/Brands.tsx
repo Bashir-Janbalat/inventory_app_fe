@@ -47,7 +47,7 @@ const Brands: React.FC = () => {
             createPath="/createBrand"
             updatePath={(id) => `/brands/update/${id}`}
             deleteItem={deleteBrand}
-            columnTitles={["id", "Name", "Product Count", "Total Stock"]}
+            columnTitles={["id", "Name", "Number of Products", "Total Stock"]}
             renderColumns={(brand) => (renderCenteredCells([
                     brand.id,
                     brand.name,

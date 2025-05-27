@@ -1,4 +1,11 @@
+import DashboardSummary from "./DashboardSummary.tsx";
+
 const Dashboard: React.FC = () => {
-    return (<h1>Dashboard</h1>);
+    return (
+        <>
+            <DashboardSummary/>
+        </>
+
+    );
 }
 export default Dashboard;
