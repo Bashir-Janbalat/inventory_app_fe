@@ -64,7 +64,7 @@ export const getWarehousById = async (id: number): Promise<WarehouseDTO> => {
 export const getWarehousesWithStats =
     async (page?: number, size?: number): Promise<PagedResponseDTO<WarehouseStatsDTO>> => {
         try {
-            const response = await axiosInstance.get("/warehouses/stats", {
+            const response = await axiosInstance.get("/dashboard/warehouse-stats", {
                 params: {
                     page,
                     size

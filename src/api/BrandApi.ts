@@ -63,7 +63,7 @@ export const deleteBrand = async (id: number): Promise<number> => {
 export const getBrandsWithStats =
     async (page?: number, size?: number): Promise<PagedResponseDTO<BrandStatsDTO>> => {
         try {
-            const response = await axiosInstance.get("/brands/stats", {
+            const response = await axiosInstance.get("/dashboard/brand-stats", {
                 params: {
                     page,
                     size

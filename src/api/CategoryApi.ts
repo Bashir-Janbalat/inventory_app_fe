@@ -63,7 +63,7 @@ export const deleteCategory = async (id: number): Promise<number> => {
 export const getCategoriesWithStats =
     async (page?: number, size?: number): Promise<PagedResponseDTO<CategoryStatsDTO>> => {
         try {
-            const response = await axiosInstance.get("/categories/stats", {
+            const response = await axiosInstance.get("/dashboard/category-stats", {
                 params: {
                     page,
                     size
