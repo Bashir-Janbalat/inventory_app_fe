@@ -30,7 +30,7 @@ export const getRoles = async (): Promise<RoleDTO[]> => {
 
 export const assignRole = async (userId: number, role: RoleDTO): Promise<number> => {
     try {
-        const response = await axiosInstance.post(`/users/assign-role?userId=${userId}`, role);
+        const response = await axiosInstance.post(`/users/${userId}/roles`, role);
         return response.status;
     } catch (error) {
         throw getDetailedApiError(error);
@@ -39,7 +39,7 @@ export const assignRole = async (userId: number, role: RoleDTO): Promise<number>
 
 export const addRole = async (roleName: string): Promise<RoleDTO> => {
     try {
-        const response = await axiosInstance.post(`/users/roles/create-role`, {name: roleName});
+        const response = await axiosInstance.post(`/users/roles`, {name: roleName});
         return response.data;
     } catch (error) {
         throw getDetailedApiError(error);
@@ -57,7 +57,7 @@ export const removeRoleFromUser = async (userId: number, roleId: number): Promis
 
 export const deleteRole = async (roleId: number): Promise<number> => {
     try {
-        const response = await axiosInstance.delete(`/users/roles/remove-role-from-all/${roleId}`);
+        const response = await axiosInstance.delete(`/users/roles/${roleId}`);
         return response.status;
     } catch (error) {
         throw getDetailedApiError(error);
