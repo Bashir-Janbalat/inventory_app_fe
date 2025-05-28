@@ -4,7 +4,7 @@ import {useFetcher} from '../../hooks/useFetcher';
 import Loading from '../base/Loading';
 import {ErrorMessage} from '../common/ErrorMessage';
 import {MonthlyProductCountStatsDTO} from '../../types/MonthlyProductCountStatsDTO';
-import {getMonthlyProductStats} from '../../api/dashboardApi';
+import {getMonthlyProductStats} from '../../api/DashboardApi.ts';
 import {Box} from '@mui/material';
 
 const MonthlyProductChart = () => {

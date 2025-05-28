@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from 'react';
 
 import {Box, Grid, Paper, Typography} from '@mui/material';
-import {getDashboardSummary} from "../../api/dashboardApi.ts";
+import {getDashboardSummary} from "../../api/DashboardApi.ts";
 import {DashboardSummaryStatsDTO} from "../../types/DashboardSummaryStatsDTO.ts";
 import Loading from "../base/Loading.tsx";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";

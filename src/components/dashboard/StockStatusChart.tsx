@@ -4,7 +4,7 @@ import {useFetcher} from '../../hooks/useFetcher.ts';
 import Loading from '../base/Loading.tsx';
 import {ErrorMessage} from '../common/ErrorMessage.tsx';
 import {StockStatusCountStatsDTO} from '../../types/StockStatusCountStatsDTO.ts';
-import {getStockStatusSummary} from "../../api/dashboardApi.ts";
+import {getStockStatusSummary} from "../../api/DashboardApi.ts";
 import { Box } from '@mui/material';
 
 type stockStatusType = 'IN_STOCK' | 'OUT_OF_STOCK' | 'LOW_STOCK';

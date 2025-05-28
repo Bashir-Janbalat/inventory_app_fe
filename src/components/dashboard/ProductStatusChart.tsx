@@ -1,7 +1,7 @@
 import {Cell, Legend, Pie, PieChart, Tooltip} from 'recharts';
 import {useCallback, useEffect, useState} from 'react';
 import {ProductStatusCountStatsDTO} from "../../types/ProductStatusCountStatsDTO.ts";
-import {getProductStatusSummary} from "../../api/dashboardApi.ts";
+import {getProductStatusSummary} from "../../api/DashboardApi.ts";
 import {useFetcher} from "../../hooks/useFetcher.ts";
 import Loading from "../base/Loading.tsx";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
