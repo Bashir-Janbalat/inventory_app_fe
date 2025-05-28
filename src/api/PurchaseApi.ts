@@ -7,6 +7,7 @@ type QueryParams = {
     page: number,
     size: number,
     date?: string,
+    sortDirection?: string
 }
 
 export const getProductsProductStatus =

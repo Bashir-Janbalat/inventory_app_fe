@@ -46,7 +46,7 @@ const Purchases: React.FC = () => {
     const [searchDate, setSearchDate] = useState("");
 
     const fetchPurchases = useCallback(async () => {
-        const pagedResponse = await getPurchases({page: page - 1, size, date: searchDate});
+        const pagedResponse = await getPurchases({page: page - 1, size, date: searchDate, sortDirection: "desc"});
         setPurchases(pagedResponse.content);
         setTotalPages(pagedResponse.totalPages);
         return pagedResponse.content;
