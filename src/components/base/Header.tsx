@@ -57,6 +57,10 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
         logout(false, "You have been successfully logged out");
         handleMenuClose();
     };
+    const handleDashboardClose = () => {
+        navigate("/dashboard");
+        handleMenuClose();
+    }
 
     return (
         <AppBar
@@ -127,7 +131,7 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
                                 </Button>
                             </Box>
 
-                            {/* For small screens: show as dropdown menu */}
+                            {/* For small screens: show as a dropdown menu */}
                             <Box sx={{display: {xs: "block", md: "none"}}}>
                                 <IconButton onClick={(e) => setMenuAnchorEl(e.currentTarget)}>
                                     <Typography sx={{fontWeight: "bold"}}>☰</Typography>
@@ -142,8 +146,7 @@ const Header: React.FC<HeaderProps> = ({darkMode, setDarkMode, toggleSidebar}) =
                                         handleMenuClose();
                                     }}>Menu</MenuItem>
                                     <MenuItem onClick={() => {
-                                        toggleSidebar();
-                                        handleMenuClose();
+                                        handleDashboardClose();
                                     }}>Dashboard</MenuItem>
                                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                                 </Menu>
