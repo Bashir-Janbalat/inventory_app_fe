@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import Loading from "../base/Loading.tsx";
 import {useFetcher} from "../../hooks/useFetcher.ts";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
-import {deleteWarehous, getWarehousesWithStats} from "../../api/WarehousApi.ts";
+import {deleteWarehouse, getWarehousesWithStats} from "../../api/WarehouseApi.ts";
 import {WarehouseStatsDTO} from "../../types/WarehouseDTO.ts";
 import GenericTable from "../common/GenericTable.tsx";
 import {renderCenteredCells} from "../../utils/StyleUtils.tsx";
@@ -46,7 +46,7 @@ const Warehouses: React.FC = () => {
             showCreateButton={true}
             createPath="/createWarehouse"
             updatePath={(id) => `/warehouses/update/${id}`}
-            deleteItem={deleteWarehous}
+            deleteItem={deleteWarehouse}
             columnTitles={["id", "Name", "address", "Number of Products", "Total Stock"]}
             renderColumns={(warehouse) => (renderCenteredCells([
                     warehouse.id,

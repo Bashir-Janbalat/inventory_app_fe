@@ -26,7 +26,7 @@ export const getPagedWarehouses =
             throw getDetailedApiError(error);
         }
     }
-export const deleteWarehous = async (id: number): Promise<number> => {
+export const deleteWarehouse = async (id: number): Promise<number> => {
     try {
         const response = await axiosInstance.delete(`/warehouses/${id}`);
         return response.status;
@@ -44,7 +44,7 @@ export const createWarehouse = async (warehous: WarehouseDTO): Promise<number> =
     }
 }
 
-export const updateWarehous = async (id: number, dto: WarehouseDTO): Promise<WarehouseDTO> => {
+export const updateWarehouse = async (id: number, dto: WarehouseDTO): Promise<WarehouseDTO> => {
     try {
         const response = await axiosInstance.put(`/warehouses/${id}`, dto);
         return response.data;
@@ -53,7 +53,7 @@ export const updateWarehous = async (id: number, dto: WarehouseDTO): Promise<War
     }
 };
 
-export const getWarehousById = async (id: number): Promise<WarehouseDTO> => {
+export const getWarehouseById = async (id: number): Promise<WarehouseDTO> => {
     try {
         const response = await axiosInstance.get(`/warehouses/${id}`);
         return response.data;

@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {UpdateForm} from "../common/UpdateForm";
 import {useCallback} from "react";
-import {getWarehousById, updateWarehous} from "../../api/WarehousApi";
+import {getWarehouseById, updateWarehouse} from "../../api/WarehouseApi.ts";
 import {WarehouseDTO} from "../../types/WarehouseDTO.ts";
 
 const UpdateWarehouse = () => {
@@ -13,14 +13,14 @@ const UpdateWarehouse = () => {
         if (parsedId === undefined) {
             throw new Error("No ID provided!");
         }
-        return await getWarehousById(parsedId);
+        return await getWarehouseById(parsedId);
     }, [parsedId]);
 
     const updater = useCallback(async (updatedWarehous: WarehouseDTO) => {
         if (parsedId === undefined) {
             throw new Error("No ID provided!");
         }
-        await updateWarehous(parsedId, updatedWarehous);
+        await updateWarehouse(parsedId, updatedWarehous);
     }, [parsedId]);
 
     if (!parsedId) {

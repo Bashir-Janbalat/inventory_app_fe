@@ -1,7 +1,7 @@
 import {useCallback, useState} from 'react';
 import {getCategories, getCategorySize} from '../api/CategoryApi';
 import {getBrands, getBrandSize} from '../api/BrandApi';
-import {getWarehouses} from '../api/WarehousApi.ts';
+import {getWarehouses} from '../api/WarehouseApi.ts';
 import {getSuppliers, getSupplierSize} from '../api/SupplierApi';
 import {getProductById} from '../api/ProductApi';
 import {CategoryDTO} from '../types/CategoryDTO';

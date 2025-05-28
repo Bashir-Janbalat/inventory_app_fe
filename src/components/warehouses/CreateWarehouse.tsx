@@ -3,7 +3,7 @@ import CreateComponent from "../common/CreateComponent.tsx";
 import {PageType} from "../../types/PageType.ts";
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import {createWarehouse} from "../../api/WarehousApi.ts";
+import {createWarehouse} from "../../api/WarehouseApi.ts";
 import {WarehouseDTO} from "../../types/WarehouseDTO.ts";
 
 const CreateWarehouse: React.FC = () => {
