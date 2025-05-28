@@ -47,37 +47,37 @@ const DashboardSummary = () => {
             <Grid container spacing={2}>
                 <Grid size={{xs: 6, sm: 4, md: 3}}>
                     <Paper sx={{p: 2}}>
-                        <Typography>Total Products</Typography>
+                        <Typography variant="body1" fontWeight="bold" >Total Products</Typography>
                         <Typography variant="h6">{summary.totalProducts}</Typography>
                     </Paper>
                 </Grid>
                 <Grid size={{xs: 6, sm: 4, md: 3}}>
                     <Paper sx={{p: 2}}>
-                        <Typography>Total Categories</Typography>
+                        <Typography variant="body1" fontWeight="bold" >Total Categories</Typography>
                         <Typography variant="h6">{summary.totalCategories}</Typography>
                     </Paper>
                 </Grid>
                 <Grid size={{xs: 6, sm: 4, md: 3}}>
                     <Paper sx={{p: 2}}>
-                        <Typography>Total Brands</Typography>
+                        <Typography variant="body1" fontWeight="bold" >Total Brands</Typography>
                         <Typography variant="h6">{summary.totalBrands}</Typography>
                     </Paper>
                 </Grid>
                 <Grid size={{xs: 6, sm: 4, md: 3}}>
                     <Paper sx={{p: 2}}>
-                        <Typography>Total Suppliers</Typography>
+                        <Typography variant="body1" fontWeight="bold" >Total Suppliers</Typography>
                         <Typography variant="h6">{summary.totalSuppliers}</Typography>
                     </Paper>
                 </Grid>
                 <Grid size={{xs: 6, sm: 4, md: 3}}>
                     <Paper sx={{p: 2}}>
-                        <Typography>Total Warehouses</Typography>
+                        <Typography variant="body1" fontWeight="bold" >Total Warehouses</Typography>
                         <Typography variant="h6">{summary.totalWarehouses}</Typography>
                     </Paper>
                 </Grid>
                 <Grid size={{xs: 6, sm: 4, md: 3}}>
                     <Paper sx={{p: 2}}>
-                        <Typography>Total Stock Quantity</Typography>
+                        <Typography variant="body1" fontWeight="bold" >Total Stock Quantity</Typography>
                         <Typography variant="h6">{summary.totalStockQuantity}</Typography>
                     </Paper>
                 </Grid>

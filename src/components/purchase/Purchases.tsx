@@ -62,7 +62,7 @@ const Purchases: React.FC = () => {
     const calculateTotalAmount = (items: PurchaseItemDTO[]): number =>
         items.reduce((sum, item) => sum + item.quantity * item.unitPrice, 0);
 
-    const calculateTotalProducts = (items: PurchaseItemDTO[]): number =>
+    const calculateTotalQuantity = (items: PurchaseItemDTO[]): number =>
         items.reduce((sum, item) => sum + item.quantity, 0);
 
     const getStatusColor = (status?: PurchaseStatus) => {
@@ -157,6 +157,7 @@ const Purchases: React.FC = () => {
                             <TableCell><strong>Supplier</strong></TableCell>
                             <TableCell><strong>Status</strong></TableCell>
                             <TableCell><strong>Total Products</strong></TableCell>
+                            <TableCell><strong>Total Quantity</strong></TableCell>
                             <TableCell><strong>Total Amount</strong></TableCell>
                             <TableCell><strong>Actions</strong></TableCell>
                         </TableRow>
@@ -189,7 +190,8 @@ const Purchases: React.FC = () => {
                                             size="medium"
                                         />
                                     </TableCell>
-                                    <TableCell>{calculateTotalProducts(purchase.items)}</TableCell>
+                                    <TableCell>{purchase.items.length}</TableCell>
+                                    <TableCell>{calculateTotalQuantity(purchase.items)}</TableCell>
                                     <TableCell>
                                         ${calculateTotalAmount(purchase.items).toLocaleString("en-US", {
                                         minimumFractionDigits: 2,

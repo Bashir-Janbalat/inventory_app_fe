@@ -35,7 +35,7 @@ const MonthlyProductChart = () => {
                     <YAxis allowDecimals={false}/>
                     <Tooltip/>
                     <Legend/>
-                    <Bar dataKey="count" fill="#1976d2"/>
+                    <Bar dataKey="count" fill="#1976d2" name="Added Products"/>
                 </BarChart>
             </ResponsiveContainer>
         </Box>
