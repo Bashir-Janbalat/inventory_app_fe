@@ -11,7 +11,7 @@ import {
     MenuItem,
     Select
 } from "@mui/material";
-import {deleteRole, getRoles} from "../../api/userApi.ts";
+import {deleteRole, getRoles} from "../../api/UserApi.ts";
 import {RoleDTO} from "../../types/RoleDTO.ts";
 import {DetailedApiError} from "../../errors/DetailedApiError.ts";
 

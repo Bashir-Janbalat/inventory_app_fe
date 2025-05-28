@@ -2,7 +2,7 @@ import {useContext, useEffect, useState} from "react";
 import {Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Select} from "@mui/material";
 import {UserDTO} from "../../types/UserDTO.ts";
 import {RoleDTO} from "../../types/RoleDTO.ts";
-import {assignRole, getRoles} from "../../api/userApi.ts";
+import {assignRole, getRoles} from "../../api/UserApi.ts";
 import {DetailedApiError} from "../../errors/DetailedApiError.ts";
 import AuthContext from "../../auth/AuthContext.tsx";
 

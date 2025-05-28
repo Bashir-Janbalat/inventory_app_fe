@@ -63,3 +63,12 @@ export const deleteRole = async (roleId: number): Promise<number> => {
         throw getDetailedApiError(error);
     }
 }
+
+export const setUserActive = async (userId: number): Promise<number> => {
+    try {
+        const response = await axiosInstance.post(`/users/activate/${userId}`);
+        return response.status;
+    } catch (error) {
+        throw getDetailedApiError(error);
+    }
+}

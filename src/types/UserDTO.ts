@@ -6,4 +6,5 @@ export interface UserDTO {
     username: string;
     email: string;
     rolesDTO: RoleDTO[];
+    active: boolean;
 }

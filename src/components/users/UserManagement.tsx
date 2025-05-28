@@ -3,7 +3,7 @@ import {Button, Card, CardContent, Chip, Container, Grid, Pagination, Stack, Typ
 import AssignRoleDialog from "./AssignRoleDialog";
 import RoleDialog from "./RoleDialog";
 import {UserDTO} from "../../types/UserDTO.ts";
-import {getUsers, removeRoleFromUser} from "../../api/userApi.ts";
+import {getUsers, removeRoleFromUser, setUserActive} from "../../api/UserApi.ts";
 import {useFetcher} from "../../hooks/useFetcher.ts";
 import Loading from "../base/Loading.tsx";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
@@ -81,6 +81,25 @@ const UserManagement: React.FC = () => {
         }
         setOpenAssignDialog(false);
     };
+
+    const handleSetUserActive = async (userId: number) => {
+        try {
+            await setUserActive(userId);
+            fetchUsers();
+            setSnackbarMessage("User set as active.");
+            setSnackbarSeverity("success");
+            setSnackbarOpen(true);
+        } catch (error) {
+            if (error instanceof DetailedApiError) {
+                setSnackbarMessage(error.message);
+            } else {
+                setSnackbarMessage('Unexpected error occurred.');
+            }
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+        }
+    };
+
     return (
         <Container>
             <Card>
@@ -108,6 +127,13 @@ const UserManagement: React.FC = () => {
                                     <CardContent>
                                         <Typography variant="h6">{user.name} ({user.username})</Typography>
                                         <Typography variant="body2" color="textSecondary">{user.email}</Typography>
+                                        <Typography
+                                            variant="body2"
+                                            sx={{mt: 1}}
+                                            color={user.active ? 'success.main' : 'text.disabled'}
+                                        >
+                                            Status: {user.active ? 'Active' : 'Inactive'}
+                                        </Typography>
                                         <Grid container spacing={1} sx={{mt: 1}}>
                                             {user.rolesDTO.map(role => (
                                                 <Grid key={role.id}>
@@ -121,15 +147,30 @@ const UserManagement: React.FC = () => {
                                             ))}
                                         </Grid>
                                         {isUserManager && (
-                                            <Button
-                                                variant="outlined"
-                                                size="small"
-                                                sx={{mt: 1}}
-                                                onClick={() => handleAssignRole(user)}
-                                            >
-                                                Assign Role
-                                            </Button>
+                                            <>
+                                                <Button
+                                                    variant="outlined"
+                                                    size="small"
+                                                    sx={{mt: 1}}
+                                                    onClick={() => handleAssignRole(user)}
+                                                >
+                                                    Assign Role
+                                                </Button>
+
+                                                {!user.active && (
+                                                    <Button
+                                                        variant="contained"
+                                                        size="small"
+                                                        color="success"
+                                                        sx={{mt: 1, ml: 2}}
+                                                        onClick={() => handleSetUserActive(user.id)}
+                                                    >
+                                                        Set as Active
+                                                    </Button>
+                                                )}
+                                            </>
                                         )}
+
                                     </CardContent>
                                 </Card>
                             </Grid>

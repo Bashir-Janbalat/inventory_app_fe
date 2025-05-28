@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Alert, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
-import {addRole} from "../../api/userApi.ts";
+import {addRole} from "../../api/UserApi.ts";
 
 interface RoleDialogProps {
     open: boolean;

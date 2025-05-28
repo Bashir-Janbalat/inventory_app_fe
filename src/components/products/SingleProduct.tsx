@@ -18,6 +18,7 @@ import CustomSnackbar from '../common/CustomSnackbar.tsx';
 import {ErrorMessage} from '../common/ErrorMessage.tsx';
 import createFetcher from '../../hooks/useProductFormData.ts';
 import {DetailedApiError} from '../../errors/DetailedApiError.ts';
+import {useAuth} from "../../hooks/useAuth.ts";
 
 const SingleProduct: React.FC = () => {
     const {id} = useParams();
@@ -30,6 +31,8 @@ const SingleProduct: React.FC = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [totalQuantity, setTotalQuantity] = useState<number>(0);
     const [uniqueWarehouses, setUniqueWarehouses] = useState<string[]>([]);
+    const {roles} = useAuth();
+    const isAdmin = roles?.includes('ROLE_ADMIN');
 
     const {fetchData, loading, error, product} = createFetcher(id, {loadProduct: true});
 
@@ -174,6 +177,7 @@ const SingleProduct: React.FC = () => {
 
                     <Box sx={{mt: 2, display: 'flex', gap: 1}}>
                         <Button
+                            disabled={!isAdmin}
                             variant="contained"
                             size="medium"
                             onClick={() => navigate(`/products/update/${productDTO.id}`)}
@@ -185,7 +189,7 @@ const SingleProduct: React.FC = () => {
                             variant="contained"
                             color="error"
                             size="medium"
-                            disabled={isSubmitting}
+                            disabled={isSubmitting || !isAdmin}
                             onClick={() => handleDelete(Number(id))}
                             fullWidth
                         >

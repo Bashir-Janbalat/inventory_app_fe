@@ -32,6 +32,7 @@ import Loading from "../base/Loading.tsx";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import {getPurchases, updatePurchaseStatus} from "../../api/PurchaseApi.ts";
 import {PurchaseDetailsRow} from "./PurchaseDetailsRow";
+import {useAuth} from "../../hooks/useAuth.ts";
 
 
 const Purchases: React.FC = () => {
@@ -44,6 +45,8 @@ const Purchases: React.FC = () => {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
     const [searchDate, setSearchDate] = useState("");
+    const {roles} = useAuth();
+    const isAdmin = roles?.includes('ROLE_ADMIN');
 
     const fetchPurchases = useCallback(async () => {
         const pagedResponse = await getPurchases({page: page - 1, size, date: searchDate, sortDirection: "desc"});
@@ -114,6 +117,7 @@ const Purchases: React.FC = () => {
             <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 4}}>
                 <Typography variant="h5" fontWeight="bold">Purchases</Typography>
                 <Button
+                    disabled={!isAdmin}
                     variant="contained"
                     color="primary"
                     startIcon={<AddCircleIcon/>}
@@ -209,8 +213,8 @@ const Purchases: React.FC = () => {
                                                 sx={{minWidth: 150}}
                                             >
                                                 <MenuItem value="" disabled> Set Status...</MenuItem>
-                                                <MenuItem value={PurchaseStatus.COMPLETED}>Completed</MenuItem>
-                                                <MenuItem value={PurchaseStatus.CANCELLED}>Cancelled</MenuItem>
+                                                <MenuItem disabled={!isAdmin} value={PurchaseStatus.COMPLETED}>Completed</MenuItem>
+                                                <MenuItem disabled={!isAdmin} value={PurchaseStatus.CANCELLED}>Cancelled</MenuItem>
                                             </Select>
                                         ) : (
                                             "-"
