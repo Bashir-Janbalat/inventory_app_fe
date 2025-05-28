@@ -1,10 +1,11 @@
 import React from "react";
-import CreateComponent from "../components/common/CreateComponent.tsx";
-import {FormField} from "../types/FormField.ts";
-import {signup} from "../api/AuthApi.ts";
-import {useNavigate} from "react-router-dom";
-import {signupUserDTO} from "../types/SignupUserDTO.ts";
-import {PageType} from "../types/PageType.ts";
+import { useNavigate } from "react-router-dom";
+import { FormField } from "../../types/FormField";
+import {signupUserDTO} from "../../types/SignupUserDTO.ts";
+import {signup} from "../../api/AuthApi.ts";
+import {PageType} from "../../types/PageType.ts";
+import CreateComponent from "../common/CreateComponent.tsx";
+
 
 const SignUpPage: React.FC = () => {
     const navigate = useNavigate();

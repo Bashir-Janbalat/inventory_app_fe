@@ -1,8 +1,8 @@
-import CreateComponent from "../components/common/CreateComponent.tsx";
-import {PageType} from "../types/PageType.ts";
-import {FormField} from "../types/FormField.ts";
-import {resetPassword} from "../api/AuthApi.ts";
 import {useNavigate} from "react-router-dom";
+import {FormField} from "../../types/FormField.ts";
+import {resetPassword} from "../../api/AuthApi.ts";
+import CreateComponent from "../common/CreateComponent.tsx";
+import {PageType} from "../../types/PageType.ts";
 
 const ResetPasswordPage: React.FC = () => {
     const navigate = useNavigate();

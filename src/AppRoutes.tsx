@@ -1,9 +1,6 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
-import LoginPage from './pages/LoginPage.tsx';
 import ProtectedRoute from "./auth/ProtectedRoute.tsx";
 import SingleProduct from "./components/products/SingleProduct.tsx";
-import SignUpPage from "./pages/SignUpPage.tsx";
-import NotFoundPage from "./pages/NotFoundPage.tsx";
 import Layout from "./components/base/Layout.tsx";
 import Categories from "./components/categories/Categories.tsx";
 import Brands from "./components/brands/Brands.tsx"
@@ -25,10 +22,13 @@ import LoginLayout from "./components/base/LoginLayout.tsx"
 import CreatePurchase from "./components/purchase/CreatePurchase.tsx";
 import Purchases from "./components/purchase/Purchases.tsx";
 import Dashboard from "./components/dashboard/Dashboard.tsx";
-import ForgotPasswordPage from "./pages/ForgotPasswordPage.tsx";
-import ResetPasswordPage from "./pages/ResetPasswordPage.tsx";
 import UserManagement from "./components/users/UserManagement.tsx";
 import ErrorLogPage from "./errors/ErrorLogPage.tsx";
+import LoginPage from "./components/auth/LoginPage.tsx";
+import SignUpPage from "./components/auth/SignUpPage.tsx";
+import ForgotPasswordPage from "./components/auth/ForgotPasswordPage.tsx";
+import ResetPasswordPage from "./components/auth/ResetPasswordPage.tsx";
+import NotFoundPage from "./components/common/NotFoundPage.tsx";
 
 interface AppRoutesProps {
     darkMode: boolean;

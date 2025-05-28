@@ -1,8 +1,9 @@
-import CreateComponent from "../components/common/CreateComponent.tsx";
-import {PageType} from "../types/PageType.ts";
-import {FormField} from "../types/FormField.ts";
-import {sendResetLink} from "../api/AuthApi.ts";
+
 import {useNavigate} from "react-router-dom";
+import CreateComponent from "../common/CreateComponent.tsx";
+import {PageType} from "../../types/PageType.ts";
+import {sendResetLink} from "../../api/AuthApi.ts";
+import {FormField} from "../../types/FormField.ts";
 
 const ForgotPasswordPage: React.FC = () => {
     const fields: FormField[] = [{name: 'email', label: 'email', type: 'email', required: true}];
