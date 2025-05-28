@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Box, Container, Typography} from '@mui/material';
+import {Box, Container} from '@mui/material';
 import {Outlet} from 'react-router-dom';
 import Header from './Header.tsx';
 import Sidebar from './Sidebar.tsx';
@@ -40,18 +40,6 @@ const Layout: React.FC<LayoutProps> = ({darkMode, setDarkMode}) => {
                 >
                     <Outlet/>
                 </Container>
-                <Box sx={{
-                    width: {xs: '0px', md: '250px'},
-                    display: {xs: 'none', md: 'block'},
-                    borderLeft: '1px solid #ccc',
-                    p: 2,
-                    backgroundColor: 'background.paper',
-                }}>
-                    <Typography variant="h6">لوحة جانبية</Typography>
-                    <Box>
-                        <p>محتوى إضافي</p>
-                    </Box>
-                </Box>
             </Box>
             {/* Footer unten */}
             <Footer/>
