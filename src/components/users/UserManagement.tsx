@@ -1,5 +1,5 @@
 import {useCallback, useContext, useEffect, useState} from "react";
-import {Button, Card, CardContent, Chip, Container, Grid, Pagination, Stack, Typography} from "@mui/material";
+import {Box, Button, Card, CardContent, Chip, Container, Grid, Pagination, Stack, Typography} from "@mui/material";
 import AssignRoleDialog from "./AssignRoleDialog";
 import RoleDialog from "./RoleDialog";
 import {UserDTO} from "../../types/UserDTO.ts";
@@ -122,9 +122,9 @@ const UserManagement: React.FC = () => {
 
                     <Grid container spacing={2}>
                         {users.map(user => (
-                            <Grid size={{xs: 12, md: 6}} key={user.id}>
-                                <Card variant="outlined">
-                                    <CardContent>
+                            <Grid size={{xs: 12, md: 6}} key={user.id} sx={{display: 'flex'}}>
+                                <Card variant="outlined" sx={{flexGrow: 1, display: 'flex', flexDirection: 'column'}}>
+                                    <CardContent sx={{flexGrow: 1}}>
                                         <Typography variant="h6">{user.name} ({user.username})</Typography>
                                         <Typography variant="body2" color="textSecondary">{user.email}</Typography>
                                         <Typography
@@ -146,32 +146,32 @@ const UserManagement: React.FC = () => {
                                                 </Grid>
                                             ))}
                                         </Grid>
-                                        {isUserManager && (
-                                            <>
-                                                <Button
-                                                    variant="outlined"
-                                                    size="small"
-                                                    sx={{mt: 1}}
-                                                    onClick={() => handleAssignRole(user)}
-                                                >
-                                                    Assign Role
-                                                </Button>
-
-                                                {!user.active && (
-                                                    <Button
-                                                        variant="contained"
-                                                        size="small"
-                                                        color="success"
-                                                        sx={{mt: 1, ml: 2}}
-                                                        onClick={() => handleSetUserActive(user.id)}
-                                                    >
-                                                        Set as Active
-                                                    </Button>
-                                                )}
-                                            </>
-                                        )}
-
                                     </CardContent>
+                                    {isUserManager && (
+                                        <Box sx={{p: 2, pt: 0}}>
+                                            <Button
+                                                variant="outlined"
+                                                size="small"
+                                                sx={{mt: 1}}
+                                                onClick={() => handleAssignRole(user)}
+                                            >
+                                                Assign Role
+                                            </Button>
+
+                                            {!user.active && (
+                                                <Button
+                                                    variant="contained"
+                                                    size="small"
+                                                    color="success"
+                                                    sx={{mt: 1, ml: 2}}
+                                                    onClick={() => handleSetUserActive(user.id)}
+                                                >
+                                                    Set as Active
+                                                </Button>
+                                            )}
+                                        </Box>
+                                    )}
+
                                 </Card>
                             </Grid>
                         ))}
