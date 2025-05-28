@@ -28,7 +28,7 @@ const LoginPage = () => {
         if (authenticated) {
             navigate('/products');
         }
-    }, [authenticated, navigate]);
+    }, [authenticated, navigate,location]);
 
     const handleSubmit = async (values: Record<string, string>) => {
         setStateSuccessMessage(null);
