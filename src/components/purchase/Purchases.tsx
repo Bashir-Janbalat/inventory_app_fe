@@ -33,6 +33,8 @@ import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import {getPurchases, updatePurchaseStatus} from "../../api/PurchaseApi.ts";
 import {PurchaseDetailsRow} from "./PurchaseDetailsRow";
 import {useAuth} from "../../hooks/useAuth.ts";
+import CustomSnackbar from "../common/CustomSnackbar.tsx";
+import {DetailedApiError} from "../../errors/DetailedApiError.ts";
 
 
 const Purchases: React.FC = () => {
@@ -47,6 +49,9 @@ const Purchases: React.FC = () => {
     const [searchDate, setSearchDate] = useState("");
     const {roles} = useAuth();
     const isAdmin = roles?.includes('ROLE_ADMIN');
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'info' | 'warning'>('success');
 
     const fetchPurchases = useCallback(async () => {
         const pagedResponse = await getPurchases({page: page - 1, size, date: searchDate, sortDirection: "desc"});
@@ -108,136 +113,153 @@ const Purchases: React.FC = () => {
                 )
             );
         } catch (error) {
-            console.error("Status update failed", error);
+            if (error instanceof DetailedApiError) {
+                setSnackbarMessage(error.message);
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
+            } else {
+                throw error;
+            }
         }
     };
 
     return (
-        <Paper elevation={3} sx={{p: 3, maxWidth: {xs: "100%", md: 1100}, mx: "auto", mt: 4}}>
-            <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 4}}>
-                <Typography variant="h5" fontWeight="bold">Purchases</Typography>
-                <Button
-                    disabled={!isAdmin}
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AddCircleIcon/>}
-                    onClick={() => navigate("/createPurchase")}
-                >
-                    Create Purchase
-                </Button>
-            </Stack>
-            <Box display="flex" gap={2} mb={3} flexWrap="wrap" alignItems="flex-start">
-                {/*Date Filter */}
-                {!isSmallScreen && (
-                    <FormControl sx={{minWidth: 180}} size="small">
-                        <InputLabel shrink htmlFor="date-input">Date</InputLabel>
-                        <OutlinedInput
-                            id="date-input"
-                            type="date"
-                            value={searchDate}
-                            onChange={(e) => {
-                                setSearchDate(e.target.value);
-                                setPage(1);
-                            }}
-                            notched
-                        />
-                    </FormControl>
-                )}
+        <>
+            <Paper elevation={3} sx={{p: 3, maxWidth: {xs: "100%", md: 1100}, mx: "auto", mt: 4}}>
+                <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{mb: 4}}>
+                    <Typography variant="h5" fontWeight="bold">Purchases</Typography>
+                    <Button
+                        disabled={!isAdmin}
+                        variant="contained"
+                        color="primary"
+                        startIcon={<AddCircleIcon/>}
+                        onClick={() => navigate("/createPurchase")}
+                    >
+                        Create Purchase
+                    </Button>
+                </Stack>
+                <Box display="flex" gap={2} mb={3} flexWrap="wrap" alignItems="flex-start">
+                    {/*Date Filter */}
+                    {!isSmallScreen && (
+                        <FormControl sx={{minWidth: 180}} size="small">
+                            <InputLabel shrink htmlFor="date-input">Date</InputLabel>
+                            <OutlinedInput
+                                id="date-input"
+                                type="date"
+                                value={searchDate}
+                                onChange={(e) => {
+                                    setSearchDate(e.target.value);
+                                    setPage(1);
+                                }}
+                                notched
+                            />
+                        </FormControl>
+                    )}
 
-                <Button variant="outlined" onClick={() => {
-                    setSearchDate("");
-                    setPage(1);
+                    <Button variant="outlined" onClick={() => {
+                        setSearchDate("");
+                        setPage(1);
 
-                }}>
-                    Clear Filters
-                </Button>
-            </Box>
-            <TableContainer>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell/>
-                            <TableCell><strong>Purchase Date</strong></TableCell>
-                            <TableCell><strong>Supplier</strong></TableCell>
-                            <TableCell><strong>Status</strong></TableCell>
-                            <TableCell><strong>Total Products</strong></TableCell>
-                            <TableCell><strong>Total Quantity</strong></TableCell>
-                            <TableCell><strong>Total Amount</strong></TableCell>
-                            <TableCell><strong>Actions</strong></TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {purchases.map((purchase) => (
-                            <React.Fragment key={purchase.id}>
-                                <TableRow>
-                                    <TableCell>
-                                        <IconButton size="small" onClick={() => toggleRow(purchase.id!)}>
-                                            {openRows[purchase.id!] ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
-                                        </IconButton>
-                                    </TableCell>
-                                    <TableCell>
-                                        {purchase.createdAt
-                                            ? new Date(purchase.createdAt).toLocaleString("de-DE", {
-                                                day: "2-digit",
-                                                month: "2-digit",
-                                                year: "numeric",
-                                                hour: "2-digit",
-                                                minute: "2-digit",
-                                            })
-                                            : "-"}
-                                    </TableCell>
-                                    <TableCell>{purchase.supplierName}</TableCell>
-                                    <TableCell>
-                                        <Chip
-                                            label={purchase.status}
-                                            color={getStatusColor(purchase.status as PurchaseStatus)}
-                                            size="medium"
-                                        />
-                                    </TableCell>
-                                    <TableCell>{purchase.items.length}</TableCell>
-                                    <TableCell>{calculateTotalQuantity(purchase.items)}</TableCell>
-                                    <TableCell>
-                                        ${calculateTotalAmount(purchase.items).toLocaleString("en-US", {
-                                        minimumFractionDigits: 2,
-                                    })}
-                                    </TableCell>
-                                    <TableCell>
-                                        {purchase.status === PurchaseStatus.PENDING ? (
-                                            <Select
-                                                size="small"
-                                                value={purchase.status === PurchaseStatus.PENDING ? "" : purchase.status}
-                                                displayEmpty
-                                                onChange={(e) =>
-                                                    handleStatusChange(purchase.id, e.target.value as unknown as PurchaseStatus)
-                                                }
-                                                sx={{minWidth: 150}}
-                                            >
-                                                <MenuItem value="" disabled> Set Status...</MenuItem>
-                                                <MenuItem disabled={!isAdmin} value={PurchaseStatus.COMPLETED}>Completed</MenuItem>
-                                                <MenuItem disabled={!isAdmin} value={PurchaseStatus.CANCELLED}>Cancelled</MenuItem>
-                                            </Select>
-                                        ) : (
-                                            "-"
-                                        )}
-                                    </TableCell>
-                                </TableRow>
-                                <PurchaseDetailsRow open={openRows[purchase.id!]} items={purchase.items}/>
-                            </React.Fragment>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <Stack direction="row" justifyContent="center" alignItems="center" marginTop={4}>
-                <Pagination
-                    count={totalPages}
-                    page={page}
-                    onChange={(_event, value) => setPage(value)}
-                    color="primary"
-                    variant="outlined"
-                    shape="rounded"
-                />
-            </Stack>
-        </Paper>
+                    }}>
+                        Clear Filters
+                    </Button>
+                </Box>
+                <TableContainer>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell/>
+                                <TableCell><strong>Purchase Date</strong></TableCell>
+                                <TableCell><strong>Supplier</strong></TableCell>
+                                <TableCell><strong>Status</strong></TableCell>
+                                <TableCell><strong>Total Products</strong></TableCell>
+                                <TableCell><strong>Total Quantity</strong></TableCell>
+                                <TableCell><strong>Total Amount</strong></TableCell>
+                                <TableCell><strong>Actions</strong></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {purchases.map((purchase) => (
+                                <React.Fragment key={purchase.id}>
+                                    <TableRow>
+                                        <TableCell>
+                                            <IconButton size="small" onClick={() => toggleRow(purchase.id!)}>
+                                                {openRows[purchase.id!] ? <KeyboardArrowUpIcon/> :
+                                                    <KeyboardArrowDownIcon/>}
+                                            </IconButton>
+                                        </TableCell>
+                                        <TableCell>
+                                            {purchase.createdAt
+                                                ? new Date(purchase.createdAt).toLocaleString("de-DE", {
+                                                    day: "2-digit",
+                                                    month: "2-digit",
+                                                    year: "numeric",
+                                                    hour: "2-digit",
+                                                    minute: "2-digit",
+                                                })
+                                                : "-"}
+                                        </TableCell>
+                                        <TableCell>{purchase.supplierName}</TableCell>
+                                        <TableCell>
+                                            <Chip
+                                                label={purchase.status}
+                                                color={getStatusColor(purchase.status as PurchaseStatus)}
+                                                size="medium"
+                                            />
+                                        </TableCell>
+                                        <TableCell>{purchase.items.length}</TableCell>
+                                        <TableCell>{calculateTotalQuantity(purchase.items)}</TableCell>
+                                        <TableCell>
+                                            ${calculateTotalAmount(purchase.items).toLocaleString("en-US", {
+                                            minimumFractionDigits: 2,
+                                        })}
+                                        </TableCell>
+                                        <TableCell>
+                                            {purchase.status === PurchaseStatus.PENDING ? (
+                                                <Select
+                                                    size="small"
+                                                    value={purchase.status === PurchaseStatus.PENDING ? "" : purchase.status}
+                                                    displayEmpty
+                                                    onChange={(e) =>
+                                                        handleStatusChange(purchase.id, e.target.value as unknown as PurchaseStatus)
+                                                    }
+                                                    sx={{minWidth: 150}}
+                                                >
+                                                    <MenuItem value="" disabled> Set Status...</MenuItem>
+                                                    <MenuItem disabled={!isAdmin}
+                                                              value={PurchaseStatus.COMPLETED}>Completed</MenuItem>
+                                                    <MenuItem disabled={!isAdmin}
+                                                              value={PurchaseStatus.CANCELLED}>Cancelled</MenuItem>
+                                                </Select>
+                                            ) : (
+                                                "-"
+                                            )}
+                                        </TableCell>
+                                    </TableRow>
+                                    <PurchaseDetailsRow open={openRows[purchase.id!]} items={purchase.items}/>
+                                </React.Fragment>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <Stack direction="row" justifyContent="center" alignItems="center" marginTop={4}>
+                    <Pagination
+                        count={totalPages}
+                        page={page}
+                        onChange={(_event, value) => setPage(value)}
+                        color="primary"
+                        variant="outlined"
+                        shape="rounded"
+                    />
+                </Stack>
+            </Paper>
+            <CustomSnackbar
+                open={snackbarOpen}
+                message={snackbarMessage}
+                severity={snackbarSeverity}
+                onClose={() => setSnackbarOpen(false)}
+            />
+        </>
     );
 };
 

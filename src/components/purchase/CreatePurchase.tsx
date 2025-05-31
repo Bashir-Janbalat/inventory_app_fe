@@ -24,6 +24,7 @@ import {useFetcher} from "../../hooks/useFetcher.ts";
 import {createPurchase, getProductsProductStatus} from "../../api/PurchaseApi.ts";
 import {useNavigate} from 'react-router-dom';
 import CustomSnackbar from "../common/CustomSnackbar.tsx";
+import {DetailedApiError} from "../../errors/DetailedApiError.ts";
 
 
 const CreatePurchase: React.FC = () => {
@@ -130,7 +131,13 @@ const CreatePurchase: React.FC = () => {
                 }, 500);
             }
         } catch (error) {
-            console.error("Fehler beim Speichern des Einkaufs:", error);
+            if (error instanceof DetailedApiError) {
+                setSnackbarMessage(error.message);
+                setSnackbarSeverity('error');
+                setSnackbarOpen(true);
+            } else {
+                throw error;
+            }
         } finally {
             setIsSaving(false);
         }
