@@ -1,5 +1,5 @@
 import {ProductDTO, StockDTO} from "../../types/ProductDTO.ts";
-import {Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import React from "react";
 import {WarehouseDTO} from "../../types/WarehouseDTO.ts";
 
@@ -20,20 +20,6 @@ const ProductStock: React.FC<ProductStockProps> = ({product, warehouses, onChang
         onChange('stocks', updatedStocks);
     };
 
-    const handleAddStock = () => {
-        const newStock: StockDTO = {
-            quantity: 0,
-            warehouse: {id: undefined, name: '', address: ''},
-        };
-        const updatedStocks = [...product.stocks, newStock];
-        onChange('stocks', updatedStocks);
-    };
-
-    const handleRemoveStock = (index: number) => {
-        const updatedStocks = [...product.stocks];
-        updatedStocks.splice(index, 1);
-        onChange('stocks', updatedStocks);
-    };
     return (
         <>
             {product.stocks.map((stock, index) => (
@@ -153,10 +139,6 @@ const ProductStock: React.FC<ProductStockProps> = ({product, warehouses, onChang
                             </FormControl>
                         </Grid>
                     )}
-                    <Grid size={{xs: 12}}>
-                        <Button color="error" variant='outlined'
-                                onClick={() => handleRemoveStock(index)}>Remove</Button>
-                    </Grid>
                     {index < product.stocks.length - 1 && (
                         <Grid size={{xs: 12}}>
                             <Box sx={{borderTop: '1px solid grey', marginTop: 2, marginBottom: 2}}/>
@@ -165,9 +147,6 @@ const ProductStock: React.FC<ProductStockProps> = ({product, warehouses, onChang
                 </React.Fragment>
             ))
             }
-            <Grid size={{xs: 12}}>
-                <Button variant="outlined" onClick={handleAddStock}>+ Add Stock</Button>
-            </Grid>
         </>
     );
 }
