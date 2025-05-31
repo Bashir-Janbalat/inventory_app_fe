@@ -9,7 +9,8 @@ import {
     IconButton,
     MenuItem,
     TextField,
-    Typography
+    Typography,
+    Autocomplete
 } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -220,20 +221,23 @@ const CreatePurchase: React.FC = () => {
                             return (
                                 <Grid container spacing={2} key={index} alignItems="center" sx={{mb: 2}}>
                                     {/* Product */}
-                                    <Grid size={{xs: 12, sm: 3}}>
-                                        <TextField
-                                            label="Product"
-                                            select
-                                            fullWidth
-                                            value={item.productId}
-                                            onChange={(e) =>
-                                                handleItemChange(index, 'productId', Number(e.target.value))}>
-                                            {products.map((product) => (
-                                                <MenuItem key={product.productId} value={product.productId}>
-                                                    {product.sku}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
+                                    <Grid size={{xs: 12, sm: 2}}>
+                                        <Autocomplete
+                                            options={products}
+                                            getOptionLabel={(option) => option.sku}
+                                            value={products.find(p => p.productId === item.productId) || null}
+                                            onChange={(_event, newValue) => {
+                                                handleItemChange(index, 'productId', newValue ? newValue.productId : '');
+                                            }}
+                                            renderInput={(params) => (
+                                                <TextField
+                                                    {...params}
+                                                    label="Product"
+                                                    fullWidth
+                                                />
+                                            )}
+                                            isOptionEqualToValue={(option, value) => option.productId === value.productId}
+                                        />
                                     </Grid>
                                     {/* Quantity */}
                                     <Grid size={{xs: 12, sm: 2}}>
