@@ -1,27 +1,15 @@
-# استخدم نسخة Node الرسمية
-FROM node:20-alpine
-
-# تحديد مجلد العمل داخل الحاوية
+# مرحلة البناء
+FROM node:20-alpine AS builder
 WORKDIR /app
-
-# نسخ ملفات الاعتماديات (package.json و package-lock.json)
-COPY package.json package-lock.json ./
-
-# تثبيت الاعتماديات
-RUN npm install
-
-# نسخ جميع ملفات المشروع بما في ذلك src و public
 COPY . .
+RUN npm install && npm run build
 
-# بناء المشروع باستخدام Vite
-# هذا سيقوم بإنشاء ملفات البناء داخل مجلد dist
-RUN npm run build
+# مرحلة التشغيل
+FROM nginx:alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# تثبيت serve لتقديم التطبيق (ملف dist الذي تم إنشاؤه)
-RUN npm install -g serve
+# نسخ إعدادات NGINX
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# فتح المنفذ 3000
 EXPOSE 3000
-
-# تشغيل التطبيق باستخدام serve
-CMD ["serve", "-s", "dist", "-l", "3000"]
+CMD ["nginx", "-g", "daemon off;"]
