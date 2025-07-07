@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "docker:build": "docker build -t inventory_app_fe .",
-    "docker:run": "docker run --env-file .env -p 3000:3000 inventory_app_fe",
+    "docker:run": "docker run --env-file .env.local -p 3000:3000 inventory_app_fe",
     "docker:up": "docker-compose -f docker-inventory_app_fe.yml up",
     "docker:down": "docker-compose -f inventory_app_fe.yml down"
   },
