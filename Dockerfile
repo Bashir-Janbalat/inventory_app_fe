@@ -15,7 +15,7 @@ ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 
 # تنفيذ البناء
-RUN npm run build
+RUN VITE_API_BASE_URL=$VITE_API_BASE_URL npm run build
 
 # 🚀 مرحلة التشغيل (باستخدام Nginx)
 FROM nginx:alpine
