@@ -8,6 +8,7 @@ export default defineConfig({
     extensions: ['.ts', '.tsx', '.js'],
   },
   build: {
+    outDir: 'dist/inventory-app',
     sourcemap: false,
     chunkSizeWarningLimit: 800,
     target: 'esnext',
