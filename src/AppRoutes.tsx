@@ -94,7 +94,7 @@ const AppRoutes: React.FC<AppRoutesProps> = ({darkMode, setDarkMode}) => {
     ];
 
     return (
-        <Router>
+        <Router basename="/inventory-app">
             <Routes>
                 <Route element={<LoginLayout/>}>
                     <Route index element={<LoginPage/>}/>
