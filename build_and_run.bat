@@ -2,7 +2,7 @@
 setlocal
 
 echo 🔄 Entferne alte Container falls vorhanden...
-docker-compose -f docker-compose.inventory_frontend.yml down
+docker-compose -f docker-compose.inventory_frontend-local.yml down
 
 echo 🚮 Entferne altes Image falls vorhanden...
 docker image inspect inventory_frontend:latest >nul 2>&1
@@ -11,7 +11,7 @@ IF %ERRORLEVEL% EQU 0 (
 )
 
 echo 🛠️  Baue und starte React Frontend mit Docker Compose...
-docker-compose -f docker-compose.inventory_frontend.yml up --build -d
+docker-compose -f docker-compose.inventory_frontend-local.yml up --build -d
 IF %ERRORLEVEL% NEQ 0 (
     echo ❌ FEHLER: docker-compose konnte nicht gestartet werden.
     exit /b %ERRORLEVEL%
@@ -19,8 +19,8 @@ IF %ERRORLEVEL% NEQ 0 (
 
 timeout /t 3 > nul
 
-start http://localhost:3000
-echo ✅ Frontend laeuft auf http://localhost:3000
+start http://localhost:3000/inventory-app/
+echo ✅ Frontend laeuft auf http://localhost:3000/inventory-app/
 
 endlocal
 pause

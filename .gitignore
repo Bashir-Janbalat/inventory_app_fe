@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 .env.local
+build_and_run.bat
+docker-compose.inventory_frontend-local.yml
